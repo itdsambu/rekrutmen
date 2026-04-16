@@ -1,0 +1,96 @@
+.divbontk {
+  padding-top:10px;	
+}
+
+.paddingtop5{
+	padding-top: 5px;
+}
+
+.paddingbottom5{
+	padding-bottom:5px;
+}
+
+.btpadding2{
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin-bottom: 2px;
+}
+
+.marginbottom10 { 
+    margin-bottom: 10px;
+}
+
+.btn span.glyphicon {    			
+	opacity: 0;				
+}
+.btn.active span.glyphicon {				
+	opacity: 1;				
+}
+
+.btnmygroup {
+	font-size: 20px;
+    padding: 1px 10px;
+}
+
+/*
+.procecore {
+	position: relative;
+	z-index:-1;
+	display:block;
+}
+*/
+
+/*
+.procecore .dataTables_processing {	
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    height: calc(100% - 70px);
+    text-align: center;
+}
+*/
+.input-sum-group{
+	padding: 1px;
+}
+.input-sum-group span{
+	color:#fff;
+	border-color:#428bca;
+	background-color:#337ab7;
+}
+.input-sum-group input,
+.input-sum-group input:hover{
+	border-color:#428bca !important;
+}
+
+
+.dataTables_processing {
+    position: absolute;
+    top: 95px;
+    width: 100%;
+    height: calc(100% - 95px);
+	text-align: center;
+	max-height:410px;
+	z-index:1000;
+}
+
+/*
+.dataTables_processing {
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 40px;
+    margin-left: -50%;
+    margin-top: -25px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: white;
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(25%, rgba(255,255,255,0.9)), color-stop(75%, rgba(255,255,255,0.9)), color-stop(100%, rgba(255,255,255,0)));
+    background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    background: -ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    background: -o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);
+}
+*/

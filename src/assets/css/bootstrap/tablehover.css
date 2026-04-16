@@ -1,0 +1,4 @@
+.hover-tab tr:hover  {
+    transform: translateY(0.23px);
+    color:#b3b3b3;
+}

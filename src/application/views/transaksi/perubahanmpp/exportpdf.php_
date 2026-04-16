@@ -1,0 +1,358 @@
+<div style="width:100%; font-family:helvetica; font-size:9px;">
+
+    <!-- ================= HEADER ================= -->
+    <table width="100%" cellpadding="4">
+        <tr>
+            <td width="120" align="center">
+                <img src="<?= FCPATH ?>assets/images/logo_terbaru.png" width="90">
+            </td>
+
+            <td>
+                <table width="100%" cellpadding="2">
+                    <tr>
+                        <td style="font-size:18px; font-weight:bold; color:#1b3c8b;">
+                            PT PULAU SAMBU
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:8px;">
+                            Kantor Pusat / Unit Usaha - Jakarta / Riau
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <p align="center" style="font-size:10px;">
+        website: www.sambugroup.com
+    </p>
+
+    <hr>
+
+    <!-- ================= JUDUL ================= -->
+    <table width="100%" cellpadding="4" border="1">
+        <tr>
+            <td align="center" style="font-weight:bold;">
+                FORM PERMINTAAN PERUBAHAN ORGANISASI
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= DIVISI DLL ================= -->
+    <table width="100%" cellpadding="4" border="0">
+
+        <tr>
+            <td width="180"><b>DIVISI</b></td>
+            <td width="10">:</td>
+            <td border="1"><?= $header->Divisi ?></td>
+        </tr>
+
+        <tr>
+            <td><b>DEPARTEMEN</b></td>
+            <td>:</td>
+            <td border="1"><?= $header->Departemen ?></td>
+        </tr>
+
+        <tr>
+            <td><b>SUB DEPARTEMEN</b></td>
+            <td>:</td>
+            <td border="1"><?= $header->SubDepartemen ?></td>
+        </tr>
+
+        <tr>
+            <td><b>JABATAN</b></td>
+            <td>:</td>
+            <td border="1"><?= $header->Jabatan ?></td>
+        </tr>
+
+        <tr>
+            <td><b>SUB JABATAN</b></td>
+            <td>:</td>
+            <td border="1"><?= $header->SubJabatan ?></td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <!-- ================= STATUS JABATAN ================= -->
+    <table width="100%" cellpadding="4">
+        <tr>
+            <td width="180"><b>STATUS JABATAN</b></td>
+
+            <td width="120">
+                <table>
+                    <tr>
+                        <td width="15">
+                            <table width="12" height="12" border="1">
+                                <tr>
+                                    <td bgcolor="<?= $header->TipePerubahan == 1 ? '#000' : '#fff' ?>"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>BARU</td>
+                    </tr>
+                </table>
+            </td>
+
+            <td>
+                <table>
+                    <tr>
+                        <td width="15">
+                            <table width="12" height="12" border="1">
+                                <tr>
+                                    <td bgcolor="<?= $header->TipePerubahan == 2 ? '#000' : '#fff' ?>"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>LAMA</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= JUMLAH PEMANGKU ================= -->
+    <table width="100%" cellpadding="4">
+        <tr>
+            <td width="180"><b>JUMLAH PEMANGKU</b></td>
+
+            <td>
+                SEBELUM:
+                <table width="30" border="1">
+                    <tr>
+                        <td align="center"><?= $header->JumlahSebelum ?></td>
+                    </tr>
+                </table>
+            </td>
+
+            <td>
+                SESUDAH:
+                <table width="30" border="1">
+                    <tr>
+                        <td align="center"><?= $header->JumlahSesudah ?></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= LATAR BELAKANG ================= -->
+    <table width="100%" border="1" cellpadding="5">
+        <tr>
+            <td>
+                <b>LATAR BELAKANG PERUBAHAN</b><br><br>
+                <?= $header->LatarBelakang ?>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= PROYEKSI ================= -->
+    <table width="100%" border="1" cellpadding="5">
+        <tr>
+            <td>
+                <b>PROYEKSI DAMPAK / VALUE</b><br><br>
+                <?= $header->ProyeksiDampak ?>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= STRUKTUR ================= -->
+    <table width="100%" border="1" cellpadding="5">
+        <tr>
+            <td>
+                <b>STRUKTUR ORGANISASI</b><br><br>
+                <?= $header->StrukturOrganisasi ?>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= KUALIFIKASI ================= -->
+    <table width="100%" border="1" cellpadding="4">
+        <tr>
+            <td><b>KUALIFIKASI PENDIDIKAN</b></td>
+            <td><?= $header->KualifikasiPendidikan ?></td>
+        </tr>
+        <tr>
+            <td><b>PENGALAMAN KERJA</b></td>
+            <td><?= $header->KualifikasiPengalaman ?></td>
+        </tr>
+        <tr>
+            <td><b>MANAGERIAL</b></td>
+            <td><?= $header->KualifikasiManajerial ?></td>
+        </tr>
+        <tr>
+            <td><b>KOMPETENSI</b></td>
+            <td><?= $header->KualifikasiKompetensi ?></td>
+        </tr>
+        <tr>
+            <td><b>SERTIFIKASI</b></td>
+            <td><?= $header->KualifikasiSertifikasi ?></td>
+        </tr>
+        <tr>
+            <td><b>LAINNYA</b></td>
+            <td><?= $header->KualifikasiLainnya ?></td>
+        </tr>
+    </table>
+
+    <br>
+
+    <!-- ================= TANDA TANGAN ================= -->
+    <table width="100%" cellpadding="5">
+
+        <tr>
+            <td align="center"><b>MENGETAHUI</b></td>
+            <td align="center"><b>MENYETUJUI</b></td>
+            <td align="center"><b>PEMOHON</b></td>
+        </tr>
+
+        <tr>
+
+            <td align="center" border="1" height="70">
+                <?php if ($header->AppStatus3 == 1) : ?>
+                    <img src="<?= FCPATH ?>assets/img/approved2.png" width="60">
+                <?php endif; ?>
+            </td>
+
+            <td align="center" border="1" height="70">
+                <?php if ($header->AppStatus2 == 1) : ?>
+                    <img src="<?= FCPATH ?>assets/img/approved2.png" width="60">
+                <?php endif; ?>
+            </td>
+
+            <td align="center" border="1" height="70">
+                <?php if ($header->AppStatus == 1) : ?>
+                    <img src="<?= FCPATH ?>assets/img/approved2.png" width="60">
+                <?php endif; ?>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td align="center"><?= $header->Approved3By ?></td>
+            <td align="center"><?= $header->Approved2By ?></td>
+            <td align="center"><?= $header->ApprovedBy ?></td>
+        </tr>
+
+    </table>
+
+    <!-- ================= LAMPIRAN A ================= -->
+    <?php if ($lampiranA) { ?>
+
+        <br pagebreak="true">
+
+        <h3>LAMPIRAN A</h3>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>SUB JABATAN</b></td>
+                <td><?= $lampiranA->NamaSubJabatan ?></td>
+            </tr>
+            <tr>
+                <td><b>LEVEL</b></td>
+                <td><?= $lampiranA->LevelJabatan ?></td>
+            </tr>
+            <tr>
+                <td><b>CATATAN</b></td>
+                <td><?= $lampiranA->Catatan ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>TUGAS & TANGGUNG JAWAB</b><br><?= $lampiranA->TugasTanggungJawab ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>WEWENANG</b><br><?= $lampiranA->Wewenang ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>TARGET KERJA</b><br><?= $lampiranA->TargetKerja ?></td>
+            </tr>
+        </table>
+
+    <?php } ?>
+
+    <!-- ================= LAMPIRAN B ================= -->
+    <?php if ($lampiranB) { ?>
+
+        <br pagebreak="true">
+
+        <h3>LAMPIRAN B</h3>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>SUB JABATAN</b></td>
+                <td><?= $lampiranB->NamaSubJabatan ?></td>
+            </tr>
+            <tr>
+                <td><b>LEVEL</b></td>
+                <td><?= $lampiranB->LevelJabatan ?></td>
+            </tr>
+            <tr>
+                <td><b>CATATAN</b></td>
+                <td><?= $lampiranB->Catatan ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>TUGAS & TANGGUNG JAWAB</b><br><?= $lampiranB->TugasTanggungJawab ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>WEWENANG</b><br><?= $lampiranB->Wewenang ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>KOORDINASI</b><br><?= $lampiranB->Koordinasi ?></td>
+            </tr>
+        </table>
+
+        <br>
+
+        <table width="100%" border="1" cellpadding="5">
+            <tr>
+                <td><b>PELAPORAN</b><br><?= $lampiranB->Pelaporan ?></td>
+            </tr>
+        </table>
+
+    <?php } ?>
+
+</div>

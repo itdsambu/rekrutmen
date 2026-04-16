@@ -1,0 +1,174 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/* 
+ * Author : ITD15
+ */
+
+class M_screening extends CI_Model{
+    
+    public function __construct() {
+        parent::__construct();
+    }
+    
+    //======= Screening TIM
+    function listTenagaKerja($nowOL,$dept){
+        $query = $this->db->query("SELECT * FROM tblTrnCalonTenagaKerja WHERE Verified = 1 AND ScreeningComplete Is Null AND UdahDiAmbil = 0 AND GeneralStatus = 0"
+                . "AND HeaderID NOT IN(SELECT HeaderID FROM tblTrnScreening WHERE Dept = '".$dept."')");
+        return $query->result();
+    }
+    
+    function getDetailTK($hdrid){
+        return $this->db->get_where('tblTrnCalonTenagaKerja',array('HeaderID'=>$hdrid));
+    }
+    
+    function simpanScreeningTim($data){
+        $this->db->trans_start();
+        $this->db->insert('tblTrnScreening',$data);
+        $sID = $this->db->insert_id();
+        $this->db->trans_complete();
+        return $sID;
+    }
+    
+    function rowTeamScreening(){
+        $query  = $this->db->query("SELECT * FROM tblMstDeptScreening");
+        return $query->num_rows();
+    }
+    
+    function getHasilScreen($hrdID){
+        $this->db->where('HeaderID',$hrdID);
+        $q = $this->db->get('tblTrnScreening');
+        $row = $this->rowTeamScreening() - 2;
+        if($q->num_rows() > $row){
+            $hasil = 'complite';
+        }else{
+            $hasil = NULL;
+        }
+        return $hasil;
+    }
+    
+    function getHasilLulus($hrdID){
+        $this->db->where('HeaderID',$hrdID);
+        $this->db->where('Lulus',1);
+        $q = $this->db->get('tblTrnScreening');
+        $hasil = $q->num_rows();
+        return $hasil;
+    }
+    function getHasilTIdakLulus($hrdID){
+        $this->db->where('HeaderID',$hrdID);
+        $this->db->where('Lulus',0);
+        $q = $this->db->get('tblTrnScreening');
+        $hasil = $q->num_rows();
+        return $hasil;
+    }
+            
+    function updateLulus($hrdID, $info){
+        $this->db->where('HeaderID',$hrdID);
+        $this->db->update('tblTrnCalonTenagaKerja',$info);
+    }
+
+
+    //================================== Screening PSN ==========================================
+    function listTKScreenedTim(){
+        $query = $this->db->query("SELECT a.*,b.KTP,b.CV,b.Lamaran,b.Ijazah,b.Transkrip FROM vwTenakerForScreenPSN as a INNER JOIN vwListBerkas as b ON b.HdrID=a.HeaderID ORDER BY HeaderID ASC");
+        return $query->result();
+    }
+	
+	function getDocs($userID){
+        $query = $this->db->query("SELECT * FROM tblTrnBerkas WHERE HeaderID='".$userID."'");
+        return $query->result();
+    }
+    
+    function resultScreen($hdrid){
+        return $this->db->get_where('tblTrnScreening',array('HeaderID'=>$hdrid));
+    }
+    
+    function resultInterview($hdrid){
+        return $this->db->get_where('tblTrnWawancara',array('HeaderID'=>$hdrid));
+    }
+            
+    function screenByPsn($hrdID, $info){
+        $this->db->where('HeaderID',$hrdID);
+        $this->db->update('tblTrnCalonTenagaKerja',$info);
+    }
+
+
+
+
+
+    function countScreeningLulus(){
+        $query = $this->db->query("SELECT HeaderID FROM vwTenakerScreeningByPsn WHERE SpecialScreening = 1 and ScreeningComplete = 1 and ScreeningHasil = 1 and GeneralStatus = 0 ORDER BY HeaderID ASC");
+        return $query->num_rows();
+    }
+
+    function selectScreeningLulus($start,$end){
+        $query = $this->db->query("SELECT * FROM (SELECT  ROW_NUMBER() OVER(ORDER BY HeaderID DESC) AS Row, "
+                . "* FROM vwTenakerScreeningByPsn AS tbl WHERE SpecialScreening = 1 and ScreeningComplete = 1 and ScreeningHasil = 1 and GeneralStatus = 0) "
+                . "vwTenakerScreeningByPsn WHERE  Row >= ".$start." AND Row <= ".$end." ");
+        return $query->result();
+    }
+
+    function countScreeningTidakLulus(){
+        $query = $this->db->query("SELECT HeaderID FROM vwTenakerScreeningByPsn WHERE SpecialScreening = 0 and ScreeningComplete = 1 and ScreeningHasil = 0 and GeneralStatus = 1 ORDER BY HeaderID ASC");
+        return $query->num_rows();
+    }
+
+    function selectScreeningTidakLulus($start,$end){
+        $query = $this->db->query("SELECT * FROM (SELECT  ROW_NUMBER() OVER(ORDER BY HeaderID DESC) AS Row, "
+                . "* FROM vwTenakerScreeningByPsn AS tbl WHERE SpecialScreening = 0 and ScreeningComplete = 1 and ScreeningHasil = 0 and GeneralStatus = 1) "
+                . "vwTenakerScreeningByPsn WHERE  Row >= ".$start." AND Row <= ".$end." ");
+        return $query->result();
+    }
+
+    function countScreeningAll(){
+        $query = $this->db->query("SELECT HeaderID FROM vwTenakerScreeningByPsn ORDER BY HeaderID ASC");
+        return $query->num_rows();
+    }
+
+    function selectScreeningAll($start,$end){
+        $query = $this->db->query("SELECT * FROM (SELECT  ROW_NUMBER() OVER(ORDER BY HeaderID DESC) AS Row, "
+                . "* FROM vwTenakerScreeningByPsn AS tbl) "
+                . "vwTenakerScreeningByPsn WHERE  Row >= ".$start." AND Row <= ".$end." ");
+        return $query->result();
+    }
+
+
+
+    function countScreeningLulusWhere($nama){
+        $query = $this->db->query("SELECT HeaderID FROM vwTenakerScreeningByPsn WHERE SpecialScreening = 1 and ScreeningComplete = 1 and ScreeningHasil = 1 and GeneralStatus = 0 and Nama LIKE '%".$nama."%' ORDER BY HeaderID ASC");
+        return $query->num_rows();
+    }
+
+    function selectScreeningLulusWhere($start,$end,$nama){
+        $query = $this->db->query("SELECT * FROM (SELECT  ROW_NUMBER() OVER(ORDER BY HeaderID DESC) AS Row, "
+                . "* FROM vwTenakerScreeningByPsn AS tbl WHERE SpecialScreening = 1 and ScreeningComplete = 1 and ScreeningHasil = 1 and GeneralStatus = 0 and Nama LIKE '%".$nama."%') "
+                . "vwTenakerScreeningByPsn WHERE  Row >= ".$start." AND Row <= ".$end." ");
+        return $query->result();
+    }
+
+    function countScreeningTidakLulusWhere($nama){
+        $query = $this->db->query("SELECT HeaderID FROM vwTenakerScreeningByPsn WHERE SpecialScreening = 0 and ScreeningComplete = 1 and ScreeningHasil = 0 and GeneralStatus = 1 and Nama LIKE '%".$nama."%' ORDER BY HeaderID ASC");
+        return $query->num_rows();
+    }
+
+    function selectScreeningTidakLulusWhere($start,$end,$nama){
+        $query = $this->db->query("SELECT * FROM (SELECT  ROW_NUMBER() OVER(ORDER BY HeaderID DESC) AS Row, "
+                . "* FROM vwTenakerScreeningByPsn AS tbl WHERE SpecialScreening = 0 and ScreeningComplete = 1 and ScreeningHasil = 0 and GeneralStatus = 1 and Nama LIKE '%".$nama."%') "
+                . "vwTenakerScreeningByPsn WHERE  Row >= ".$start." AND Row <= ".$end." ");
+        return $query->result();
+    }
+
+    function countScreeningAllWhere($nama){
+        $query = $this->db->query("SELECT HeaderID FROM vwTenakerScreeningByPsn WHERE Nama LIKE '%".$nama."%'ORDER BY HeaderID ASC");
+        return $query->num_rows();
+    }
+
+    function selectScreeningAllWhere($start,$end,$nama){
+        $query = $this->db->query("SELECT * FROM (SELECT  ROW_NUMBER() OVER(ORDER BY HeaderID DESC) AS Row, "
+                . "* FROM vwTenakerScreeningByPsn AS tbl WHERE Nama LIKE '%".$nama."%') "
+                . "vwTenakerScreeningByPsn WHERE  Row >= ".$start." AND Row <= ".$end." ");
+        return $query->result();
+    }
+}
+
+/* End of file m_screening.php */
+/* Location: ./application/models/m_screening.php */

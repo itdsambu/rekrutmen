@@ -1,0 +1,740 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/* 
+ * Author : ITD15
+ */
+
+class M_register extends CI_Model
+{
+
+    function __construct()
+    {
+        parent::__construct();
+    }
+
+    //    function get_perusahaan_bygroup(){
+    //        $pemborong = strtoupper($this->input->post('pemborong'));
+    //        $query = $this->db->get_where('vwMstPemborong', array('Pemborong' => $pemborong));
+    //        if ($query->num_rows() > 0){
+    //                $row = $query->row();
+    //                $perusahaan=$row->Perusahaan;
+    //        }else{
+    //                $perusahaan='';
+    //        }
+    //        return $perusahaan;
+    //    }
+    //        
+    //    function get_pemborong_bygroup($idpemborong){
+    //        if ($idpemborong > 0){
+    //            $result = $this->db->get_where('vwMstPemborong', array('IDPemborong'=>$idpemborong));
+    //        }else{
+    //            $this->db->select('*');
+    //            $this->db->from('vwMstPemborong');
+    //            $this->db->order_by('IDPerusahaan','ASC');
+    //            $this->db->order_by('IDPemborong','ASC');
+    //            $result = $this->db->get();
+    //        }
+    //        return $result;
+    //    }
+
+    function getPSGPemborong($idpemborong)
+    {
+        //        $this->db->order_by('Perusahaan','ASC');
+        //        $query = $this->db->get('PSGBorongan.dbo.tblMstPerusahaan');
+        //        return $query->result();
+        if ($idpemborong > 0) {
+            $result = $this->db->get_where('vwMstPemborong', array('IDPerusahaan' => $idpemborong));
+        } else {
+            $this->db->select('*');
+            $this->db->from('vwMstPemborong');
+            $this->db->order_by('Perusahaan', 'ASC');
+            $result = $this->db->get();
+        }
+        return $result->result();
+    }
+    function getPSGSubPemborong($idpemborong)
+    {
+        if ($idpemborong > 0) {
+            $result = $this->db->get_where('vwMstSubPemborong', array('IDPerusahaan' => $idpemborong));
+        } else {
+            $this->db->select('*');
+            $this->db->from('vwMstSubPemborong');
+            $this->db->order_by('Perusahaan', 'ASC');
+            $result = $this->db->get();
+        }
+        return $result->result();
+    }
+
+    function getPemborong()
+    {
+        $pemborong = strtoupper($this->input->post('pemborong'));
+        $query = $this->db->get_where('vwMstPemborong', array('Perusahaan' => $pemborong));
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $perusahaan = $row->Pimpinan;
+        } else {
+            $perusahaan = '';
+        }
+        return $perusahaan;
+    }
+
+    function getSubPemborong($subpemborong)
+    {
+        $query = $this->db->query("select * from vwmstsubpemborong where Perusahaan ='$subpemborong' ");
+        return $query->result();
+    }
+
+    function PilihCTKB($start_date, $end_date, $idpemborong)
+    {
+        if ($idpemborong > 0) {
+            $query = $this->db->query("SELECT * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND registereddate >= '$start_date' 
+            AND registereddate <= '$end_date' AND "
+                . "CVNama IN (SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) ORDER BY headerid DESC");
+        } else {
+            /**
+             * VINO MINTA RANGE tanggalnya sesuai dengan tanggal yang di daftarkan pemborong
+             */
+            $query = $this->db->query("SELECT top(1000)
+                                        A.*,
+                                        B.BerkasID,
+                                        B.KTP,
+                                        B.CV,
+                                        B.Lamaran,
+                                        B.Ijazah,
+                                        B.Transkrip,
+                                        B.SuratKontrak,
+                                        B.Vaksin1,
+                                        B.Vaksin2,
+                                        B.Vaksin3,
+                                        B.KK,
+                                        B.SKCK 
+                                    FROM
+                                        vwListTenakerForPemborong AS A
+                                        INNER JOIN dbo.tblTrnBerkas as B ON A.HeaderID = b.HeaderID  WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND DikirimDate >= '$start_date' 
+                                            AND DikirimDate <= '$end_date' AND (KeteranganKirim != 'blacklist' OR KeteranganKirim IS NULL) ORDER BY headerid DESC");
+        }
+
+        return $query->result();
+    }
+
+    function PilihCTKBProses($start_date, $end_date, $idpemborong)
+    {
+        if ($idpemborong > 0) {
+            $query = $this->db->query("SELECT * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND registereddate >= '$start_date' 
+            AND registereddate <= '$end_date' AND "
+                . "CVNama IN (SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) ORDER BY headerid DESC");
+        } else {
+            /**
+             * VINO MINTA RANGE tanggalnya sesuai dengan tanggal yang di daftarkan pemborong
+             */
+            $query = $this->db->query("SELECT
+                                        A.*,
+                                        B.BerkasID,
+                                        B.KTP,
+                                        B.CV,
+                                        B.Lamaran,
+                                        B.Ijazah,
+                                        B.Transkrip,
+                                        B.SuratKontrak,
+                                        B.Vaksin1,
+                                        B.Vaksin2,
+                                        B.Vaksin3,
+                                        B.KK,
+                                        B.SKCK 
+                                    FROM
+                                        vwListTenakerForPemborong AS A
+                                        LEFT JOIN dbo.tblTrnBerkas as B ON A.HeaderID = b.HeaderID  
+                                    WHERE 
+                                        PostingData = 0 
+                                        AND StatusDaftar IS NOT NULL  
+                                        AND StatusDaftar = 1 
+                                        AND Proses = 'proses' 
+                                        AND (JadwalInterview IS NULL OR JadwalInterview = '') 
+                                        AND DikirimDate >= '$start_date' 
+                                        AND DikirimDate <= '$end_date' 
+                                        ORDER BY headerid DESC");
+        }
+
+        return $query->result();
+    }
+
+    function listByPBR($idpemborong)
+    {
+        if ($idpemborong > 0) {
+            $query = $this->db->query("SELECT TOP(2000) * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NULL AND "
+                . "CVNama IN (SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) ORDER BY headerid DESC");
+        } else {
+            $query = $this->db->query("SELECT TOP(2000) * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NULL ORDER BY headerid DESC");
+        }
+        return $query->result();
+    }
+
+    function updateDikirim($data)
+    {
+        $this->db->trans_start();
+        // $this->db->where_in('HeaderID', $id);
+        // $this->db->update('tblTrnCalonTenagaKerja', $data);
+        $this->db->update_batch('tblTrnCalonTenagaKerja', $data, 'HeaderID');
+        $rtn = $this->db->trans_complete();
+
+        if ($rtn) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    function sendToBlacklist($headerId, $keterangan, $diprosesby, $diprosesDt, $StatusBlacklist)
+    {
+        $this->db->trans_begin();
+        $this->db->query(
+            "INSERT INTO tblTrnBlacklist (
+                                CVNama,
+                                Pemborong,
+                                NIK,
+                                DeptAbbr,
+                                Remark,
+                                NamaIbuKandung,
+                                AdaPhotoOnline,
+                                created_by,
+                                created_date,
+                                Nama,
+                                Status,
+                                IDPT,
+                                NoKTP,
+                                TglLahir,
+                            BlackListDuaBulan 
+                            )
+                            
+                            SELECT
+                                CVNama,
+                                Pemborong,
+                                ISNULL(NIK, '0') as NIK,
+                                DeptTujuan as DeptAbbr,
+                                '$keterangan' as Remark,
+                                NamaIbuKandung,
+                                AdaPhotoOnline,
+                                '$diprosesby' as created_by,
+                                CAST('$diprosesDt' AS DATE) AS created_date,
+                                Nama,
+                                'Blacklist' as Status,
+                                'P1' as IDPT,
+                                No_Ktp as NoKTP,
+                                Tgl_Lahir as TglLahir,
+                                '$StatusBlacklist' as BlackListDuaBulan
+                            FROM
+                                tblTrnCalonTenagaKerja 
+                            WHERE
+                                HeaderID = '$headerId'"
+        );
+        if ($this->db->trans_status() == FALSE) {
+            $this->db->trans_rollback();
+            $result = 0;
+        } else {
+            $this->db->trans_commit();
+            $result = 1;
+        }
+
+        return $result;
+    }
+
+    function getSuku()
+    {
+        $query = $this->db->get('tblMstSuku');
+        return $query->result();
+    }
+
+    function getProvinsi()
+    {
+        $query = $this->db->get('PSGPayroll..tblMstProvinsi');
+        return $query->result();
+    }
+
+    function getKabupaten($idprov)
+    {
+        $this->db->where('ProvinsiID', $idprov);
+        $query = $this->db->get('PSGPayroll..tblMstKabKota');
+        return $query;
+    }
+
+    function getkecamatan($idprov, $idkab)
+    {
+        $this->db->where('KabKotaID', $idkab);
+        $this->db->where('ProvinsiID', $idprov);
+        $query = $this->db->get('PSGPayroll..tblMstKecamatan');
+        return $query;
+    }
+
+    function getAgama()
+    {
+        $query = $this->db->get('tblMstAgama');
+        return $query->result();
+    }
+
+    function getStatusKawin()
+    {
+        $query = $this->db->get('tblMstStatusKawin');
+        return $query->result();
+    }
+
+    function getPendidikan()
+    {
+        $this->db->ORDER_BY('ID');
+        $query = $this->db->get('tblMstPendidikan');
+        return $query->result();
+    }
+
+    function getDept()
+    {
+        $this->db->ORDER_BY('DeptAbbr');
+        $query = $this->db->get('PSGPayroll..tblMstDepartemen');
+        return $query->result();
+    }
+
+    function getDept1($div)
+    {
+        $this->db->where('DeptID', $div);
+        $query = $this->db->get('PSGRekrutmen.dbo.vwMstDivisi');
+        return $query;
+    }
+
+    function getJurusan()
+    {
+        $this->db->ORDER_BY('Jurusan');
+        $query = $this->db->get('tblMstJurusan');
+        return $query->result();
+    }
+
+    function getJabatan()
+    {
+        $query = $this->db->get('tblMstJabatan');
+        return $query->result();
+    }
+
+    // gx dipake --start
+    function cek_data_pelamar($tgllahir, $namaibu, $pemborong)
+    {
+        $statustk = 0;
+
+        //cek pelamar yang pernah bekerja/melamar dan dinyatakan TIDAK LULUS
+        //STATUS = 5
+        if ($statustk === 0) {
+            $query5 = $this->db->query("Select HeaderID From tblTrnCalonTenagaKerja Where convert(datetime,convert(varchar(10),Tgl_Lahir,103),103)=convert(datetime,convert(varchar(10),'" . $tgllahir . "',103),103) "
+                . "and NamaIbuKandung='$namaibu' And GeneralStatus=1 And ScreeningHasil=0 ");
+            if ($query5->num_rows() > 0) {
+                $statustk = 5;
+            }
+        }
+
+        //cek pelamar masih kerja di RSUP (parameter TanggalKeluar & TanggalKeluarTemporary)
+        //STATUS = 3
+        if ($statustk === 0) {
+            $query3 = $this->db->query("Select NoFix From vwOL_TKRequestPayBoro Where convert(datetime,convert(varchar(10),Tgl_Lahir,103),103)=convert(datetime,convert(varchar(10),'" . $tgllahir . "',103),103) "
+                . "and NamaIbuKandung='$namaibu' and TanggalKeluar is Null And TanggalKeluarTemporary is Null");
+            if ($query3->num_rows() > 0) {
+                $statustk = 3;
+            }
+        }
+
+        //cek pelamar masih jeda (parameter TanggalKeluarTemporary)
+        //STATUS = 4
+        if ($statustk === 0) {
+            $query4 = $this->db->query("Select NoFix From vwOL_TKRequestPayBoro Where convert(datetime,convert(varchar(10),Tgl_Lahir,103),103)=convert(datetime,convert(varchar(10),'" . $tgllahir . "',103),103) "
+                . "and NamaIbuKandung='$namaibu' and (DateDiff(DAY,TanggalKeluarTemporary,GETDATE()) < 31 or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31)");
+            if ($query4->num_rows() > 0) {
+                $statustk = 4;
+            }
+        }
+
+        //cek pelamar sudah diinput dengan nama pemborong TIDAK sama
+        //STATUS = 2
+        if ($statustk === 0) {
+            $query2 = $this->db->query("Select top 1 HeaderID From tblTrnCalonTenagaKerja Where convert(datetime,convert(varchar(10),Tgl_Lahir,103),103)=convert(datetime,convert(varchar(10),'" . $tgllahir . "',103),103) "
+                . "and NamaIbuKandung='$namaibu' And Pemborong <> '$pemborong' And GeneralStatus=0 "
+                . "Order By HeaderID Desc");
+            if ($query2->num_rows() > 0) {
+                $statustk = 2;
+            }
+        }
+
+        //cek pelamar sudah diinput dengan nama pemborong sama
+        //STATUS = 1
+        if ($statustk === 0) {
+            $query1 = $this->db->query("Select top 1 HeaderID From tblTrnCalonTenagaKerja Where convert(datetime,convert(varchar(10),Tgl_Lahir,103),103)=convert(datetime,convert(varchar(10),'" . $tgllahir . "',103),103) "
+                . "and NamaIbuKandung='$namaibu' And Pemborong = '$pemborong' And GeneralStatus=0 "
+                . "Order By HeaderID Desc");
+            if ($query1->num_rows() > 0) {
+                $statustk = 1;
+            }
+        }
+
+        return $statustk;
+    }
+    // gx dipake --end
+
+    // cek pelamar yang pernah bekerja/melamar dan dinyatakan TIDAK LULUS ==========
+    function cekRegScreeningReject($tglLahir, $namaIbu, $namaAyah)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,GeneralStatus,ScreeningHasil,NamaBapak  FROM tblTrnCalonTenagaKerja "
+            . "WHERE (NamaIbuKandung = '" . $namaIbu . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 1 AND ScreeningHasil = 0) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 1 AND ScreeningHasil = 0) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND NamaIbuKandung = '" . $namaIbu . "' AND GeneralStatus = 1 AND ScreeningHasil = 0)");
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // cek Pernah Melamar di Pemborong lain==========
+    function cekRegTK($pemborong, $tglLahir, $namaIbu, $namaAyah)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,Pemborong,NamaBapak FROM tblTrnCalonTenagaKerja "
+            . "WHERE (NamaIbuKandung = '" . $namaIbu . "' AND Pemborong != '" . $pemborong . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0 AND DATEDIFF(MONTH, RegisteredDate, GETDATE( ))<=3) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND Pemborong != '" . $pemborong . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0 AND DATEDIFF(MONTH, RegisteredDate, GETDATE( ))<=3) "
+            . "OR (NamaIbuKandung = '" . $namaIbu . "' AND Pemborong != '" . $pemborong . "' AND NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0 AND DATEDIFF(MONTH, RegisteredDate, GETDATE( ))<=3)");
+        return $query->result();
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // cek sudah diiput oleh Pemborong Saat Ini ===========
+    function cekRegTKPem($pemborong, $tglLahir, $namaIbu, $namaAyah)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,Pemborong,NamaBapak FROM tblTrnCalonTenagaKerja "
+            . "WHERE (NamaIbuKandung = '" . $namaIbu . "' AND Pemborong = '" . $pemborong . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0 AND DATEDIFF(MONTH, RegisteredDate, GETDATE( ))<=1) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND Pemborong = '" . $pemborong . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0 AND DATEDIFF(MONTH, RegisteredDate, GETDATE( ))<=1) "
+            . "OR (NamaIbuKandung = '" . $namaIbu . "' AND Pemborong = '" . $pemborong . "' AND NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0 AND DATEDIFF(MONTH, RegisteredDate, GETDATE( ))<=1) ");
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // cek sudah diiput oleh Pemborong Lainnya ===========
+    function cekRegTKPem2($pemborong, $tglLahir, $namaIbu, $namaAyah)
+    {
+        return $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,Pemborong,NamaBapak FROM tblTrnCalonTenagaKerja "
+            . "WHERE (NamaIbuKandung = '" . $namaIbu . "' AND Pemborong != '" . $pemborong . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND Pemborong != '" . $pemborong . "' AND Tgl_Lahir = '" . $tglLahir . "' AND GeneralStatus = 0) "
+            . "OR (NamaIbuKandung = '" . $namaIbu . "' AND Pemborong != '" . $pemborong . "' AND NamaBapak = '" . $namaAyah . "' AND GeneralStatus = 0)")->row();
+    }
+    // cek masih dalam masa jeda (TanggalKeluarTemporary) ==========
+    function cekRegInTemp($tglLahir, $namaIbu, $namaAyah)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,NamaBapak  FROM vw_cekTKRequestPayBoro "
+            . "WHERE (NamaIbuKandung = '" . $namaIbu . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(DAY,TanggalKeluarTemp,GETDATE()) < 31  or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31)) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(DAY,TanggalKeluarTemp,GETDATE()) < 31  or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31)) "
+            . "OR (NamaIbuKandung = '" . $namaIbu . "' AND NamaBapak = '" . $namaAyah . "' AND (DateDiff(DAY,TanggalKeluarTemp,GETDATE()) < 31  or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31))");
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function cekRegInTempSamePemborong($tglLahir, $namaIbu, $namaAyah, $pemborong)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,NamaBapak  FROM vw_cekTKRequestPayBoro "
+            . "WHERE (Pemborong = '" . $pemborong . "' AND NamaIbuKandung = '" . $namaIbu . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(DAY,TanggalKeluarTemp,GETDATE()) < 31  or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31)) "
+            . "OR (Pemborong = '" . $pemborong . "' AND NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(DAY,TanggalKeluarTemp,GETDATE()) < 31  or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31)) "
+            . "OR (Pemborong = '" . $pemborong . "' AND NamaIbuKandung = '" . $namaIbu . "' AND NamaBapak = '" . $namaAyah . "' AND (DateDiff(DAY,TanggalKeluarTemp,GETDATE()) < 31  or DateDiff(DAY,TanggalKeluar,GETDATE()) < 31))");
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function cekRegInTempDiffPemborong($tglLahir, $namaIbu, $namaAyah, $pemborong)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,NamaBapak  FROM vw_cekTKRequestPayBoro "
+            . "WHERE (Pemborong != '" . $pemborong . "' AND NamaIbuKandung = '" . $namaIbu . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(MONTH,TanggalKeluarTemp,GETDATE()) <= 3  or DateDiff(MONTH,TanggalKeluar,GETDATE()) <= 3)) "
+            . "OR (Pemborong != '" . $pemborong . "' AND NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(MONTH,TanggalKeluarTemp,GETDATE()) <= 3  or DateDiff(MONTH,TanggalKeluar,GETDATE()) <= 3)) "
+            . "OR (Pemborong != '" . $pemborong . "' AND NamaIbuKandung = '" . $namaIbu . "' AND NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND (DateDiff(MONTH,TanggalKeluarTemp,GETDATE()) <= 3  or DateDiff(MONTH,TanggalKeluar,GETDATE()) <= 3))");
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // cek Pernah Masih Aktif sebagai karyawan ==========
+    function cekRegAktif($tglLahir, $namaIbu, $namaAyah)
+    {
+        $query = $this->db->query("SELECT Nama,NamaIbuKandung,Tgl_Lahir,NamaBapak  FROM vw_cekTKRequestPayBoro "
+            . "WHERE (NamaIbuKandung = '" . $namaIbu . "' AND Tgl_Lahir = '" . $tglLahir . "' AND TanggalKeluar Is NULL AND TanggalKeluarTemp Is NULL) "
+            . "OR (NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND TanggalKeluar Is NULL AND TanggalKeluarTemp Is NULL) "
+            . "OR (NamaIbuKandung = '" . $namaIbu . "' AND NamaBapak = '" . $namaAyah . "' AND Tgl_Lahir = '" . $tglLahir . "' AND TanggalKeluar Is NULL AND TanggalKeluarTemp Is NULL)");
+        if ($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function pernahReg($tglLahir, $namaIbu)
+    {
+        return $this->db->query("SELECT * FROM tblTrnCalonTenagaKerja where NamaIbuKandung='" . strtoupper($namaIbu) . "' AND "
+            . "Tgl_Lahir='" . $tglLahir . "' ORDER BY RegisteredDate DESC, CreatedDate DESC ");
+    }
+
+    function simpanTKTemp($info)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnCalonTenagaKerjaTemporary', $info);
+        $hdridtemp = $this->db->insert_id();
+        $this->db->trans_complete();
+        return $hdridtemp;
+    }
+
+    function simpanTK($info)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnCalonTenagaKerja', $info);
+        $hdrID = $this->db->insert_id();
+        $this->db->trans_complete();
+        return $hdrID;
+    }
+
+    function hapusTKTemp($hdridtemp)
+    {
+        $this->db->where('HeaderIDTemporary', $hdridtemp);
+        $this->db->delete('tblTrnCalonTenagaKerjaTemporary');
+    }
+
+    function cek_datakeluarga($hdrID, $hdridtemp, $nama)
+    {
+        if ($hdridtemp == 0) {
+            $query = $this->db->get_where('tblTrnKeluarga', array('HeaderID' => $hdrID, 'Nama' => $nama));
+        } else {
+            $query = $this->db->get_where('tblTrnKeluarga', array('HeaderIDTemp' => $hdridtemp, 'Nama' => $nama));
+        }
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $detailid = $row->DetailID;
+        } else {
+            $detailid = 0;
+        }
+        return $detailid;
+    }
+
+    function simpan_datakeluarga($infokel)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnKeluarga', $infokel);
+        $this->db->insert_id();
+        $this->db->trans_complete();
+    }
+
+    function update_datakeluarga($detailid, $infokel)
+    {
+        $this->db->trans_start();
+        $this->db->where('DetailID', $detailid);
+        $this->db->update('tblTrnKeluarga', $infokel);
+        $this->db->trans_complete();
+    }
+
+    function update_datakeluarga_fromtemp($hdrID, $hdrtempid)
+    {
+        $this->db->trans_start();
+        $this->db->where('HeaderIDTemp', $hdrtempid);
+        $this->db->update('tblTrnKeluarga', array('HeaderID' => $hdrID));
+        $this->db->trans_complete();
+    }
+
+    function update_headeridtemp_formtemp($hdrID, $hdridtemp)
+    {
+        $this->db->trans_start();
+        $this->db->where('HeaderID', $hdrID);
+        $this->db->update('tblTrnCalonTenagaKerja', array('HeaderIDTemp' => $hdridtemp));
+        $this->db->trans_complete();
+    }
+
+    function cek_dataanak($hdrID, $hdridtemp, $namaanak)
+    {
+        if ($hdridtemp == 0) {
+            $query = $this->db->get_where('tblTrnAnak', array('HeaderID' => $hdrID, 'Nama' => $namaanak));
+        } else {
+            $query = $this->db->get_where('tblTrnAnak', array('HeaderIDTemp' => $hdridtemp, 'Nama' => $namaanak));
+        }
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $detailid = $row->DetailID;
+        } else {
+            $detailid = 0;
+        }
+        return $detailid;
+    }
+
+    function simpan_dataanak($infoanak)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnAnak', $infoanak);
+        $this->db->insert_id();
+        $this->db->trans_complete();
+    }
+
+    function update_dataanak($detailid, $infoanak)
+    {
+        $this->db->trans_start();
+        $this->db->where('DetailID', $detailid);
+        $this->db->update('tblTrnAnak', $infoanak);
+        $this->db->trans_complete();
+    }
+
+    function update_dataanak_fromtemp($hdrID, $hdrtempid)
+    {
+        $this->db->trans_start();
+        $this->db->where('HeaderIDTemp', $hdrtempid);
+        $this->db->update('tblTrnAnak', array('HeaderID' => $hdrID));
+        $this->db->trans_complete();
+    }
+
+    function cek_datasdr($hdrID, $hdridtemp, $namasdr)
+    {
+        if ($hdridtemp == 0) {
+            $query = $this->db->get_where('tblTrnSaudara', array('HeaderID' => $hdrID, 'Nama' => $namasdr));
+        } else {
+            $query = $this->db->get_where('tblTrnSaudara', array('HeaderIDTemp' => $hdridtemp, 'Nama' => $namasdr));
+        }
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $detailid = $row->DetailID;
+        } else {
+            $detailid = 0;
+        }
+        return $detailid;
+    }
+
+    function simpan_datasdr($infosaudara)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnSaudara', $infosaudara);
+        $this->db->insert_id();
+        $this->db->trans_complete();
+    }
+
+    function update_datasdr($detailid, $infosaudara)
+    {
+        $this->db->trans_start();
+        $this->db->where('DetailID', $detailid);
+        $this->db->update('tblTrnSaudara', $infosaudara);
+        $this->db->trans_complete();
+    }
+
+    function update_datasdr_fromtemp($hdrID, $hdrtempid)
+    {
+        $this->db->trans_start();
+        $this->db->where('HeaderIDTemp', $hdrtempid);
+        $this->db->update('tblTrnSaudara', array('HeaderID' => $hdrID));
+        $this->db->trans_complete();
+    }
+
+    function cek_datapendidikan($hdrID, $hdridtemp, $pendidikantingkat)
+    {
+        if ($hdridtemp == 0) {
+            $query = $this->db->get_where('tblTrnPendidikan', array('HeaderID' => $hdrID, 'Tingkat' => $pendidikantingkat));
+        } else {
+            $query = $this->db->get_where('tblTrnPendidikan', array('HeaderIDTemp' => $hdridtemp, 'Tingkat' => $pendidikantingkat));
+        }
+
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $detailid = $row->DetailID;
+        } else {
+            $detailid = 0;
+        }
+        return $detailid;
+    }
+
+    function simpan_datapendidikan($infopendidikan)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnPendidikan', $infopendidikan);
+        $this->db->insert_id();
+        $this->db->trans_complete();
+    }
+
+    function update_datapendidikan($detailid, $infopendidikan)
+    {
+        $this->db->trans_start();
+        $this->db->where('DetailID', $detailid);
+        $this->db->update('tblTrnPendidikan', $infopendidikan);
+        $this->db->trans_complete();
+    }
+
+    function update_datapendidikan_fromtemp($hdrID, $hdrtempid)
+    {
+        $this->db->trans_start();
+        $this->db->where('HeaderIDTemp', $hdrtempid);
+        $this->db->update('tblTrnPendidikan', array('HeaderID' => $hdrID));
+        $this->db->trans_complete();
+    }
+
+    function update_status_foto($hdrID)
+    {
+        $this->db->trans_start();
+        $this->db->where('HeaderID', $hdrID);
+        $this->db->update('tblTrnCalonTenagaKerja', array('AdaPhotoOnline' => 1));
+        $this->db->trans_complete();
+    }
+
+    function get_tenagakerja($hdrID)
+    {
+        return $this->db->get_where('tblTrnCalonTenagaKerja', array('HeaderID' => $hdrID));
+    }
+
+    function get_datatk_temp($hdridtemp)
+    {
+        $this->db->where('HeaderIDTemporary', $hdridtemp);
+        return $this->db->get('tblTrnCalonTenagaKerjaTemporary');
+    }
+
+    // function saveCK($data){
+    //        $this->db->insert('tblTrnCalonKandidat',$data);
+    //        $hdrid = $this->db->insert_id();
+    //        $this->db->trans_complete();
+    //        return $hdrid;
+    //    }
+
+    function saveCK($data)
+    {
+        $this->db->trans_start();
+        $this->db->insert('tblTrnCalonKandidat', $data);
+        $hdrID = $this->db->insert_id();
+        $this->db->trans_complete();
+        return $hdrID;
+    }
+
+    function getDataCK($id)
+    {
+        return $this->db->get_where('vwTrnCalonKandidat', array('ID' => $id));
+    }
+
+    function updateCK($id_ck, $data)
+    {
+        $this->db->where($id_ck);
+        $query = $this->db->update('tblTrnCalonKandidat', $data);
+        return $query;
+    }
+
+    // function cekTK1($where)
+    // {
+    //     return $this->db->get_where('tblTrnBlacklist', $where)->result();
+    // }
+    function cekTK($namaTK, $ibu)
+    {
+        return $this->db->query("select * from tblTrnBlacklist where Nama = '$namaTK' and NamaIbuKandung = '$ibu' and ((BlackListDuaBulan = 1 
+                                and DATEDIFF(month, created_date,GETDATE()) < 6) or (BlackListDuaBulan is null and Status = 'Blacklist'))")->result();
+    }
+    function cekNama($nama)
+    {
+        return $this->db->query("select * from tblTrnBlacklist where Nama like '%$nama%'")->result();
+    }
+}
+
+/* End of file m_register.php */
+/* Location: ./application/models/m_register.php */

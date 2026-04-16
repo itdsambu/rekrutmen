@@ -1,0 +1,110 @@
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/checkboxall.js"></script>
+<div class="page-header">
+    <h1>
+        TRANSAKSI
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            Approval Request by Department
+        </small>
+    </h1>
+</div><!-- /.page-header -->
+
+<?php 
+    $att = array('class'=>'form-horizontal', 'role'=>'form');
+    echo form_open('approval/multiApprovalDept', $att);
+?>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4 class="widget-title">Requisition who want approved</h4>
+
+                <div class="widget-toolbar">
+                    <a href="" data-action="collapse"><i class="ace-icon fa fa-chevron-up"></i></a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <?php
+                        if($this->input->get('msg') == 'Success'){
+                            echo "<p class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>
+                                    <i class='ace-icon fa fa-times'></i></button>Screening by TEAM Success!</p>";
+                        }
+                    ?>
+                    <div class="table-responsive">
+                    <table id="dataTables-listTK" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center" rowspan="2">
+                                    <label class="pos-rel">
+                                        <input type="checkbox" class="ace" onclick="checkUncheckAll(this);">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </th>
+                                <th rowspan="2">ID</th>
+                                <th rowspan="2">Departemen</th>
+                                <th rowspan="2">Posisi/ Pekerajaan</th>
+                                <th rowspan="2">Pemborong</th>
+                                <th colspan="3" class="text-center">Permintaan</th>
+                                <th rowspan="2">
+                                    <i class="ace-icon fa fa-user bigger-110 hidden-480"></i> Requested By
+                                </th>
+                                <th rowspan="2">
+                                    <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i> Requested Date
+                                </th>
+                                <th rowspan="2" class="text-center">Opsi</th>
+                            </tr>
+                            <tr>
+                                <th>Target</th>
+                                <th>Tersedia</th>
+                                <th>Permintaan</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        <?php
+                        foreach ($_getTran as $set):
+                            ?>
+                            <?php
+                                echo '<tr data-id="'.$set->DetailID.'" class="rowdetail info" >';
+                            ?>
+                                <td class="text-center">
+                                    <div class="checkbox">
+                                    <label class="pos-rel">
+                                        <input name="ckDetailID[]" type="checkbox" class="ace" value="<?php echo $set->DetailID;?>" >
+                                        <span class="lbl"></span>
+                                    </label>
+                                    </div>
+                                </td>
+                                <td style="width: 50px; " class="text-right"><?php echo $set->DetailID;?></td>
+                                <td><?php echo $set->DeptAbbr;?></td>
+                                <td><?php echo $set->Pekerjaan;?></td>
+                                <td><?php echo $set->Pemborong;?></td>
+                                <td><?php echo $set->TKTarget;?></td>
+                                <td><?php echo $set->TKSedia;?></td>
+                                <td><?php echo $set->TKPermintaan;?></td>
+                                <td><?php echo $set->CreatedBy;?></td>
+                                <td class="text-right"><?php echo $set->CreatedDate;?></td>
+                                <td class="text-center">
+                                    <span title="View Issue" data-rel="tooltip"  class="approval btn btn-minier btn-round btn-primary">
+                                        <i class="ace-icon fa fa-files-o bigger-100"></i> Approval
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-toolbox padding-8 clearfix">
+                <div class="well text-center">
+                    <input type="submit" value="Approve" name="Submit" class="btn btn-success" >
+                    <input type="submit" value="Decline" name="Submit" class="btn btn-danger" >
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+

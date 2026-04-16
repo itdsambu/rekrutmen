@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>Recruitment Management System - 404 not found</title>
+
+    <meta name="description" content="User login page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel='shortcut icon' type='image icon' href="<?php echo base_url(); ?>assets/img/user_accounts.png" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/font-awesome.css" />
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/ace.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/ace-rtl.css" />
+</head>
+
+<body class="no-skin">
+    <div class="main-container ace-save-state" id="main-container">
+        <div class="main-content">
+            <div class="main-content-inner">
+                <div class="page-content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+
+                            <div class="error-container">
+                                <div class="well">
+                                    <h1 class="grey lighter smaller text-center">
+                                        <span class="blue bigger-125">
+                                            <i class="ace-icon fa fa-sitemap"></i>
+                                            404
+                                        </span>
+                                        Halaman tidak ditemukan :(
+                                    </h1>
+
+                                    <hr>
+                                    <div class="space"></div>
+
+                                    <div class="center">
+                                        <a href="javascript:history.back()" class="btn btn-grey">
+                                            <i class="ace-icon fa fa-arrow-left"></i>
+                                            Go Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PAGE CONTENT ENDS -->
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        &copy; PT Pulau Sambu Guntung - <?= date('Y'); ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+
+</body>
+
+</html>
