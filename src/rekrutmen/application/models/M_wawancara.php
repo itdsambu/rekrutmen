@@ -236,7 +236,10 @@ class M_wawancara extends CI_Model
     function getSubJabatan_($idJabatan, $dept)
     {
 
-        if ($dept == 'TBN' || $dept == 'PWH') {
+        // if ($dept == 'TBN' || $dept == 'PWH') {
+        //     $dept = 'PWP';
+        // }
+        if ($dept == 'PWH') {
             $dept = 'PWP';
         }
 

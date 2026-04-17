@@ -50,7 +50,7 @@ class TrainingOnline_v2 extends CI_Controller
 
         $req = $this->M_TrainingOnline->_getTenagaKerjaKaryawan($nik, $deptid);
 
-        if (count($req) > 0) {
+        if (!empty($req)) {
             $get = array(
                 'status'  => true,
                 'vstatus' => 'berhasil',
