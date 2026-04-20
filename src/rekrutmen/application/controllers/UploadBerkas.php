@@ -167,9 +167,14 @@ class UploadBerkas extends CI_Controller
         $config['allow_scale_up']   = true;
         $config['overwrite']        = true;
         $config['file_name']        = $namafile;
-        $config['max_size']         = '5120';
+        $config['max_size']         = '10240';
 
         $this->load->library('upload');
+        // echo "URL: $url<br>";
+        // echo "Realpath: " . realpath($url) . "<br>";
+        // echo "Is dir: " . (is_dir($url) ? 'YES' : 'NO') . "<br>";
+        // echo "Writable: " . (is_writable($url) ? 'YES' : 'NO') . "<br>";
+        // exit;
         $this->upload->initialize($config);
 
         if ($this->upload->do_upload('txtfile')) {
