@@ -2,15 +2,17 @@ name: rekrutmen
 
 services:
   nginx:
-    image: nginx:1.27-alpine
+    image: openresty/openresty:alpine
     container_name: rekrutmen-nginx
     restart: always
     ports:
-      - "80:80"
+      - "8082:80"
     volumes:
       - ./src/rekrutmen:/var/www/html/rekrutmen
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-       - ./dataupload:/var/www/html/rekrutmen/dataupload
+      - /media/foto_kar:/media/foto_kar
+      - /media/forqsd:/media/forqsd
+      - /media/fortrainingpsn:/media/fortrainingpsn
     depends_on:
       - app83
     networks:
@@ -28,6 +30,18 @@ services:
     volumes:
       - ./src/rekrutmen:/var/www/html/rekrutmen
       - ./docker/php83/php.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
+      - /media/foto_kar:/media/foto_kar
+      - /media/forqsd:/media/forqsd
+      - /media/fortrainingpsn:/media/fortrainingpsn
+      - /media/forqsd/rekrutmen/berkas:/media/forqsd/rekrutmen/berkas
+      - /media/forqsd/rekrutmen/bypass:/media/forqsd/rekrutmen/bypass
+      - /media/forqsd/rekrutmen/calonkandidat:/media/forqsd/rekrutmen/calonkandidat
+      - /media/forqsd/rekrutmen/foto:/media/forqsd/rekrutmen/foto
+      - /media/forqsd/rekrutmen/fotoProfil:/media/forqsd/rekrutmen/fotoProfil
+      - /media/forqsd/rekrutmen/idealkarytk:/media/forqsd/rekrutmen/idealkarytk
+      - /media/forqsd/rekrutmen/ttd:/media/forqsd/rekrutmen/ttd
+      - /media/forqsd/rekrutmen/ttdbynik:/media/forqsd/rekrutmen/ttdbynik
+      - /media/forqsd/rekrutmen/ttdpgd:/media/forqsd/rekrutmen/ttdpgd
     environment:
       TZ: Asia/Jakarta
       CI_ENV: ${CI_ENV}
@@ -67,4 +81,4 @@ services:
 networks:
   appnet:
   proxy-net:
-    # external: true
+    external: true
