@@ -435,7 +435,7 @@ class M_register extends CI_Model
                                 NoKTP,
                                 TglLahir,
                             BlackListDuaBulan,
-                            BlackListEnamBulan
+                            BlackListEnamBulan,
                             HeaderID 
                             )
                             
