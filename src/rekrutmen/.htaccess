@@ -1,5 +1,53 @@
-RewriteEngine on
-     RewriteCond $1 !^(index\.php|images|stylesheets|system/application/sources/)
-     RewriteCond %{REQUEST_FILENAME} !-f
-     RewriteCond %{REQUEST_FILENAME} !-d
-     RewriteRule ^(.*)$ ./index.php/$1 [L,QSA]
+Options -Indexes
+RewriteEngine On
+
+# ============================================
+# BLOKIR AKSES KE FILE SENSITIF (EXTENSION)
+# ============================================
+<FilesMatch "\.(env|ini|log|sql|bak|backup|sh|sqlite|db|key|pem|crt|p12|csr|htpasswd|htaccess|git|gitignore|json|lock|md|dist|phar|yml|yaml|xml|neon|twig|ps1|bat|exe|bin|dump)$">
+    Require all denied
+</FilesMatch>
+
+# ============================================
+# BLOKIR FILE DAN FOLDER SPESIFIK
+# ============================================
+<FilesMatch "^(composer\.json|composer\.lock|license\.txt|readme\.rst|phpinfo\.php|\.gitignore|\.htaccess\.bak)$">
+    Require all denied
+</FilesMatch>
+
+RedirectMatch 403 ^/(application|system|backup-file|\.git|\.vscode)/.*$
+
+# ============================================
+# ROUTING KE INDEX.PHP (AGAR WEBSITE JALAN)
+# ============================================
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+
+# ============================================
+# SECURITY HEADERS
+# ============================================
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+</IfModule>
+
+# ============================================
+# ERROR HANDLING
+# ============================================
+<IfModule mod_php7.c>
+    php_flag display_errors off
+    php_flag log_errors on
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_flag display_errors off
+    php_flag log_errors on
+</IfModule>
+
+# Nonaktifkan directory browsing
+Options -Indexes
