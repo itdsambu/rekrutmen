@@ -28,6 +28,41 @@ $tanggal_mcu = '';
 //         }
 //     }
 // }
+// if (isset($dtdetail)) {
+//     foreach ($dtdetail as $row) {
+//         $nama         = $row->Nama;
+//         $kesimpulanCU = $row->kesimpulanCU;
+//         $tanggal_mcu  = date("d-m-Y", strtotime($row->mcu_date));
+
+//         $text = $row->pesanklinik;
+
+//         // Split per baris, ambil yang diawali bullet •
+//         $lines = preg_split('/\r\n|\r|\n/', $text);
+//         $results = [];
+
+//         foreach ($lines as $line) {
+//             // Cari baris yang dimulai dengan bullet • (UTF-8: E2 80 A2)
+//             if (preg_match('/^\s*•\s*(.+)$/u', trim($line), $m)) {
+//                 $item = trim($m[1]);
+//                 if (!empty($item)) {
+//                     $results[] = $item;
+//                 }
+//             }
+//         }
+
+//         $count = count($results);
+//         if ($count == 2) {
+//             $pesanklinik = implode(' dan ', $results);
+//         } elseif ($count > 2) {
+//             $last = array_pop($results);
+//             $pesanklinik = implode(', ', $results) . ', dan ' . $last;
+//         } elseif ($count == 1) {
+//             $pesanklinik = reset($results);
+//         } else {
+//             $pesanklinik = '';
+//         }
+//     }
+// }
 if (isset($dtdetail)) {
     foreach ($dtdetail as $row) {
         $nama         = $row->Nama;
@@ -36,14 +71,13 @@ if (isset($dtdetail)) {
 
         $text = $row->pesanklinik;
 
-        // Split per baris, ambil yang diawali bullet •
-        $lines = preg_split('/\r\n|\r|\n/', $text);
+        // Ambil semua teks di dalam tanda kutip (support " " keriting dan " " lurus)
+        // \x{201C} = " (left double quotation mark)
+        // \x{201D} = " (right double quotation mark)
         $results = [];
-
-        foreach ($lines as $line) {
-            // Cari baris yang dimulai dengan bullet • (UTF-8: E2 80 A2)
-            if (preg_match('/^\s*•\s*(.+)$/u', trim($line), $m)) {
-                $item = trim($m[1]);
+        if (preg_match_all('/[\x{201C}"]([^\x{201C}\x{201D}"]+)[\x{201D}"]/u', $text, $matches)) {
+            foreach ($matches[1] as $item) {
+                $item = trim($item);
                 if (!empty($item)) {
                     $results[] = $item;
                 }
@@ -63,7 +97,6 @@ if (isset($dtdetail)) {
         }
     }
 }
-
 ?>
 <!DOCTYPE html>
 <html>
