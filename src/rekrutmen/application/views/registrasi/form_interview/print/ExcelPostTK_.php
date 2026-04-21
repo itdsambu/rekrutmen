@@ -1,8 +1,22 @@
 <?php
 
-$this->load->library("Excel/PHPExcel");
+// $this->load->library("Excel/PHPExcel");
 
-$objPHPExcel    = new PHPExcel();
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Borders;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
+// $objPHPExcel    = new PHPExcel();
+$objPHPExcel = new Spreadsheet();
 $style_col = array(
     'font'      => array(
         'bold' => FALSE,
@@ -10,59 +24,59 @@ $style_col = array(
         'size' => '11'
     ), // Set font nya jadi bold  
     'alignment' => array(
-        'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 'wrap' => true, // Set text jadi ditengah secara horizontal (center)    
-        'vertical'  => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+        'horizontal' => Alignment::HORIZONTAL_CENTER, 'wrap' => true, // Set text jadi ditengah secara horizontal (center)    
+        'vertical'  => Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
     ),
     'borders' => array(
-        'left'   => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis   
-        'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis    
-        'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis    
-        'top'  => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis  
+        'left'   => array('style'  => Border::BORDER_THIN), // Set border top dengan garis tipis   
+        'right' => array('style'  => Border::BORDER_THIN),  // Set border right dengan garis tipis    
+        'bottom' => array('style'  => Border::BORDER_THIN), // Set border bottom dengan garis tipis    
+        'top'  => array('style'  => Border::BORDER_THIN) // Set border left dengan garis tipis  
     )
 );
 
 $header3 = array(
-    'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT), // Set text jadi di tengah secara horizontal (middle)  ), 
+    'alignment' => array('horizontal' => Alignment::HORIZONTAL_LEFT), // Set text jadi di tengah secara horizontal (middle)  ), 
     'font' => array('bold' => false, 'name' => 'Times New Roman', 'size' => '11'),
     'borders' => array(
-        'top'   => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis   
-        'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis    
-        'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis    
-        'left'  => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis  
+        'top'   => array('style'  => Border::BORDER_THIN), // Set border top dengan garis tipis   
+        'right' => array('style'  => Border::BORDER_THIN),  // Set border right dengan garis tipis    
+        'bottom' => array('style'  => Border::BORDER_THIN), // Set border bottom dengan garis tipis    
+        'left'  => array('style'  => Border::BORDER_THIN) // Set border left dengan garis tipis  
     )
 );
 
 
 $header4 = array(
-    'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER), // Set text jadi di tengah secara horizontal (middle)  ), 
+    'alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER), // Set text jadi di tengah secara horizontal (middle)  ), 
     'font' => array('bold' => false, 'name' => 'Times New Roman', 'size' => '14'),
     'borders' => array(
-        'top'   => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis   
-        'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis    
-        'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis    
-        'left'  => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis  
+        'top'   => array('style'  => Border::BORDER_THIN), // Set border top dengan garis tipis   
+        'right' => array('style'  => Border::BORDER_THIN),  // Set border right dengan garis tipis    
+        'bottom' => array('style'  => Border::BORDER_THIN), // Set border bottom dengan garis tipis    
+        'left'  => array('style'  => Border::BORDER_THIN) // Set border left dengan garis tipis  
     )
 );
 
 $header5 = array(
-    'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER), // Set text jadi di tengah secara horizontal (middle)  ), 
+    'alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER), // Set text jadi di tengah secara horizontal (middle)  ), 
     'font' => array('bold' => false, 'name' => 'Times New Roman', 'size' => '11'),
     'borders' => array(
-        'top'   => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis   
-        'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis    
-        'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis    
-        'left'  => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis  
+        'top'   => array('style'  => Border::BORDER_THIN), // Set border top dengan garis tipis   
+        'right' => array('style'  => Border::BORDER_THIN),  // Set border right dengan garis tipis    
+        'bottom' => array('style'  => Border::BORDER_THIN), // Set border bottom dengan garis tipis    
+        'left'  => array('style'  => Border::BORDER_THIN) // Set border left dengan garis tipis  
     ),
 );
 
 $Bold = array(
-    'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER), // Set text jadi di tengah secara horizontal (middle)  ), 
+    'alignment' => array('horizontal' => Alignment::HORIZONTAL_CENTER), // Set text jadi di tengah secara horizontal (middle)  ), 
     'font' => array('bold' => true, 'name' => 'Times New Roman', 'size' => '11', 'italic' => false),
     'borders' => array(
-        'top'   => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis   
-        'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis    
-        'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis    
-        'left'  => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis  
+        'top'   => array('style'  => Border::BORDER_THIN), // Set border top dengan garis tipis   
+        'right' => array('style'  => Border::BORDER_THIN),  // Set border right dengan garis tipis    
+        'bottom' => array('style'  => Border::BORDER_THIN), // Set border bottom dengan garis tipis    
+        'left'  => array('style'  => Border::BORDER_THIN) // Set border left dengan garis tipis  
     )
 );
 
@@ -176,8 +190,8 @@ foreach ($getDetail as $key => $get) {
     $objPHPExcel->getActiveSheet()->getStyle('A' . $row . ':AH' . $row)->applyFromArray($style_col);
 
     // Format kolom teks agar tidak dibaca sebagai angka
-    $objPHPExcel->getActiveSheet()->getStyle('F' . $row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-    $objPHPExcel->getActiveSheet()->getStyle('AG' . $row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+    $objPHPExcel->getActiveSheet()->getStyle('F' . $row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+    $objPHPExcel->getActiveSheet()->getStyle('AG' . $row)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
     // Set value data ke setiap kolom
     $objPHPExcel->setActiveSheetIndex($sheetIndex)
@@ -233,12 +247,24 @@ foreach ($getDetail as $key => $get) {
 
 // $objWriter->save('php://output');
 sleep(2);
-ob_clean();
-header('Content-Type: text/html; charset=utf-8');
-header('Content-type: application/vnd.ms-excel');
-// header('Content-Disposition: attachment;filename=' . $frmnm . '.xls');
-header('Content-Disposition: attachment;filename="Post Tenaker.xls"');
-$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-$objWriter->save('php://output');
-exit();
-ob_end_clean();
+// ob_clean();
+// header('Content-Type: text/html; charset=utf-8');
+// header('Content-type: application/vnd.ms-excel');
+// // header('Content-Disposition: attachment;filename=' . $frmnm . '.xls');
+// header('Content-Disposition: attachment;filename="Post Tenaker.xls"');
+// $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+// $objWriter->save('php://output');
+// exit();
+// ob_end_clean();
+
+$writer = new Xlsx($objPHPExcel);
+
+header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Disposition: attachment;filename="Post Tenaker.xlsx"');
+
+$writer->save('php://output');
+exit;
