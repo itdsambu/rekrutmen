@@ -4,6 +4,19 @@
  * Author by ITD15
  */
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Borders;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
 class PrintControl extends CI_Controller
 {
     public function __construct()
@@ -556,7 +569,7 @@ class PrintControl extends CI_Controller
 
     function EksportExcel($data)
     {
-        $this->load->library("Excel/PHPExcel");
+        // $this->load->library("Excel/PHPExcel");
         $data = urldecode($data);
         $data = json_decode($data);
         // $data['param'] = json_decode($data);
@@ -720,6 +733,7 @@ class PrintControl extends CI_Controller
             $row[] = $tglLahir;
             $row[] = $jenisKelamin;
             $row[] = $berkasLengkap;
+            $row[] = $field->Pemborong;
             $row[] = $createBy;
             $row[] = $specialScreening;
             $row[] = $wawancara;

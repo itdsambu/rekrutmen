@@ -104,6 +104,7 @@
                                         <th>Tangga Lahir</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Berkas</th>
+                                        <th>Pemborong</th>
                                         <th>
                                             <i class="ace-icon fa fa-user bigger-110 hidden-480"></i> Posted By
                                         </th>
