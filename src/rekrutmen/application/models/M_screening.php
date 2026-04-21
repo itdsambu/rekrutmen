@@ -22,9 +22,24 @@ class M_screening extends CI_Model
             $where = "AND a.status_p2k3 = 1 AND (AppP2K3Status not in(0,1) OR AppP2K3Status IS NULL)"; //perubahan pada AppP2K3Status,dimana 0 = DisApprove dan 1 = Approve
         } else if ($isDiv == 3) {
             $where = "AND a.status_elc = 1 AND (AppELCStatus <> 1 OR AppELCStatus IS NULL)";
+        } else if ($isDiv == 4) {
+            $where = "AND a.status_hed = 1 AND (AppHEDStatus <> 1 OR AppHEDStatus IS NULL)";
         } else {
             $where = "AND b.kodedivisi = 25 
-                    AND ( (a.status_p2k3 = 1 AND AppP2K3Status = 1 AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL )) OR ( a.status_p2k3 = 0 AND a.status_elc = 0  AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL ) )  OR ( a.status_elc = 1 AND AppELCStatus = 1  AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL ) ) OR ( a.status_p2k3 = 0 AND a.status_elc = 1 AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL ) )  )";
+                    -- AND ( (a.status_p2k3 = 1 AND AppP2K3Status = 1 AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL )) OR ( a.status_p2k3 = 0 AND a.status_elc = 0  AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL ) )  OR ( a.status_elc = 1 AND AppELCStatus = 1  AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL ) ) OR ( a.status_p2k3 = 0 AND a.status_elc = 1 AND ( AppDivStatus <> 1 OR AppDivStatus IS NULL ) )  )
+                    AND (
+                        (AppDivStatus <> 1 OR AppDivStatus IS NULL)
+                        AND (
+                            (a.status_p2k3 = 1 AND AppP2K3Status = 1)
+                            OR (a.status_elc = 1 AND AppELCStatus = 1)
+                            OR (a.status_hed = 1 AND AppHEDStatus = 1)
+                            OR (a.status_p2k3 = 0 AND a.status_elc = 0 AND a.status_hed = 0)
+                            OR (a.status_p2k3 = 0 AND a.status_elc = 0 AND a.status_hed = 1)
+                            OR (a.status_p2k3 = 0 AND a.status_elc = 1 AND a.status_hed = 0)
+                            OR (a.status_p2k3 = 1 AND a.status_elc = 0 AND a.status_hed = 0)
+                        )
+                    )
+                    ";
         }
         //penambahan tgl register per 2022-01-01 
         $query = $this->db->query("SELECT DISTINCT

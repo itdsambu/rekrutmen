@@ -538,6 +538,15 @@ $namafoto = './dataupload/foto/' . $hdrid . '.jpg';
             </div>
 
         </form>
+    <?php } else if ($isDiv == 4) { ?>
+        <form action="<?= base_url('screeningByTim/AppHED') ?>" method="post">
+            <input type="hidden" name="HEDHeaderID" id="HeaderID" value="<?= $row->HeaderID ?>" readonly>
+            <textarea name="AppHEDCatatan" id="AppHEDCatatan" placeholder="Catatan By HED" class="form-control" required=""></textarea>
+            <br>
+            <div align="center" class="row">
+                <button type="submit" class="btn btn-primary float-right btn-inline">APPROVE HED</button>
+            </div>
+        </form>
     <?php }  ?>
 </div>
 

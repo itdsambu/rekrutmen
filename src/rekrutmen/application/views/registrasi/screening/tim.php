@@ -9,6 +9,8 @@
                 echo 'Approval Divisi P2K3';
             } else if ($isDiv == 3) {
                 echo 'Approval Divisi ELC';
+            } else if ($isDiv == 4) {
+                echo 'Approval Divisi HED';
             } else {
                 echo 'Approval Divisi Utility';
             } ?>
@@ -51,6 +53,10 @@
                     if ($this->input->get('msg') == 'SuccessssS') {
                         echo "<p class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>
                                     <i class='ace-icon fa fa-times'></i></button>TK Telah Approve oleh ELC!</p>";
+                    }
+                    if ($this->input->get('msg') == 'SuccessssSS') {
+                        echo "<p class='alert alert-info'><button type='button' class='close' data-dismiss='alert'>
+                                    <i class='ace-icon fa fa-times'></i></button>TK Telah Approve oleh HED!</p>";
                     }
                     ?>
                     <div class="table-responsive">
@@ -339,6 +345,8 @@
                 var kd = 3;
             <?php } else if ($isDiv == 2) { ?>
                 var kd = 2;
+            <?php } else if ($isDiv == 4) { ?>
+                var kd = 4;
             <?php } else { ?>
                 var kd = 1;
             <?php } ?>

@@ -247,6 +247,21 @@ class ScreeningByTim extends CI_Controller
         redirect('screeningByTim/DivELC?msg=SuccessssS');
     }
 
+    function AppHED()
+    {
+        $hdrID = $this->input->post('HEDHeaderID');
+        $AppHEDCatatan = $this->input->post('AppHEDCatatan');
+        // var_dump($hdrID,$AppHEDCatatan); die;
+        $info = array(
+            'AppHEDStatus'  => 1,
+            'AppHEDBy'      => $this->session->userdata('userid'),
+            'AppHEDDate'    => date('Y-m-d H:m:i'),
+            'AppHEDCatatan' => $AppHEDCatatan,
+        );
+        $this->m_screening->updateLulus($hdrID, $info);
+        redirect('screeningByTim/DivHED?msg=SuccessssSS');
+    }
+
 
     // ========= List Tenaga KErja
     function detailtk()
