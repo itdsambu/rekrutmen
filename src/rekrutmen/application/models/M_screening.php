@@ -194,10 +194,10 @@ class M_screening extends CI_Model
                                                 a.ScreeningComplete = 1
                                                 AND (
 
-                                                    -- Tidak Utility, tidak P2K3, tidak ELC
+                                                    -- Tidak Utility, tidak P2K3, tidak ELC, tidak HED, dan sudah wawancara hasil
                                                     ( 
                                                         a.DeptTujuan NOT IN (SELECT DeptAbbr FROM CTE)
-                                                        AND (ISNULL(a.status_p2k3,0) = 0 AND ISNULL(a.status_elc,0) = 0)           
+                                                        AND (ISNULL(a.status_p2k3,0) = 0 AND ISNULL(a.status_elc,0) = 0 AND ISNULL(a.status_hed,0) = 0)         
                                                         AND a.WawancaraHasil IS NOT NULL
                                                     )
 
@@ -209,6 +209,7 @@ class M_screening extends CI_Model
                                                         AND ISNULL(a.AppDivStatus,0) = 1
                                                         AND ISNULL(a.AppP2K3Status,0) = 0
                                                         AND ISNULL(a.AppELCStatus,0) = 0
+                                                        AND ISNULL(a.AppHEDStatus,0) = 0
                                                     )
                                             -- 
                                                     OR
@@ -218,6 +219,8 @@ class M_screening extends CI_Model
                                                         ISNULL(AppP2K3Status,0) = 1 
                                                         AND ISNULL(AppELCStatus,0) = 0 
                                                         AND ISNULL(AppDivStatus,0) = 0
+                                                        AND ISNULL(a.AppHEDStatus,0) = 0
+
                                                         AND a.DeptTujuan NOT IN (SELECT DeptAbbr FROM CTE)
                                                     )
                                             -- 
@@ -228,7 +231,18 @@ class M_screening extends CI_Model
                                                         ISNULL(AppP2K3Status,0) = 0 
                                                         AND ISNULL(AppELCStatus,0) = 1 
                                                         AND ISNULL(AppDivStatus,0) = 0
+                                                        AND ISNULL(a.AppHEDStatus,0) = 0
                                                         AND a.DeptTujuan NOT IN (SELECT DeptAbbr FROM CTE)
+                                                    )
+
+                                                    OR
+                                                    -- HED
+                                                    (
+                                                        ISNULL(AppP2K3Status,0) = 0 
+                                                        AND ISNULL(AppELCStatus,0) = 0 
+                                                        AND ISNULL(AppDivStatus,0) = 0
+                                                        AND ISNULL(a.AppHEDStatus,0) = 1
+                                                        -- AND a.DeptTujuan NOT IN (SELECT DeptAbbr FROM CTE)
                                                     )
                                             -- 
                                                     OR
@@ -247,6 +261,14 @@ class M_screening extends CI_Model
                                                         a.DeptTujuan IN (SELECT DeptAbbr FROM CTE)
                                                         AND ISNULL(a.AppDivStatus,0) = 1
                                                         AND ISNULL(a.AppELCStatus,0) = 1
+                                                    )
+                                                    OR
+
+                                                    -- Utility + HED
+                                                    (
+                                                        a.DeptTujuan IN (SELECT DeptAbbr FROM CTE)
+                                                        AND ISNULL(a.AppDivStatus,0) = 1
+                                                        AND ISNULL(a.AppHEDStatus,0) = 1
                                                     )
 
                                                 ) ORDER BY HeaderID ASC;");

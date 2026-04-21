@@ -71,6 +71,15 @@ class ScreeningByTim extends CI_Controller
         $this->template->display('registrasi/screening/tim', $data);
     }
 
+    public function DivHED()
+    {
+        $nowOL = $this->session->userdata('username');
+        $dept   = $this->session->userdata('dept');
+        $data['_getTK'] = $this->m_screening->listTenagaKerja($nowOL, $dept, 4);
+        $data['isDiv'] = 4;
+        $this->template->display('registrasi/screening/tim', $data);
+    }
+
     function screenTim()
     {
         if ('IS_AJAX') {
