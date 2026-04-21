@@ -1211,6 +1211,12 @@ class Registrasi extends CI_Controller
             $this->m_register->update_dataanak_fromtemp($hdrID, $hdridtemp);
             $this->m_register->update_headeridtemp_formtemp($hdrID, $hdridtemp);
 
+            $dataBerkas = array(
+                'HeaderID' => $hdrID,
+                $berkas    => '',
+            );
+            $result     = $this->m_upload_berkas->insert_db_berkas($dataBerkas);
+
             redirect('registrasi/uploadFoto');
         }
     }
