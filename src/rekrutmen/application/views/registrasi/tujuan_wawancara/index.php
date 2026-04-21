@@ -98,6 +98,7 @@ echo form_open('wawancaraTujuan/simpanTujuan', $att);
                                     </th> <!-- <th>Department</th>-->
                                     <th>TO P2K3</th>
                                     <th>TO ELC</th>
+                                    <th>TO HED</th>
                                     <th>ID</th>
                                     <th>Nama</th>
                                     <th>Pemborong</th>
@@ -141,7 +142,15 @@ echo form_open('wawancaraTujuan/simpanTujuan', $att);
                                     <td class="text-center">
                                         <div class="checkbox">
                                             <label class="pos-rel">
-                                                <input name="to_elc[<?= $no3 ?>]" class="to_elc" id="to_elc" type="checkbox" value="">
+                                                <!-- <input name="alldatapost[<?= $no3 ?>]" class="alldatapost" id="alldatapost" type="hidden" value=""> -->
+                                                <input name="to_p2k3[<?= $no3 ?>]" class="to_p2k3" id="to_p2k3" type="checkbox" value="">
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="checkbox">
+                                            <label class="pos-rel">
+                                                <input name="to_hed[<?= $no3 ?>]" class="to_hed" id="to_hed" type="checkbox" value="">
                                             </label>
                                         </div>
                                     </td>
@@ -216,20 +225,31 @@ echo form_open('wawancaraTujuan/simpanTujuan', $att);
 </div>
 
 <script type="text/javascript">
-    $(".to_p2k3").on("click", function() {
-        // alert("Coba")
+    // $(".to_p2k3").on("click", function() {
+    //     // alert("Coba")
+    //     let that = $(this);
+    //     if (this.checked) {
+    //         let elc = that.closest("tr").find(".to_elc")
+    //         elc.prop("checked", false)
+    //     }
+    // });
+    // $(".to_elc").on("click", function() {
+    //     // alert("Coba")
+    //     let that = $(this);
+    //     if (this.checked) {
+    //         let elc = that.closest("tr").find(".to_p2k3")
+    //         elc.prop("checked", false)
+    //     }
+    // });
+
+    $(".to_p2k3, .to_elc, .to_hed").on("click", function() {
         let that = $(this);
         if (this.checked) {
-            let elc = that.closest("tr").find(".to_elc")
-            elc.prop("checked", false)
-        }
-    });
-    $(".to_elc").on("click", function() {
-        // alert("Coba")
-        let that = $(this);
-        if (this.checked) {
-            let elc = that.closest("tr").find(".to_p2k3")
-            elc.prop("checked", false)
+            // uncheck checkbox lain di row yang sama
+            that.closest("tr")
+                .find(".to_p2k3, .to_elc, .to_hed")
+                .not(this)
+                .prop("checked", false);
         }
     });
 
