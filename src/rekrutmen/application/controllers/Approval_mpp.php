@@ -147,6 +147,45 @@ class Approval_mpp extends CI_Controller
         }
     }
 
+    function disapprove_all_dept()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $ids = $this->input->post('ids');
+
+            if (empty($ids)) {
+                echo json_encode([
+                    'status' => false,
+                    'message' => 'ID tidak ditemukan'
+                ]);
+                return;
+            }
+
+            $data = [
+                'Status'          => 5, // Rejected / Disapprove
+                'RejectedBy'      => $this->session->userdata('username'),
+                'RejectedDate'    => date('Y-m-d H:i:s'),
+                'RejectionReason' => 'Rejected by Dept',
+                'ApprovedBy'      => NULL,
+                'ApprovedDate'    => NULL,
+                'AppStatus'       => 2, // Rejected / Disapprove
+                'Approved2By'     => NULL,
+                'Approved2Date'   => NULL,
+                'AppStatus2'      => NULL,
+                'Approved3By'     => NULL,
+                'Approved3Date'   => NULL,
+                'AppStatus3'      => NULL,
+            ];
+
+            $result = $this->m_approval_mpp->approve_batch($ids, $data);
+
+            echo json_encode([
+                'status'  => $result,
+                'message' => $result ? 'Approval berhasil' : 'Approval gagal'
+            ]);
+        }
+    }
+
 
 
 
@@ -275,6 +314,45 @@ class Approval_mpp extends CI_Controller
         }
     }
 
+    function disapprove_all_divisi()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $ids = $this->input->post('ids');
+
+            if (empty($ids)) {
+                echo json_encode([
+                    'status' => false,
+                    'message' => 'ID tidak ditemukan'
+                ]);
+                return;
+            }
+
+            $data = [
+                'Status'          => 5, // Rejected / Disapprove
+                'RejectedBy'      => $this->session->userdata('username'),
+                'RejectedDate'    => date('Y-m-d H:i:s'),
+                'RejectionReason' => 'Rejected by Divisi',
+                'ApprovedBy'      => NULL,
+                'ApprovedDate'    => NULL,
+                'AppStatus'       => NULL,
+                'Approved2By'     => NULL,
+                'Approved2Date'   => NULL,
+                'AppStatus2'      => 2, // Rejected / Disapprove
+                'Approved3By'     => NULL,
+                'Approved3Date'   => NULL,
+                'AppStatus3'      => NULL,
+            ];
+
+            $result = $this->m_approval_mpp->approve_batch($ids, $data);
+
+            echo json_encode([
+                'status'  => $result,
+                'message' => $result ? 'Approval berhasil' : 'Approval gagal'
+            ]);
+        }
+    }
+
 
     // ======================== End Of Approval Divisi ============================
     // ======================== Approval HRD ============================
@@ -385,10 +463,49 @@ class Approval_mpp extends CI_Controller
             }
 
             $data = [
-                'Status'       => 4,
+                'Status'       => 5, // Rejected / Disapprove,
                 'Approved3By'   => $this->session->userdata('username'),
                 'Approved3Date' => date('Y-m-d H:i:s'),
                 'AppStatus3'    => 1,
+            ];
+
+            $result = $this->m_approval_mpp->approve_batch($ids, $data);
+
+            echo json_encode([
+                'status'  => $result,
+                'message' => $result ? 'Approval berhasil' : 'Approval gagal'
+            ]);
+        }
+    }
+
+    function disapprove_all_hrd()
+    {
+        if ($this->input->is_ajax_request()) {
+
+            $ids = $this->input->post('ids');
+
+            if (empty($ids)) {
+                echo json_encode([
+                    'status' => false,
+                    'message' => 'ID tidak ditemukan'
+                ]);
+                return;
+            }
+
+            $data = [
+                'Status'          => 5, // Rejected / Disapprove
+                'RejectedBy'      => $this->session->userdata('username'),
+                'RejectedDate'    => date('Y-m-d H:i:s'),
+                'RejectionReason' => 'Rejected by HRD',
+                'ApprovedBy'      => NULL,
+                'ApprovedDate'    => NULL,
+                'AppStatus'       => NULL,
+                'Approved2By'     => NULL,
+                'Approved2Date'   => NULL,
+                'AppStatus2'      => NULL,
+                'Approved3By'     => NULL,
+                'Approved3Date'   => NULL,
+                'AppStatus3'      => 2, // Rejected / Disapprove
             ];
 
             $result = $this->m_approval_mpp->approve_batch($ids, $data);

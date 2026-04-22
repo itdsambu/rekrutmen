@@ -132,6 +132,7 @@
                 </table>
                 <br>
                 <button id="btnApprove" class="btn btn-success bt-2"><i class="fa fa-check"></i> Approve All</button>
+                <button id="btnDisapprove" class="btn btn-danger bt-2"><i class="fa fa-times"></i> Disapprove All</button>
             </div>
         </div>
     </div>
@@ -335,6 +336,47 @@
             if (result.isConfirmed) {
                 $.ajax({
                     url: base_url + 'approval_mpp/approve_all_hrd',
+                    type: 'POST',
+                    data: {
+                        ids: ids
+                    },
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.status) {
+                            Swal.fire('Berhasil!', res.message, 'success');
+                            table.ajax.reload(null, false);
+                        } else {
+                            Swal.fire('Gagal!', res.message, 'error');
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#btnDisapprove', function() {
+
+        var ids = $('.checkRow:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (ids.length === 0) {
+            Swal.fire('Peringatan', 'Silakan pilih data yang ingin di Disapprove', 'warning');
+            return;
+        }
+
+        Swal.fire({
+            title: 'Konfirmasi',
+            text: 'Apakah Anda yakin ingin disapprove data ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#DD6B55',
+            confirmButtonText: 'Ya, Disapprove!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: base_url + 'approval_mpp/disapprove_all_hrd',
                     type: 'POST',
                     data: {
                         ids: ids
