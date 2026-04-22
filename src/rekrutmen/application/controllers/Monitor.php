@@ -81,6 +81,14 @@ class Monitor extends CI_Controller
         $this->template->display('monitor/AppP2K3/V_AppP2K3', $data);
     }
 
+    public function AppHED()
+    {
+        $nowOL            = $this->session->userdata('username');
+        $dept             = $this->session->userdata('dept');
+        $data['_getTK']   = $this->m_monitor->listTenagaKerjaHED($dept);
+        $this->template->display('monitor/AppHED/V_AppHED', $data);
+    }
+
     public function screeningProses2()
     {
         $monthfilter = $this->input->post('monthfilter');

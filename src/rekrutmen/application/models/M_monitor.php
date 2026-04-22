@@ -1287,6 +1287,47 @@ class M_monitor extends CI_Model
                                         a.HeaderID ASC");
         return $query->result();
     }
+    // === Monitoring Approval HED === //
+    function listTenagaKerjaHED($dept)
+    {
+        $query = $this->db->query("SELECT
+                                    a.HeaderID,
+                                    a.Nama,
+                                    a.CVNama,
+                                    a.Pemborong,
+                                    a.Tgl_Lahir,
+                                    a.Jenis_Kelamin,
+                                    a.ScreeningComplete,
+                                    a.RegisteredBy,
+                                    a.RegisteredDate,
+                                    a.AppDivStatus,
+                                    a.DeptTujuan,
+                                    a.TransID,
+                                    c.Pekerjaan,
+                                    a.AppHEDStatus,
+                                    a.AppHEDDate,
+                                    a.AppHEDBy,
+                                    a.AppHEDCatatan,
+                                    CASE
+                                        
+                                        WHEN b.kodedivisi = 25 THEN
+                                        1 ELSE 0 
+                                    END AS AppDivNeeded,
+                                    a.status_p2k3,
+                                    a.status_elc, 
+                                    a.status_hed 
+                                    FROM
+                                    tblTrnCalonTenagaKerja a
+                                    LEFT JOIN (SELECT DISTINCT DeptKary, kodedivisi FROM vwMstDivisi) b ON a.DeptTujuan = b.DeptKary
+                                    LEFT JOIN vwTrnApprovalAll AS c ON a.TransID = c.DetailID 
+                                    WHERE
+                                    Verified = '1'  
+                                    AND HeaderID NOT IN (SELECT HeaderID FROM tblTrnScreening WHERE Dept = '$dept') 
+                                    AND a.status_hed = 1 
+                                    ORDER BY
+                                    a.HeaderID ASC");
+        return $query->result();
+    }
 
 
     // === Pengecekan === //
