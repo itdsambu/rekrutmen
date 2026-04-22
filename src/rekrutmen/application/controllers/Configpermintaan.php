@@ -4,6 +4,20 @@
  * Author by Heriyanto
  */
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Borders;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 require_once APPPATH . 'core/BaseController.php';
 
 class Configpermintaan extends BaseController
@@ -597,25 +611,83 @@ class Configpermintaan extends BaseController
         }
     }
 
+    // function importExcel()
+    // {
+
+    //     $this->load->library("Excel/PHPExcel");
+
+    //     if (!isset($_FILES['file_excel']['name'])) {
+    //         echo "<div class='alert alert-danger'>File tidak ditemukan</div>";
+    //         return;
+    //     }
+
+    //     $file = $_FILES['file_excel']['tmp_name'];
+    //     $objPHPExcel = PHPExcel_IOFactory::load($file);
+    //     $sheet = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+
+    //     $data = [];
+    //     foreach ($sheet as $index => $row) {
+    //         if ($index == 1 || $index == 2) continue; // Lewati header
+    //         $data[] = [
+    //             'dept' => $row['B'],
+    //             'nama_sub' => $row['C'],
+    //             'A' => $row['D'],
+    //             'B' => $row['E'],
+    //             'C' => $row['F'],
+    //             'D' => $row['G'],
+    //             'E' => $row['H'],
+    //             'F' => $row['I'],
+    //             'G' => $row['J'],
+    //             'H' => $row['K'],
+    //             'I' => $row['L'],
+    //             'J' => $row['M'],
+    //             'K' => $row['N'],
+    //         ];
+    //     }
+
+    //     $insert = $this->M_configpermintaan->insert_batch($data);
+    //     if ($insert) {
+    //         $this->db->query(
+    //             "EXEC sp_InsertKuotaPermintaan ?, ?",
+    //             [date('Y'), $this->session->userdata('userid')]
+    //         );
+    //     }
+
+    //     $this->db->trans_complete();
+
+    //     if ($this->db->trans_status() === FALSE) {
+    //         echo "<div class='alert alert-danger'>Gagal proses.</div>";
+    //     } else {
+    //         echo "<div class='alert alert-success'>Import & SP berhasil.</div>";
+    //     }
+    // }
+
     function importExcel()
     {
-
-        $this->load->library("Excel/PHPExcel");
-
-        if (!isset($_FILES['file_excel']['name'])) {
+        if (!isset($_FILES['file_excel']['name']) || empty($_FILES['file_excel']['tmp_name'])) {
             echo "<div class='alert alert-danger'>File tidak ditemukan</div>";
             return;
         }
 
         $file = $_FILES['file_excel']['tmp_name'];
-        $objPHPExcel = PHPExcel_IOFactory::load($file);
-        $sheet = $objPHPExcel->getActiveSheet()->toArray(null, true, true, true);
+
+        try {
+            $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+        } catch (\Exception $e) {
+            echo "<div class='alert alert-danger'>Gagal baca file: " . $e->getMessage() . "</div>";
+            return;
+        }
 
         $data = [];
         foreach ($sheet as $index => $row) {
             if ($index == 1 || $index == 2) continue; // Lewati header
+
+            // Skip baris kosong
+            if (empty($row['B']) && empty($row['C'])) continue;
+
             $data[] = [
-                'dept' => $row['B'],
+                'dept'     => $row['B'],
                 'nama_sub' => $row['C'],
                 'A' => $row['D'],
                 'B' => $row['E'],
@@ -631,13 +703,19 @@ class Configpermintaan extends BaseController
             ];
         }
 
-        $insert = $this->M_configpermintaan->insert_batch($data);
-        if ($insert) {
-            $this->db->query(
-                "EXEC sp_InsertKuotaPermintaan ?, ?",
-                [date('Y'), $this->session->userdata('userid')]
-            );
+        if (empty($data)) {
+            echo "<div class='alert alert-warning'>Tidak ada data untuk diimport.</div>";
+            return;
         }
+
+        $this->db->trans_start();
+
+        $this->M_configpermintaan->insert_batch($data);
+
+        $this->db->query(
+            "EXEC sp_InsertKuotaPermintaan ?, ?",
+            [date('Y'), $this->session->userdata('userid')]
+        );
 
         $this->db->trans_complete();
 
