@@ -55,7 +55,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
-       DB_HOST_1: ${DB_HOST_1}
+      DB_HOST_1: ${DB_HOST_1}
       DB_PORT_1: ${DB_PORT_1}
       DB_USER_1: ${DB_USER_1}
       DB_PASS_1: ${DB_PASS_1}
@@ -98,9 +98,18 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2G
+          memory: 12G
         reservations:
-          memory: 512M
+          memory: 2G
+    # ============================================
+    # Kernel tuning untuk high-concurrency
+    # ============================================
+    sysctls:
+      - net.core.somaxconn=1024
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - appnet
 
