@@ -50,31 +50,46 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       DB_NAME: ${DB_NAME}
-      DB_HOST_1: ${DB_HOST}
-      DB_PORT_1: ${DB_PORT}
-      DB_USER_1: ${DB_USER}
-      DB_PASS_1: ${DB_PASS}
-      DB_NAME_1: ${DB_NAME}
-      DB_HOST_2: ${DB_HOST}
-      DB_PORT_2: ${DB_PORT}
-      DB_USER_2: ${DB_USER}
-      DB_PASS_2: ${DB_PASS}
-      DB_NAME_2: ${DB_NAME}
-      DB_HOST_3: ${DB_HOST}
-      DB_PORT_3: ${DB_PORT}
-      DB_USER_3: ${DB_USER}
-      DB_PASS_3: ${DB_PASS}
-      DB_NAME_3: ${DB_NAME}
-      DB_HOST_4: ${DB_HOST}
-      DB_PORT_4: ${DB_PORT}
-      DB_USER_4: ${DB_USER}
-      DB_PASS_4: ${DB_PASS}
-      DB_NAME_4: ${DB_NAME}
-      DB_HOST_5: ${DB_HOST}
-      DB_PORT_5: ${DB_PORT}
-      DB_USER_5: ${DB_USER}
-      DB_PASS_5: ${DB_PASS}
-      DB_NAME_5: ${DB_NAME}
+      DB_HOST_1: ${DB_HOST_1}
+      DB_PORT_1: ${DB_PORT_1}
+      DB_USER_1: ${DB_USER_1}
+      DB_PASS_1: ${DB_PASS_1}
+      DB_NAME_1: ${DB_NAME_1}
+      DB_HOST_2: ${DB_HOST_2}
+      DB_PORT_2: ${DB_PORT_2}
+      DB_USER_2: ${DB_USER_2}
+      DB_PASS_2: ${DB_PASS_2}
+      DB_NAME_2: ${DB_NAME_2}
+      DB_HOST_3: ${DB_HOST_3}
+      DB_PORT_3: ${DB_PORT_3}
+      DB_USER_3: ${DB_USER_3}
+      DB_PASS_3: ${DB_PASS_3}
+      DB_NAME_3: ${DB_NAME_3}
+      DB_HOST_4: ${DB_HOST_4}
+      DB_PORT_4: ${DB_PORT_4}
+      DB_USER_4: ${DB_USER_4}
+      DB_PASS_4: ${DB_PASS_4}
+      DB_NAME_4: ${DB_NAME_4}
+      DB_HOST_5: ${DB_HOST_5}
+      DB_PORT_5: ${DB_PORT_5}
+      DB_USER_5: ${DB_USER_5}
+      DB_PASS_5: ${DB_PASS_5}
+      DB_NAME_5: ${DB_NAME_5}
+      DB_HOST_6: ${DB_HOST_6}
+      DB_PORT_6: ${DB_PORT_6}
+      DB_USER_6: ${DB_USER_6}
+      DB_PASS_6: ${DB_PASS_6}
+      DB_NAME_6: ${DB_NAME_6}
+      DB_HOST_7: ${DB_HOST_7}
+      DB_PORT_7: ${DB_PORT_7}
+      DB_USER_7: ${DB_USER_7}
+      DB_PASS_7: ${DB_PASS_7}
+      DB_NAME_7: ${DB_NAME_7}
+      DB_HOST_8: ${DB_HOST_8}
+      DB_PORT_8: ${DB_PORT_8}
+      DB_USER_8: ${DB_USER_8}
+      DB_PASS_8: ${DB_PASS_8}
+      DB_NAME_8: ${DB_NAME_8}
     networks:
       - appnet
 

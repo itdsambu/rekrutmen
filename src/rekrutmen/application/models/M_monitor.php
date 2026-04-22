@@ -1975,6 +1975,13 @@ class M_monitor extends CI_Model
         return $this->db->get()->result();
     }
 
+    // public function getDataListTenakerForPBR($id)
+    // {
+    //     $pg = $this->load->database('sambusehat', TRUE);
+    //     $q1 = $pg->query("SELECT * FROM v_trx_mcu_no_widal WHERE header_id = '$id'");
+    //     return $q1->result();  // ✅ langsung result(), tanpa ->get()
+    // }
+
     public function getDataListTenakerForPBR($id)
     {
         $this->db->select('A.*, A.HeaderID as ID, B.*');
