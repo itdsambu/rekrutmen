@@ -27,9 +27,14 @@ services:
     container_name: rekrutmen-php83
     restart: always
     working_dir: /var/www/html/rekrutmen
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - ./src/rekrutmen:/var/www/html/rekrutmen
       - ./docker/php83/php.ini:/usr/local/etc/php/conf.d/99-custom.ini:ro
+      - ./docker/php83/zz-custom-pool.conf:/usr/local/etc/php-fpm.d/zz-custom-pool.conf:ro
       - /media/foto_kar:/media/foto_kar
       - /media/forqsd:/media/forqsd
       - /media/fortrainingpsn:/media/fortrainingpsn
@@ -75,6 +80,12 @@ services:
       DB_USER_5: ${DB_USER}
       DB_PASS_5: ${DB_PASS}
       DB_NAME_5: ${DB_NAME}
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
     networks:
       - appnet
 
