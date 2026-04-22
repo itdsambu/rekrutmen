@@ -218,9 +218,6 @@ if ($this->session->userdata('groupuser') == '13' || $this->session->userdata('g
                                             <td><?php echo $row->DeptAbbr; ?></td>
                                             <td><?php echo $row->Pekerjaan; ?></td>
                                             <td class="text-center"><?php echo $sisa; ?></td>
-                                            <!-- <td class="text-center"><?php echo $penuhi; ?></td> -->
-                                            <!-- <td class="text-center"><?php echo $minta; ?></td> -->
-                                            <!-- <td class="text-center"><?php echo ($diidentifikasi) < 0 ? 0 : ($diidentifikasi); ?></td> -->
                                             <td class="text-center"><?php echo $penuhi2; ?></td>
                                             <td class="text-center"><?php echo $minta2; ?></td>
                                             <td class="text-center"><?php echo ($diidentifikasi2) < 0 ? 0 : ($diidentifikasi2); ?></td>
