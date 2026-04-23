@@ -232,1791 +232,1249 @@ class C_export_excel_print_berkas extends CI_Controller
 
     function excelStyle()
     {
+        // ============================================================
+        // BASE STYLE - digunakan sebagai template dasar
+        // ============================================================
+        $baseFont = [
+            'name' => 'Times New Roman',
+            'size' => 11,
+        ];
 
+        $baseNumberFormat = [
+            'formatCode' => NumberFormat::FORMAT_TEXT,
+        ];
 
-        $DiagonalBorder = (array(
-            'borders' => array(
-                'diagonal' => array(
-                    'style' => Border::BORDER_THIN,
-                ),
-                'diagonaldirection' => Borders::DIAGONAL_DOWN,
-            ),
-        ));
+        $borderThin = ['borderStyle' => Border::BORDER_THIN];
+        $borderDotted = ['borderStyle' => Border::BORDER_DOTTED];
+        $borderDouble = ['borderStyle' => Border::BORDER_DOUBLE];
+        $borderThick = ['borderStyle' => Border::BORDER_THICK];
+        $borderDashDotDot = ['borderStyle' => Border::BORDER_DASHDOTDOT];
 
+        // ============================================================
+        // DIAGONAL BORDER
+        // ============================================================
+        $DiagonalBorder = [
+            'borders' => [
+                'diagonal' => $borderThin,
+                'diagonalDirection' => Borders::DIAGONAL_DOWN,
+            ],
+        ];
 
-        $PTStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 14
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        // ============================================================
+        // PT STYLE - Header PT PULAU SAMBU (bold, size 14, all border)
+        // ============================================================
+        $PTStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 14],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderDetDashStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_DASHDOTDOT),
-                'left'   => array('style' => Border::BORDER_DASHDOTDOT),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $PTStyleNoRightBorder = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 14],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $justBorderStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 12
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-        ));
-
-        $borderJustBottomStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 12
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-            ),
-        ));
-
-
-        $PTStyleNoRightBorder = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold' => true,
-                'name' => 'Times New Roman',
-                'size' => 14
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        // ============================================================
+        // DETAIL HEADER - dengan border DashDotDot di kiri-kanan
+        // ============================================================
+        $DetailheaderDetDashStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderDashDotDot,
+                'left' => $borderDashDotDot,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'allborders' => [
-                    'style' => Border::BORDER_THIN,
-                ],
-                // 'bottom' => array('style' => Border::BORDER_THIN),
-                // 'right'  => array('style' => Border::BORDER_THIN),
-                // 'left'   => array('style' => Border::BORDER_THIN),
-                // 'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        // ============================================================
+        // JUST BORDER STYLE - all border thin, size 12
+        // ============================================================
+        $justBorderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 12],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+        ];
+
+        $borderJustBottomStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 12],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+            ],
+        ];
+
+        // ============================================================
+        // HEADER STYLE - bold, all border (menggunakan allBorders)
+        // ============================================================
+        $headerStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'allBorders' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRight = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        // ============================================================
+        // HEADER STYLE VARIANTS - untuk berbagai posisi border
+        // ============================================================
+        $headerStyleRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightcenter = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $headerStyleRightcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightleftcenter = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $headerStyleRightleftcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleBottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $StyleBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleBorderTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $StyleBorderTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['top' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleBottomunderline = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11,
-                // 'underline' => PHPExcel_Style_Font::UNDERLINE_SINGLE
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $StyleBottomunderline = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeft = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleLeft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleLeftRight = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $headerStyleLeftRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleLeftRight2 = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleLeftRight2 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleRightbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleRightTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleRightbottomcenter = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleLeftTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $headerStyleRightbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $headerStyleRightbottomcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightleftbottomcenter = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $headerStyleRightleftbottomcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightleftbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftBottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleRightleftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleRightBottomTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleLeftBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $StyleRightBottomTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $Style14 = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 14
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
+        $headerStyleRightBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftBottomTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $StyleRightBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftRightTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'right' => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $Style14 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 14],
+            'numberFormat' => $baseNumberFormat,
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleTopBottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleLeftBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $justBottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleLeftRightTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $justTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top' => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $justRight = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right' => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $justLeft = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left' => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleLeftBottomTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $headerStyleTopBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $justBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $justTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['top' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $justRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $justLeft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $StyleLeftBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $StyleBottomTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $StyleBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $noborderStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'alignment' => array(
+        // ============================================================
+        // NO BORDER STYLE
+        // ============================================================
+        $noborderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-
-        $rightborderStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $rightborderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $leftborderStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $leftborderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        // ============================================================
+        // DETAIL HEADER VARIANTS
+        // ============================================================
+        $DetailheaderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleBold = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderStyleBold = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleleft = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderStyleleft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleleftNoBorder = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            // 'borders' => array(
-            //   'bottom' => array('style' => Border::BORDER_THIN),
-            //   'left'   => array('style' => Border::BORDER_THIN),
-            //   'top'    => array('style' => Border::BORDER_THIN)
-            // ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderStyleleftNoBorder = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyletopbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderStyletopbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleright = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderStyleright = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderVerticalStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $DetailheaderVerticalStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_BOTTOM,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_BOTTOM,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderRightTopStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $DetailheaderRightTopStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderRightBottomStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderRightBottomStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderRightStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $DetailheaderRightStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderLeftStyle = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $DetailheaderLeftStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleRightbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        // ============================================================
+        // FOOTER STYLES
+        // ============================================================
+        $footerStyleRightbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRightTop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRightbottom2 = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRightbottom3 = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRight = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleRightLeftbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $footerStyleRightTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerRightLeftbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $footerStyleRightbottom2 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleLeftbottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top'  => array('style' => Border::BORDER_THIN),
-                'left'  => array('style' => Border::BORDER_THIN),
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $footerStyleRightbottom3 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleLeft = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => Border::BORDER_THIN),
-            ),
-            'alignment' => array(
+        $footerStyleRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStylebottomtop = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'    => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $footerStyleRightLeftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStylebottom = (array(
-            'fill'   => array(
-                'type'    => Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStyle = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN),
-                'right'   => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN),
-                'top'     => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $footerRightLeftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleLeftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'top' => $borderThin,
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleLeft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStylebottomtop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStylebottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        // ============================================================
+        // BODY STYLES - untuk cell isi data
+        // ============================================================
+        $bodyStyle = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStylewithDoth = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_DOTTED),
-                'right'   => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN),
-                'top'     => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $bodyStylewithDoth = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDotted,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStylewithNoBorderTop = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN),
-                'right'   => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $bodyStylewithNoBorderTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStyleLeft = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN),
-                'right'   => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN),
-                'top'     => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $bodyStyleLeft = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleLeft = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_DOUBLE),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        // ============================================================
+        // DOUBLE & SPECIAL BORDER STYLES
+        // ============================================================
+        $doubleLeft = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderDouble,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $doubleLeftBottom = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_DOUBLE),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_DOUBLE),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleSolidTop = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top' => array('style' => Border::BORDER_THICK)
-            ),
-            'alignment' => array(
+        $doubleLeftBottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderDouble,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $doubleSolidTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['top' => $borderThick],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $doubleSolidBottom = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THICK),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleBottom = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_DOUBLE),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $doubleSolidBottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThick,
+                'right' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleBottomBold = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11,
-                'bold' => true
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_DOUBLE),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $doubleBottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $noborderTop = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_DOUBLE),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-            ),
-            'alignment' => array(
+        $doubleBottomBold = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11, 'bold' => true],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $noborderTop2 = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_DOUBLE),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_THIN),
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $noborderTop3 = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_THIN),
-                'right'  => array('style' => Border::BORDER_THIN),
-                'left'   => array('style' => Border::BORDER_THIN),
-                'top'    => array('style' => Border::BORDER_DOUBLE),
-            ),
-            'alignment' => array(
-                'horizontal' => Alignment::HORIZONTAL_CENTER,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $boderdottedbottom = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF'),
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11,
-                'bold'    => true,
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => Border::BORDER_DOTTED),
+        $noborderTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-            ),
-            'alignment' => array(
+        $noborderTop2 = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $noborderTop3 = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderDouble,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $boderdottedbottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11, 'bold' => true],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderDotted],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_LEFT,
-                'vertical'   => Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $leftBottomTop = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN),
-                // 'right'   => array('style' => Border::BORDER_THIN),
-                'left'    => array('style' => Border::BORDER_THIN),
-                'top'     => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+        $leftBottomTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
-        $rightBottomTop = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN),
-                'right'   => array('style' => Border::BORDER_THIN),
-                // 'left'    => array('style' => Border::BORDER_THIN),
-                'top'     => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'wrapText' => true,
+            ],
+        ];
+
+        $rightBottomTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
-        $BottomTop = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_THIN),
-                // 'right'   => array('style' => Border::BORDER_THIN),
-                // 'left'    => array('style' => Border::BORDER_THIN),
-                'top'     => array('style' => Border::BORDER_THIN)
-            ),
-            'alignment' => array(
+                'wrapText' => true,
+            ],
+        ];
+
+        $BottomTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStylewithDot = (array(
-            'fill'   => array(
-                'type'  => Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => Border::BORDER_DOTTED),
-                'right'   => array('style' => Border::BORDER_DOTTED),
-                'left'    => array('style' => Border::BORDER_DOTTED),
-                'top'     => array('style' => Border::BORDER_DOTTED)
-            ),
-            'alignment' => array(
+        $bodyStylewithDot = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDotted,
+                'right' => $borderDotted,
+                'left' => $borderDotted,
+                'top' => $borderDotted,
+            ],
+            'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_CENTER,
                 'vertical' => Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+                'wrapText' => true,
+            ],
+        ];
 
-
+        // ============================================================
+        // RETURN ALL STYLES
+        // ============================================================
         return [
             'PTStyle'                          => $PTStyle,
             'DetailheaderDetDashStyle'         => $DetailheaderDetDashStyle,
@@ -2086,7 +1544,7 @@ class C_export_excel_print_berkas extends CI_Controller
             'boderdottedbottom'                => $boderdottedbottom,
             'bodyStyleLeft'                    => $bodyStyleLeft,
             'bodyStylewithDoth'                => $bodyStylewithDoth,
-            'bodyStylewithDot'                => $bodyStylewithDot,
+            'bodyStylewithDot'                 => $bodyStylewithDot,
             'bodyStylewithNoBorderTop'         => $bodyStylewithNoBorderTop,
             'justBottom'                       => $justBottom,
             'justTop'                          => $justTop,
@@ -2098,6 +1556,1875 @@ class C_export_excel_print_berkas extends CI_Controller
             'DiagonalBorder'                   => $DiagonalBorder,
         ];
     }
+
+    // function excelStyle()
+    // {
+
+
+    //     $DiagonalBorder = (array(
+    //         'borders' => array(
+    //             'diagonal' => array(
+    //                 'style' => Border::BORDER_THIN,
+    //             ),
+    //             'diagonaldirection' => Borders::DIAGONAL_DOWN,
+    //         ),
+    //     ));
+
+
+    //     $PTStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 14
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderDetDashStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_DASHDOTDOT),
+    //             'left'   => array('style' => Border::BORDER_DASHDOTDOT),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $justBorderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 12
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //     ));
+
+    //     $borderJustBottomStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 12
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //         ),
+    //     ));
+
+
+    //     $PTStyleNoRightBorder = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold' => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 14
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'allborders' => [
+    //                 'style' => Border::BORDER_THIN,
+    //             ],
+    //             // 'bottom' => array('style' => Border::BORDER_THIN),
+    //             // 'right'  => array('style' => Border::BORDER_THIN),
+    //             // 'left'   => array('style' => Border::BORDER_THIN),
+    //             // 'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRight = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightleftcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleBorderTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleBottomunderline = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11,
+    //             // 'underline' => PHPExcel_Style_Font::UNDERLINE_SINGLE
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeft = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleLeftRight = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleLeftRight2 = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeftTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleRightbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleRightbottomcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightleftbottomcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightleftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeftBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleRightBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $StyleRightBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $Style14 = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 14
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+
+    //     $headerStyleLeftBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeftRightTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'right' => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleTopBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $justBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $justTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top' => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $justRight = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right' => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $justLeft = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left' => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleLeftBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_RIGHT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $StyleBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $noborderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+
+    //     $rightborderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $leftborderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleBold = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleleft = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleleftNoBorder = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         // 'borders' => array(
+    //         //   'bottom' => array('style' => Border::BORDER_THIN),
+    //         //   'left'   => array('style' => Border::BORDER_THIN),
+    //         //   'top'    => array('style' => Border::BORDER_THIN)
+    //         // ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyletopbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleright = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_RIGHT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderVerticalStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_BOTTOM,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderRightTopStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderRightBottomStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderRightStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderLeftStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleRightbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_RIGHT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRightTop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRightbottom2 = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRightbottom3 = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRight = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleRightLeftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerRightLeftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleLeftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top'  => array('style' => Border::BORDER_THIN),
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleLeft = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => Border::BORDER_THIN),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStylebottomtop = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'    => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStylebottom = (array(
+    //         'fill'   => array(
+    //             'type'    => Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $bodyStyle = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN),
+    //             'right'   => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN),
+    //             'top'     => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStylewithDoth = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_DOTTED),
+    //             'right'   => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN),
+    //             'top'     => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStylewithNoBorderTop = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN),
+    //             'right'   => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStyleLeft = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN),
+    //             'right'   => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN),
+    //             'top'     => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleLeft = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_DOUBLE),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $doubleLeftBottom = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_DOUBLE),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleSolidTop = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top' => array('style' => Border::BORDER_THICK)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $doubleSolidBottom = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THICK),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleBottom = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleBottomBold = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11,
+    //             'bold' => true
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $noborderTop = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $noborderTop2 = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_THIN),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $noborderTop3 = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_THIN),
+    //             'right'  => array('style' => Border::BORDER_THIN),
+    //             'left'   => array('style' => Border::BORDER_THIN),
+    //             'top'    => array('style' => Border::BORDER_DOUBLE),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $boderdottedbottom = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF'),
+
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11,
+    //             'bold'    => true,
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => Border::BORDER_DOTTED),
+
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $leftBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN),
+    //             // 'right'   => array('style' => Border::BORDER_THIN),
+    //             'left'    => array('style' => Border::BORDER_THIN),
+    //             'top'     => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+    //     $rightBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN),
+    //             'right'   => array('style' => Border::BORDER_THIN),
+    //             // 'left'    => array('style' => Border::BORDER_THIN),
+    //             'top'     => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+    //     $BottomTop = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_THIN),
+    //             // 'right'   => array('style' => Border::BORDER_THIN),
+    //             // 'left'    => array('style' => Border::BORDER_THIN),
+    //             'top'     => array('style' => Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStylewithDot = (array(
+    //         'fill'   => array(
+    //             'type'  => Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => Border::BORDER_DOTTED),
+    //             'right'   => array('style' => Border::BORDER_DOTTED),
+    //             'left'    => array('style' => Border::BORDER_DOTTED),
+    //             'top'     => array('style' => Border::BORDER_DOTTED)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+
+    //     return [
+    //         'PTStyle'                          => $PTStyle,
+    //         'DetailheaderDetDashStyle'         => $DetailheaderDetDashStyle,
+    //         'justBorderStyle'                  => $justBorderStyle,
+    //         'PTStyleNoRightBorder'             => $PTStyleNoRightBorder,
+    //         'headerStyle'                      => $headerStyle,
+    //         'DetailheaderStyle'                => $DetailheaderStyle,
+    //         'DetailheaderStyleBold'            => $DetailheaderStyleBold,
+    //         'DetailheaderStyleleft'            => $DetailheaderStyleleft,
+    //         'DetailheaderStyleleftNoBorder'    => $DetailheaderStyleleftNoBorder,
+    //         'DetailheaderStyletopbottom'       => $DetailheaderStyletopbottom,
+    //         'DetailheaderStyleright'           => $DetailheaderStyleright,
+    //         'DetailheaderVerticalStyle'        => $DetailheaderVerticalStyle,
+    //         'bodyStyle'                        => $bodyStyle,
+    //         'doubleLeft'                       => $doubleLeft,
+    //         'doubleLeftBottom'                 => $doubleLeftBottom,
+    //         'doubleBottom'                     => $doubleBottom,
+    //         'doubleBottomBold'                 => $doubleBottomBold,
+    //         'doubleSolidTop'                   => $doubleSolidTop,
+    //         'doubleSolidBottom'                => $doubleSolidBottom,
+    //         'noborderTop'                      => $noborderTop,
+    //         'noborderTop2'                     => $noborderTop2,
+    //         'noborderTop3'                     => $noborderTop3,
+    //         'headerStyleRight'                 => $headerStyleRight,
+    //         'headerStyleRightcenter'           => $headerStyleRightcenter,
+    //         'headerStyleRightleftcenter'       => $headerStyleRightleftcenter,
+    //         'headerStyleLeft'                  => $headerStyleLeft,
+    //         'headerStyleLeftRight'             => $headerStyleLeftRight,
+    //         'headerStyleLeftRight2'            => $headerStyleLeftRight2,
+    //         'headerStyleRightTop'              => $headerStyleRightTop,
+    //         'headerStyleLeftTop'               => $headerStyleLeftTop,
+    //         'headerStyleRightbottom'           => $headerStyleRightbottom,
+    //         'headerStyleRightbottomcenter'     => $headerStyleRightbottomcenter,
+    //         'headerStyleRightleftbottomcenter' => $headerStyleRightleftbottomcenter,
+    //         'headerStyleRightleftbottom'       => $headerStyleRightleftbottom,
+    //         'headerStyleLeftBottom'            => $headerStyleLeftBottom,
+    //         'headerStyleRightBottomTop'        => $headerStyleRightBottomTop,
+    //         'headerStyleLeftBottomTop'         => $headerStyleLeftBottomTop,
+    //         'headerStyleLeftRightTop'          => $headerStyleLeftRightTop,
+    //         'headerStyleTopBottom'             => $headerStyleTopBottom,
+    //         'StyleLeftBottomTop'               => $StyleLeftBottomTop,
+    //         'StyleRightBottomTop'              => $StyleRightBottomTop,
+    //         'Style14'                          => $Style14,
+    //         'StyleBottomTop'                   => $StyleBottomTop,
+    //         'StyleBottom'                      => $StyleBottom,
+    //         'StyleBorderTop'                   => $StyleBorderTop,
+    //         'StyleBottomunderline'             => $StyleBottomunderline,
+    //         'borderJustBottomStyle'            => $borderJustBottomStyle,
+    //         'noborderStyle'                    => $noborderStyle,
+    //         'rightborderStyle'                 => $rightborderStyle,
+    //         'leftborderStyle'                  => $leftborderStyle,
+    //         'DetailheaderRightTopStyle'        => $DetailheaderRightTopStyle,
+    //         'DetailheaderRightStyle'           => $DetailheaderRightStyle,
+    //         'DetailheaderLeftStyle'            => $DetailheaderLeftStyle,
+    //         'DetailheaderRightBottomStyle'     => $DetailheaderRightBottomStyle,
+    //         'footerStyleRightbottom'           => $footerStyleRightbottom,
+    //         'footerStyleRightbottom2'          => $footerStyleRightbottom2,
+    //         'footerStyleRightbottom3'          => $footerStyleRightbottom3,
+    //         'footerStyleRightTop'              => $footerStyleRightTop,
+    //         'footerStyleRight'                 => $footerStyleRight,
+    //         'footerStyleRightLeftbottom'       => $footerStyleRightLeftbottom,
+    //         'footerRightLeftbottom'            => $footerRightLeftbottom,
+    //         'footerStyleLeftbottom'            => $footerStyleLeftbottom,
+    //         'footerStyleLeft'                  => $footerStyleLeft,
+    //         'footerStylebottomtop'             => $footerStylebottomtop,
+    //         'footerStylebottom'                => $footerStylebottom,
+    //         'boderdottedbottom'                => $boderdottedbottom,
+    //         'bodyStyleLeft'                    => $bodyStyleLeft,
+    //         'bodyStylewithDoth'                => $bodyStylewithDoth,
+    //         'bodyStylewithDot'                => $bodyStylewithDot,
+    //         'bodyStylewithNoBorderTop'         => $bodyStylewithNoBorderTop,
+    //         'justBottom'                       => $justBottom,
+    //         'justTop'                          => $justTop,
+    //         'justRight'                        => $justRight,
+    //         'justLeft'                         => $justLeft,
+    //         'leftBottomTop'                    => $leftBottomTop,
+    //         'rightBottomTop'                   => $rightBottomTop,
+    //         'BottomTop'                        => $BottomTop,
+    //         'DiagonalBorder'                   => $DiagonalBorder,
+    //     ];
+    // }
 
     // function excelStyle()
     // {
