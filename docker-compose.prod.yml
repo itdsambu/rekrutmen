@@ -98,9 +98,18 @@ services:
     deploy:
       resources:
         limits:
-          memory: 2G
+          memory: 12G
         reservations:
-          memory: 512M
+          memory: 2G
+    # ============================================
+    # Kernel tuning untuk high-concurrency
+    # ============================================
+    sysctls:
+      - net.core.somaxconn=1024
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - appnet
 
