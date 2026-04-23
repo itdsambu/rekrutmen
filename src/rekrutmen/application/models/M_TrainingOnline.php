@@ -89,12 +89,33 @@ class M_TrainingOnline extends CI_Model
 
     //function cek nofix dan materi yang sama
 
-    function cekNofix($Nofix, $hdrSoal)
+    function cekNofixOld($Nofix, $hdrSoal)
     {
         // Query lama
         // $query = $this->db->query("SELECT COUNT(RegFix) as nofix  from PSGTrainingOnline..tblTrnJawabanHdr where RegFix ='$Nofix'  and IDMstSoalHdr= '$hdrSoal'");
         // Query baru
         $query = $this->db->query("SELECT COUNT(RegFix) as nofix  from PSGTrainingOnline..vwTrnJawabanHdrelc where RegFix ='$Nofix'  and IDMstSoalHdr= '$hdrSoal' and Nilai is not null and remedial = 0");
+        return $query->row();
+    }
+
+    function cekNofix($Nofix, $hdrSoal)
+    {
+        // OPTIMIZED VERSION:
+        // 1. Query langsung ke base table (bukan view)
+        // 2. Prepared statement (anti SQL injection + plan caching)
+        // 3. TOP 3 + COUNT - stop scan setelah ketemu 3 row (early termination)
+        
+        $sql = "SELECT COUNT(*) AS nofix 
+                FROM (
+                    SELECT TOP 3 RegFix 
+                    FROM PSGTrainingOnline..tblTrnJawabanHdr 
+                    WHERE RegFix = ? 
+                    AND IDMstSoalHdr = ? 
+                    AND Nilai IS NOT NULL 
+                    AND remedial = 0
+                ) AS t";
+        
+        $query = $this->db->query($sql, array($Nofix, $hdrSoal));
         return $query->row();
     }
 
