@@ -95,6 +95,21 @@ services:
       DB_USER_8: ${DB_USER_8}
       DB_PASS_8: ${DB_PASS_8}
       DB_NAME_8: ${DB_NAME_8}
+    deploy:
+      resources:
+        limits:
+          memory: 12G
+        reservations:
+          memory: 2G
+    # ============================================
+    # Kernel tuning untuk high-concurrency
+    # ============================================
+    sysctls:
+      - net.core.somaxconn=1024
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
     networks:
       - appnet
 
