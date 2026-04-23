@@ -2122,7 +2122,8 @@ class Monitor extends CI_Controller
                 }
 
                 $isMcu = '';
-                if ($field->apvdokterby == NULL) {
+                // if ($field->apvdokterby == NULL) {
+                if ($field->approved_dokter_by == NULL) {
                     $isMcu .= '<span class="label label-default">✘</span>';
                 } else {
                     $isMcu .= '<span class="label label-success">✔</span>';
@@ -2136,7 +2137,8 @@ class Monitor extends CI_Controller
                 }
 
                 $keterangan = '';
-                if ($field->WawancaraKe != NULL && $field->apvdokterby != NULL && $field->UdahDiAmbil == 1 && $field->Nofix != null) {
+                // if ($field->WawancaraKe != NULL && $field->apvdokterby != NULL && $field->UdahDiAmbil == 1 && $field->Nofix != null) {
+                if ($field->WawancaraKe != NULL && $field->approved_dokter_by != NULL && $field->UdahDiAmbil == 1 && $field->Nofix != null) {
                     $keterangan .= '<span class="label label-success">Complete</span>';
                 } else {
                     if ($idpemborong > 0 && ($field->KeteranganKirim == 'blacklist' || $field->KeteranganKirim == 'blacklist_2_bln')) {
@@ -2157,16 +2159,20 @@ class Monitor extends CI_Controller
 
                 $kesimpulanCu = '';
                 $printPDF = '';
-                if (strpos($field->kesimpulanCU, "Tidak Sehat permanen") !== false || strpos($field->kesimpulanCU, "Tidak Sehat Permanen") !== false) {
-                    $kesimpulanCu =   str_replace("Tidak Sehat permanen", '<span class="badge badge-danger">Tidak Sehat Permanen</span>', $field->kesimpulanCU);
+                // if (strpos($field->kesimpulanCU, "Tidak Sehat permanen") !== false || strpos($field->kesimpulanCU, "Tidak Sehat Permanen") !== false) {
+                if (strpos($field->kesimpulan_mcu, "Tidak Sehat permanen") !== false || strpos($field->kesimpulan_mcu, "Tidak Sehat Permanen") !== false) {
+                    // $kesimpulanCu =   str_replace("Tidak Sehat permanen", '<span class="badge badge-danger">Tidak Sehat Permanen</span>', $field->kesimpulanCU);
+                    $kesimpulanCu =   str_replace("Tidak Sehat permanen", '<span class="badge badge-danger">Tidak Sehat Permanen</span>', $field->kesimpulan_mcu);
                     $key = 'your-secret-key'; // Kunci enkripsi, simpan di tempat yang aman
                     $encryptedHeaderID = encrypt($field->HeaderID, $key);
 
                     $printPDF = '<a disabled title="Export PDF" target="_blank" data-rel="tooltip" href="' . base_url("export_pdf/C_export_topdf/exporttopdf/") . $encryptedHeaderID . '" class="btn btn-minier btn-round btn-danger">
                                     <i class="ace-icon fa fa-file-o bigger-100"></i> Export PDF
                                 </a>';
-                } elseif (strpos($field->kesimpulanCU, "Tidak Sehat") !== false) {
-                    $kesimpulanCu =   str_replace("Tidak Sehat", '<span class="badge badge-danger">Tidak Sehat</span>', $field->kesimpulanCU);
+                    // } elseif (strpos($field->kesimpulanCU, "Tidak Sehat") !== false) {
+                } elseif (strpos($field->kesimpulan_mcu, "Tidak Sehat") !== false) {
+                    // $kesimpulanCu =   str_replace("Tidak Sehat", '<span class="badge badge-danger">Tidak Sehat</span>', $field->kesimpulanCU);
+                    $kesimpulanCu =   str_replace("Tidak Sehat", '<span class="badge badge-danger">Tidak Sehat</span>', $field->kesimpulan_mcu);
                     $key = 'your-secret-key'; // Kunci enkripsi, simpan di tempat yang aman
                     $encryptedHeaderID = encrypt($field->HeaderID, $key);
 
@@ -2175,7 +2181,8 @@ class Monitor extends CI_Controller
                                 </a>';
                 } else {
                     // $kesimpulanCu =  str_replace("Sehat", '<span class="badge badge-success">Sehat</span>', $field->kesimpulanCU);
-                    $kesimpulanCu =  $field->kesimpulanCU;
+                    // $kesimpulanCu =  $field->kesimpulanCU;
+                    $kesimpulanCu =  $field->kesimpulan_mcu;
                 }
                 $mcudate = $field->mcu_date != NULL ? date('d-m-Y', strtotime($field->mcu_date)) : '';
 

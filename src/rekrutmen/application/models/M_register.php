@@ -59,10 +59,142 @@ class M_register extends CI_Model
 
 
 
+    // private function _get_datatables_query($table, $proses = '')
+    // {
+    //     $idpemborong = $this->session->userdata('idpemborong');
+
+
+    //     if ($idpemborong > 0) {
+    //         $this->db->select('*');
+    //         $this->db->from($table);
+    //         $this->db->where('PostingData', 0);
+    //         $this->db->where('StatusDaftar IS NOT NULL', null, false);
+    //         $this->db->where('StatusDaftar <>', 1);
+
+    //         if (!empty($_POST['start_date']) && !empty($_POST['end_date'])) {
+    //             $this->db->where('DikirimDate >=', date('Y-m-d', strtotime($_POST['start_date'])));
+    //             $this->db->where('DikirimDate <=', date('Y-m-d', strtotime($_POST['end_date'])));
+    //         }
+    //         $this->db->group_start();  // Start grouping for OR condition
+    //         $this->db->where('CVNama IN (SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = ' . $this->db->escape($idpemborong) . ')', null, false);
+    //         $this->db->or_where('CVNama IN (SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = ' . $this->db->escape($idpemborong) . ')', null, false);
+    //         $this->db->group_end();  // End grouping for OR condition
+    //         // $this->db->order_by('headerid', 'DESC');
+    //     } else {
+
+    //         if ($table == 'vwListTenakerForPemborong') {
+    //             $this->db->select('A.*,C.kesimpulanCU, B.BerkasID, B.KTP, B.CV, B.Lamaran, B.Ijazah, B.Transkrip, B.SuratKontrak, B.Vaksin1, B.Vaksin2, B.Vaksin3, B.KK, B.SKCK');
+    //             $this->db->from($table . ' AS A');
+    //             $this->db->join('dbo.tblTrnBerkas AS B', 'A.HeaderID = B.HeaderID', 'inner');
+    //             $this->db->join('PSGKlinik.dbo.tbl_kk_MstMedicalTemporaryTKNew AS C', 'A.HeaderID = C.HeaderID ', 'left');
+    //             $this->db->where('PostingData', 0);
+    //             $this->db->where('StatusDaftar IS NOT NULL');
+
+    //             if ($proses == 'proses') {
+    //                 $this->db->where('Proses', 'proses');
+    //                 $this->db->where('StatusDaftar', 1);
+    //                 $this->db->where('JadwalInterview IS NULL');
+    //                 $this->db->where('kesimpulanCU IS NOT NULL');
+    //             } elseif ($proses == 'mcu') {
+    //                 $this->db->where('Proses', 'proses');
+    //                 $this->db->where('StatusDaftar', 1);
+    //                 $this->db->where('kesimpulanCU IS NULL');
+    //                 $this->db->where('mcu_date IS NULL');
+    //                 $this->db->where('mcu_update_by IS NULL');
+    //             } else {
+    //                 $this->db->where('StatusDaftar <>', 1);
+    //                 // $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) <=', 3);
+    //                 $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) <=', 5);
+    //             }
+
+    //             if (!empty($_POST['start_process_date']) && !empty($_POST['end_process_date'])) {
+    //                 $this->db->where('DiprosesDate >=', date('Y-m-d', strtotime($_POST['start_process_date'])));
+    //                 $this->db->where('DiprosesDate <=', date('Y-m-d', strtotime($_POST['end_process_date'])));
+    //             }
+
+
+    //             $this->db->group_start();  // Start grouping of where clauses
+    //             $this->db->where('KeteranganKirim !=', 'blacklist');
+    //             $this->db->where('KeteranganKirim !=', 'blacklist_2_bln');
+    //             $this->db->where('KeteranganKirim !=', 'blacklist_6_bln');
+    //             $this->db->or_where('KeteranganKirim IS NULL');
+    //             $this->db->group_end();  // End grouping of where clauses
+    //             // $this->db->order_by('HeaderID', 'DESC');
+    //         } else {
+
+    //             $this->db->select('*');
+    //             $this->db->from($table);
+    //         }
+    //     }
+
+    //     $this->db->limit(500);
+
+    //     $i = 0;
+
+    //     foreach ($this->column_search_main_ctkb as $item) // loop column 
+    //     {
+    //         if ($_POST['search']['value']) // if datatable sends POST for search
+    //         {
+    //             if ($item == 'date_time') {
+
+
+    //                 $search_value = $_POST['search']['value'];
+    //                 $this->db->or_where("TO_CHAR($item, 'YYYY-MM-DD') LIKE", "'%$search_value%'", false);
+    //             } else {
+
+    //                 if ($i === 0) // first loop
+    //                 {
+    //                     $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+    //                     $this->db->like($item, $_POST['search']['value']);
+    //                 } else {
+    //                     $this->db->or_like($item, $_POST['search']['value']);
+    //                 }
+    //             }
+    //             if (count($this->column_search_main_ctkb) - 1 == $i)  //last loop
+    //                 $this->db->group_end(); //close bracket
+    //         }
+    //         $i++;
+    //     }
+
+
+
+
+    //     if (isset($_POST['order'])) // here order processing
+    //     {
+    //         $this->db->order_by($this->column_order_main_ctkb[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+    //     } else if (isset($this->order_main_ctkb)) {
+    //         $order = $this->order_main_ctkb;
+    //         $this->db->order_by(key($order), $order[key($order)]);
+    //     }
+    // }
+
+
+    // public function get_datatables($table, $proses = '')
+    // {
+    //     $this->_get_datatables_query($table, $proses);
+    //     if ($_POST['length'] != -1)
+    //         $this->db->limit($_POST['length'], $_POST['start']);
+    //     $query = $this->db->get();
+    //     return $query->result();
+    // }
+
+    // public function count_filtered($table)
+    // {
+    //     $this->_get_datatables_query($table);
+    //     $query = $this->db->get();
+    //     return $query->num_rows();
+    // }
+
+    // public function count_all($table)
+    // {
+    //     return $this->db->from($table)
+    //         ->count_all_results();
+    // }
+
+    // methode baru dengan merge data medical dari sambusehat + post-filter MCU
     private function _get_datatables_query($table, $proses = '')
     {
         $idpemborong = $this->session->userdata('idpemborong');
-
 
         if ($idpemborong > 0) {
             $this->db->select('*');
@@ -75,35 +207,45 @@ class M_register extends CI_Model
                 $this->db->where('DikirimDate >=', date('Y-m-d', strtotime($_POST['start_date'])));
                 $this->db->where('DikirimDate <=', date('Y-m-d', strtotime($_POST['end_date'])));
             }
-            $this->db->group_start();  // Start grouping for OR condition
+            $this->db->group_start();
             $this->db->where('CVNama IN (SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = ' . $this->db->escape($idpemborong) . ')', null, false);
             $this->db->or_where('CVNama IN (SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = ' . $this->db->escape($idpemborong) . ')', null, false);
-            $this->db->group_end();  // End grouping for OR condition
-            // $this->db->order_by('headerid', 'DESC');
+            $this->db->group_end();
         } else {
 
             if ($table == 'vwListTenakerForPemborong') {
-                $this->db->select('A.*,C.kesimpulanCU, B.BerkasID, B.KTP, B.CV, B.Lamaran, B.Ijazah, B.Transkrip, B.SuratKontrak, B.Vaksin1, B.Vaksin2, B.Vaksin3, B.KK, B.SKCK');
+                // Select tanpa kolom C (akan di-merge dari sambusehat)
+                $this->db->select('A.*, B.BerkasID, B.KTP, B.CV, B.Lamaran, B.Ijazah, B.Transkrip, B.SuratKontrak, B.Vaksin1, B.Vaksin2, B.Vaksin3, B.KK, B.SKCK');
                 $this->db->from($table . ' AS A');
                 $this->db->join('dbo.tblTrnBerkas AS B', 'A.HeaderID = B.HeaderID', 'inner');
-                $this->db->join('PSGKlinik.dbo.tbl_kk_MstMedicalTemporaryTKNew AS C', 'A.HeaderID = C.HeaderID ', 'left');
+                // JOIN ke PSGKlinik dihapus
+
                 $this->db->where('PostingData', 0);
                 $this->db->where('StatusDaftar IS NOT NULL');
+
+                // Pre-filter HeaderID dari sambusehat untuk case yg butuh kesimpulanCU
+                $headerIdsFromPgsql = $this->_get_header_ids_from_pgsql_filter_ctkb($proses);
+                if ($headerIdsFromPgsql !== null) {
+                    if (empty($headerIdsFromPgsql)) {
+                        $this->db->where('1 = 0', NULL, FALSE);
+                    } else {
+                        $this->db->where_in('A.HeaderID', $headerIdsFromPgsql);
+                    }
+                }
 
                 if ($proses == 'proses') {
                     $this->db->where('Proses', 'proses');
                     $this->db->where('StatusDaftar', 1);
                     $this->db->where('JadwalInterview IS NULL');
-                    $this->db->where('kesimpulanCU IS NOT NULL');
+                    // kesimpulanCU IS NOT NULL → sudah di-pre-filter
                 } elseif ($proses == 'mcu') {
                     $this->db->where('Proses', 'proses');
                     $this->db->where('StatusDaftar', 1);
-                    $this->db->where('kesimpulanCU IS NULL');
+                    // kesimpulanCU IS NULL → di post-filter setelah merge
                     $this->db->where('mcu_date IS NULL');
                     $this->db->where('mcu_update_by IS NULL');
                 } else {
                     $this->db->where('StatusDaftar <>', 1);
-                    // $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) <=', 3);
                     $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) <=', 5);
                 }
 
@@ -112,16 +254,13 @@ class M_register extends CI_Model
                     $this->db->where('DiprosesDate <=', date('Y-m-d', strtotime($_POST['end_process_date'])));
                 }
 
-
-                $this->db->group_start();  // Start grouping of where clauses
+                $this->db->group_start();
                 $this->db->where('KeteranganKirim !=', 'blacklist');
                 $this->db->where('KeteranganKirim !=', 'blacklist_2_bln');
                 $this->db->where('KeteranganKirim !=', 'blacklist_6_bln');
                 $this->db->or_where('KeteranganKirim IS NULL');
-                $this->db->group_end();  // End grouping of where clauses
-                // $this->db->order_by('HeaderID', 'DESC');
+                $this->db->group_end();
             } else {
-
                 $this->db->select('*');
                 $this->db->from($table);
             }
@@ -130,37 +269,26 @@ class M_register extends CI_Model
         $this->db->limit(500);
 
         $i = 0;
-
-        foreach ($this->column_search_main_ctkb as $item) // loop column 
-        {
-            if ($_POST['search']['value']) // if datatable sends POST for search
-            {
+        foreach ($this->column_search_main_ctkb as $item) {
+            if ($_POST['search']['value']) {
                 if ($item == 'date_time') {
-
-
                     $search_value = $_POST['search']['value'];
                     $this->db->or_where("TO_CHAR($item, 'YYYY-MM-DD') LIKE", "'%$search_value%'", false);
                 } else {
-
-                    if ($i === 0) // first loop
-                    {
-                        $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    if ($i === 0) {
+                        $this->db->group_start();
                         $this->db->like($item, $_POST['search']['value']);
                     } else {
                         $this->db->or_like($item, $_POST['search']['value']);
                     }
                 }
-                if (count($this->column_search_main_ctkb) - 1 == $i)  //last loop
-                    $this->db->group_end(); //close bracket
+                if (count($this->column_search_main_ctkb) - 1 == $i)
+                    $this->db->group_end();
             }
             $i++;
         }
 
-
-
-
-        if (isset($_POST['order'])) // here order processing
-        {
+        if (isset($_POST['order'])) {
             $this->db->order_by($this->column_order_main_ctkb[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
         } else if (isset($this->order_main_ctkb)) {
             $order = $this->order_main_ctkb;
@@ -168,6 +296,31 @@ class M_register extends CI_Model
         }
     }
 
+    /**
+     * Pre-filter HeaderID dari sambusehat berdasarkan parameter $proses
+     *
+     * @return array|null  null = tidak perlu pre-filter, [] = tidak ada match, array = list HeaderID
+     */
+
+    private function _get_header_ids_from_pgsql_filter_ctkb($proses)
+    {
+        if ($proses != 'proses') return null; // hanya case 'proses' yg pre-filter
+
+        // Step 1: Ambil kandidat HeaderID dari tabel A
+        $candidateIds = $this->_get_candidate_header_ids($proses);
+
+        if (empty($candidateIds)) return [];
+
+        // Step 2: Cek mana yg punya kesimpulan_mcu di sambusehat
+        $dbPgsql = $this->load->database('sambusehat', TRUE);
+        $rows = $dbPgsql->select('header_id')
+            ->from('mcu_trx_medical_hdr')
+            ->where('kesimpulan_mcu IS NOT NULL')
+            ->where_in('header_id', $candidateIds)
+            ->get()->result();
+
+        return array_column($rows, 'header_id');
+    }
 
     public function get_datatables($table, $proses = '')
     {
@@ -175,13 +328,35 @@ class M_register extends CI_Model
         if ($_POST['length'] != -1)
             $this->db->limit($_POST['length'], $_POST['start']);
         $query = $this->db->get();
-        return $query->result();
+        $dataA = $query->result();
+
+        // Merge dengan data medical dari sambusehat
+        $merged = $this->_merge_with_pgsql_medical($dataA);
+
+        // Post-filter untuk case 'mcu' → kesimpulanCU IS NULL
+        if ($proses == 'mcu' && $table == 'vwListTenakerForPemborong') {
+            $merged = array_values(array_filter($merged, function ($row) {
+                return !isset($row->kesimpulan_mcu) || $row->kesimpulan_mcu === null;
+            }));
+        }
+        return $merged;
     }
 
-    public function count_filtered($table)
+    public function count_filtered($table, $proses = '')
     {
-        $this->_get_datatables_query($table);
+        $this->_get_datatables_query($table, $proses);
         $query = $this->db->get();
+
+        // Untuk case 'mcu', harus merge + filter dulu baru hitung
+        if ($proses == 'mcu' && $table == 'vwListTenakerForPemborong') {
+            $dataA = $query->result();
+            $merged = $this->_merge_with_pgsql_medical($dataA);
+            $filtered = array_filter($merged, function ($row) {
+                return !isset($row->kesimpulan_mcu) || $row->kesimpulan_mcu === null;
+            });
+            return count($filtered);
+        }
+
         return $query->num_rows();
     }
 
@@ -190,6 +365,101 @@ class M_register extends CI_Model
         return $this->db->from($table)
             ->count_all_results();
     }
+
+    private function _merge_with_pgsql_medical($dataA)
+    {
+        if (empty($dataA)) return [];
+
+        $dbPgsql   = $this->load->database('sambusehat', TRUE);
+        $headerIds = array_column($dataA, 'HeaderID');
+
+        // Tentukan kolom yang mau di-expose (sesuai yg dipakai controller/view)
+        $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu';
+
+        // Daftar kolom B yg harus selalu ada di output (tanpa header_id)
+        $bColumns = ['approved_dokter_by', 'kesimpulan_mcu'];
+
+        // Mapping: nama kolom baru (pgsql) => nama kolom lama (alias biar kode lama tetap jalan)
+        $aliasMap = [
+            'approved_dokter_by' => 'apvdokterby',
+            'kesimpulan_mcu'     => 'kesimpulanCU',
+        ];
+
+        $dataB = $dbPgsql->select($selectCols)
+            ->from('mcu_trx_medical_hdr')
+            ->where_in('header_id', $headerIds)
+            ->get()->result();
+
+        $mapB = [];
+        foreach ($dataB as $row) {
+            $mapB[$row->header_id] = $row;
+        }
+
+        foreach ($dataA as &$row) {
+            // Default semua kolom B jadi null dulu
+            foreach ($bColumns as $k) {
+                $row->$k = null;
+            }
+            // Override dengan data aktual kalau match
+            if (isset($mapB[$row->HeaderID])) {
+                foreach ($mapB[$row->HeaderID] as $k => $v) {
+                    if ($k === 'header_id') continue;
+                    $row->$k = $v;
+                }
+            }
+
+            // Copy nilai kolom baru ke nama kolom lama (alias)
+            foreach ($aliasMap as $newName => $oldName) {
+                $row->$oldName = $row->$newName ?? null;
+            }
+        }
+        unset($row);
+
+        return $dataA;
+    }
+
+    /**
+     * Ambil HeaderID kandidat dari tabel A (tanpa filter kesimpulanCU)
+     * Dipakai untuk membatasi scope query ke sambusehat
+     */
+
+    private function _get_candidate_header_ids($proses)
+    {
+        // Pakai koneksi terpisah biar tidak bentrok dengan $this->db
+        $db = $this->load->database('default', TRUE);
+
+        $db->select('A.HeaderID')
+            ->from('vwListTenakerForPemborong AS A')
+            ->join('dbo.tblTrnBerkas AS B', 'A.HeaderID = B.HeaderID', 'inner')
+            ->where('PostingData', 0)
+            ->where('StatusDaftar IS NOT NULL');
+
+        if ($proses == 'proses') {
+            $db->where('Proses', 'proses');
+            $db->where('StatusDaftar', 1);
+            $db->where('JadwalInterview IS NULL');
+        }
+
+        if (!empty($_POST['start_process_date']) && !empty($_POST['end_process_date'])) {
+            $db->where('DiprosesDate >=', date('Y-m-d', strtotime($_POST['start_process_date'])));
+            $db->where('DiprosesDate <=', date('Y-m-d', strtotime($_POST['end_process_date'])));
+        }
+
+        $db->group_start();
+        $db->where('KeteranganKirim !=', 'blacklist');
+        $db->where('KeteranganKirim !=', 'blacklist_2_bln');
+        $db->where('KeteranganKirim !=', 'blacklist_6_bln');
+        $db->or_where('KeteranganKirim IS NULL');
+        $db->group_end();
+
+        $db->limit(2000);
+
+        $rows = $db->get()->result();
+        return array_column($rows, 'HeaderID');
+    }
+
+
+    // /////////////////
 
     //    function get_perusahaan_bygroup(){
     //        $pemborong = strtoupper($this->input->post('pemborong'));
