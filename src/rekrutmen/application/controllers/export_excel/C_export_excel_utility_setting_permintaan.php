@@ -530,1766 +530,1249 @@ class C_export_excel_utility_setting_permintaan extends CI_Controller
 
     function excelStyle()
     {
+        // ============================================================
+        // BASE STYLE - digunakan sebagai template dasar
+        // ============================================================
+        $baseFont = [
+            'name' => 'Times New Roman',
+            'size' => 11,
+        ];
 
+        $baseNumberFormat = [
+            'formatCode' => NumberFormat::FORMAT_TEXT,
+        ];
 
-        $DiagonalBorder = (array(
-            'borders' => array(
-                'diagonal' => array(
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-                ),
-                'diagonaldirection' => PHPExcel_Style_Borders::DIAGONAL_DOWN,
-            ),
-        ));
+        $borderThin = ['borderStyle' => Border::BORDER_THIN];
+        $borderDotted = ['borderStyle' => Border::BORDER_DOTTED];
+        $borderDouble = ['borderStyle' => Border::BORDER_DOUBLE];
+        $borderThick = ['borderStyle' => Border::BORDER_THICK];
+        $borderDashDotDot = ['borderStyle' => Border::BORDER_DASHDOTDOT];
 
+        // ============================================================
+        // DIAGONAL BORDER
+        // ============================================================
+        $DiagonalBorder = [
+            'borders' => [
+                'diagonal' => $borderThin,
+                'diagonalDirection' => Borders::DIAGONAL_DOWN,
+            ],
+        ];
 
-        $PTStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 14
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        // ============================================================
+        // PT STYLE - Header PT PULAU SAMBU (bold, size 14, all border)
+        // ============================================================
+        $PTStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 14],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderDetDashStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_DASHDOTDOT),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_DASHDOTDOT),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $PTStyleNoRightBorder = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 14],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $justBorderStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 12
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-        ));
+        // ============================================================
+        // DETAIL HEADER - dengan border DashDotDot di kiri-kanan
+        // ============================================================
+        $DetailheaderDetDashStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderDashDotDot,
+                'left' => $borderDashDotDot,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $borderJustBottomStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 12
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-            ),
-        ));
+        // ============================================================
+        // JUST BORDER STYLE - all border thin, size 12
+        // ============================================================
+        $justBorderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 12],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+        ];
 
+        $borderJustBottomStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 12],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+            ],
+        ];
 
-        $PTStyleNoRightBorder = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold' => true,
-                'name' => 'Times New Roman',
-                'size' => 14
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        // ============================================================
+        // HEADER STYLE - bold, all border (menggunakan allBorders)
+        // ============================================================
+        $headerStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'allBorders' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'allborders' => [
-                    'style' => PHPExcel_Style_Border::BORDER_THIN,
-                ],
-                // 'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRight = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightcenter = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightleftcenter = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        // ============================================================
+        // HEADER STYLE VARIANTS - untuk berbagai posisi border
+        // ============================================================
+        $headerStyleRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleBottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleBorderTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightleftcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleBottomunderline = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11,
-                // 'underline' => PHPExcel_Style_Font::UNDERLINE_SINGLE
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $StyleBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeft = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleLeftRight = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleLeftRight2 = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $StyleBorderTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['top' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $StyleBottomunderline = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleRightbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleLeft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleRightbottomcenter = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightleftbottomcenter = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $headerStyleRightleftbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleLeftRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftBottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleLeftRight2 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleRightBottomTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $StyleRightBottomTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $Style14 = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 14
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
+        $headerStyleLeftTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftBottomTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleLeftRightTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightbottomcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $headerStyleTopBottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightleftbottomcenter = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $justBottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $justTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $justRight = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $justLeft = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightleftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $StyleLeftBottomTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $StyleBottomTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleLeftBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $noborderStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleRightBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
+        $StyleRightBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $rightborderStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $Style14 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 14],
+            'numberFormat' => $baseNumberFormat,
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $leftborderStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleLeftBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleBold = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleleft = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleleftNoBorder = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            // 'borders' => array(
-            //   'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-            //   'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-            //   'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            // ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyletopbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderStyleright = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleLeftRightTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderVerticalStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_BOTTOM,
-                'wrap'       => true
-            ),
-        ));
+        $headerStyleTopBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderRightTopStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderRightBottomStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $DetailheaderRightStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $justBottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $DetailheaderLeftStyle = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => true,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $justTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['top' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleRightbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRightTop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRightbottom2 = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRightbottom3 = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStyleRight = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $justRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleRightLeftbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $justLeft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerRightLeftbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $StyleLeftBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleLeftbottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $StyleBottomTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStyleLeft = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        // ============================================================
+        // NO BORDER STYLE
+        // ============================================================
+        $noborderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $footerStylebottomtop = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $footerStylebottom = (array(
-            'fill'   => array(
-                'type'    => PHPExcel_Style_Fill::FILL_SOLID
-            ),
-            'font' => array(
-                'bold'    => false,
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $rightborderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStyle = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+        $leftborderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStylewithDoth = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_DOTTED),
-                'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+        // ============================================================
+        // DETAIL HEADER VARIANTS
+        // ============================================================
+        $DetailheaderStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStylewithNoBorderTop = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+        $DetailheaderStyleBold = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $bodyStyleLeft = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $DetailheaderStyleleft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleLeft = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $doubleLeftBottom = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $DetailheaderStyleleftNoBorder = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleSolidTop = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'top' => array('style' => PHPExcel_Style_Border::BORDER_THICK)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $doubleSolidBottom = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THICK),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $DetailheaderStyletopbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleBottom = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $DetailheaderStyleright = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $doubleBottomBold = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11,
-                'bold' => true
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $DetailheaderVerticalStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_BOTTOM,
+                'wrapText' => true,
+            ],
+        ];
 
-        $noborderTop = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $noborderTop2 = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $noborderTop3 = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'    => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
-        $boderdottedbottom = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('rgb' => 'FFFFFFFF'),
+        $DetailheaderRightTopStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size' => 11,
-                'bold'    => true,
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOTTED),
+        $DetailheaderRightBottomStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
-                'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'       => true
-            ),
-        ));
+        $DetailheaderRightStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
-        $leftBottomTop = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
-        $rightBottomTop = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
-        $BottomTop = (array(
-            'fill'   => array(
-                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
-                'color' => array('argb' => 'FFFFFFFF')
-            ),
-            'font'   => array(
-                'name' => 'Times New Roman',
-                'size'  => 11
-            ),
-            'numberformat'   => array(
-                'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
-            ),
-            'borders' => array(
-                'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                // 'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-                'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-            ),
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-                'wrap'     => true
-            ),
-        ));
+        $DetailheaderLeftStyle = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => true, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
+        // ============================================================
+        // FOOTER STYLES
+        // ============================================================
+        $footerStyleRightbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_RIGHT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
 
+        $footerStyleRightTop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleRightbottom2 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleRightbottom3 = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleRight = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['right' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleRightLeftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerRightLeftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleLeftbottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'top' => $borderThin,
+                'left' => $borderThin,
+                'bottom' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStyleLeft = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['left' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStylebottomtop = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $footerStylebottom = [
+            'fill' => ['fillType' => Fill::FILL_SOLID],
+            'font' => ['bold' => false, 'name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderThin],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        // ============================================================
+        // BODY STYLES - untuk cell isi data
+        // ============================================================
+        $bodyStyle = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $bodyStylewithDoth = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDotted,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $bodyStylewithNoBorderTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $bodyStyleLeft = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        // ============================================================
+        // DOUBLE & SPECIAL BORDER STYLES
+        // ============================================================
+        $doubleLeft = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderDouble,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $doubleLeftBottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderDouble,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $doubleSolidTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['top' => $borderThick],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $doubleSolidBottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThick,
+                'right' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $doubleBottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $doubleBottomBold = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11, 'bold' => true],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $noborderTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $noborderTop2 = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDouble,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $noborderTop3 = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderDouble,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $boderdottedbottom = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11, 'bold' => true],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => ['bottom' => $borderDotted],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_LEFT,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $leftBottomTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'left' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $rightBottomTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'right' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $BottomTop = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderThin,
+                'top' => $borderThin,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        $bodyStylewithDot = [
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'color' => ['argb' => 'FFFFFFFF'],
+            ],
+            'font' => ['name' => 'Times New Roman', 'size' => 11],
+            'numberFormat' => $baseNumberFormat,
+            'borders' => [
+                'bottom' => $borderDotted,
+                'right' => $borderDotted,
+                'left' => $borderDotted,
+                'top' => $borderDotted,
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+        ];
+
+        // ============================================================
+        // RETURN ALL STYLES
+        // ============================================================
         return [
             'PTStyle'                          => $PTStyle,
             'DetailheaderDetDashStyle'         => $DetailheaderDetDashStyle,
@@ -2359,6 +1842,7 @@ class C_export_excel_utility_setting_permintaan extends CI_Controller
             'boderdottedbottom'                => $boderdottedbottom,
             'bodyStyleLeft'                    => $bodyStyleLeft,
             'bodyStylewithDoth'                => $bodyStylewithDoth,
+            'bodyStylewithDot'                 => $bodyStylewithDot,
             'bodyStylewithNoBorderTop'         => $bodyStylewithNoBorderTop,
             'justBottom'                       => $justBottom,
             'justTop'                          => $justTop,
@@ -2370,4 +1854,1847 @@ class C_export_excel_utility_setting_permintaan extends CI_Controller
             'DiagonalBorder'                   => $DiagonalBorder,
         ];
     }
+
+    // function excelStyle()
+    // {
+
+
+    //     $DiagonalBorder = (array(
+    //         'borders' => array(
+    //             'diagonal' => array(
+    //                 'style' => PHPExcel_Style_Border::BORDER_THIN,
+    //             ),
+    //             'diagonaldirection' => PHPExcel_Style_Borders::DIAGONAL_DOWN,
+    //         ),
+    //     ));
+
+
+    //     $PTStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 14
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderDetDashStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_DASHDOTDOT),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_DASHDOTDOT),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $justBorderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 12
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //     ));
+
+    //     $borderJustBottomStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 12
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //         ),
+    //     ));
+
+
+    //     $PTStyleNoRightBorder = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold' => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 14
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'allborders' => [
+    //                 'style' => PHPExcel_Style_Border::BORDER_THIN,
+    //             ],
+    //             // 'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRight = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightleftcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleBorderTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleBottomunderline = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11,
+    //             // 'underline' => PHPExcel_Style_Font::UNDERLINE_SINGLE
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeft = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleLeftRight = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleLeftRight2 = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeftTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleRightbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleRightbottomcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightleftbottomcenter = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $headerStyleRightleftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeftBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleRightBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $StyleRightBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $Style14 = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 14
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+
+    //     $headerStyleLeftBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleLeftRightTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $headerStyleTopBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $justBottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $justTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $justRight = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $justLeft = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $StyleLeftBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $StyleBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $noborderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+
+    //     $rightborderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $leftborderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleBold = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleleft = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleleftNoBorder = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         // 'borders' => array(
+    //         //   'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //         //   'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //         //   'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         // ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyletopbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderStyleright = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderVerticalStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_BOTTOM,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderRightTopStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderRightBottomStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $DetailheaderRightStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $DetailheaderLeftStyle = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => true,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleRightbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRightTop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRightbottom2 = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRightbottom3 = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStyleRight = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleRightLeftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerRightLeftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleLeftbottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStyleLeft = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'left'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $footerStylebottomtop = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $footerStylebottom = (array(
+    //         'fill'   => array(
+    //             'type'    => PHPExcel_Style_Fill::FILL_SOLID
+    //         ),
+    //         'font' => array(
+    //             'bold'    => false,
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code'    => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $bodyStyle = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStylewithDoth = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_DOTTED),
+    //             'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStylewithNoBorderTop = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+    //     $bodyStyleLeft = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleLeft = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $doubleLeftBottom = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleSolidTop = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'top' => array('style' => PHPExcel_Style_Border::BORDER_THICK)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $doubleSolidBottom = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THICK),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleBottom = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $doubleBottomBold = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11,
+    //             'bold' => true
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $noborderTop = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $noborderTop2 = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $noborderTop3 = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'    => array('style' => PHPExcel_Style_Border::BORDER_DOUBLE),
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+    //     $boderdottedbottom = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('rgb' => 'FFFFFFFF'),
+
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size' => 11,
+    //             'bold'    => true,
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom' => array('style' => PHPExcel_Style_Border::BORDER_DOTTED),
+
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //             'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'       => true
+    //         ),
+    //     ));
+
+    //     $leftBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+    //     $rightBottomTop = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+    //     $BottomTop = (array(
+    //         'fill'   => array(
+    //             'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+    //             'color' => array('argb' => 'FFFFFFFF')
+    //         ),
+    //         'font'   => array(
+    //             'name' => 'Times New Roman',
+    //             'size'  => 11
+    //         ),
+    //         'numberformat'   => array(
+    //             'code' => PHPExcel_Style_NumberFormat::FORMAT_TEXT
+    //         ),
+    //         'borders' => array(
+    //             'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             // 'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+    //             'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+    //         ),
+    //         'alignment' => array(
+    //             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //             'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+    //             'wrap'     => true
+    //         ),
+    //     ));
+
+
+    //     return [
+    //         'PTStyle'                          => $PTStyle,
+    //         'DetailheaderDetDashStyle'         => $DetailheaderDetDashStyle,
+    //         'justBorderStyle'                  => $justBorderStyle,
+    //         'PTStyleNoRightBorder'             => $PTStyleNoRightBorder,
+    //         'headerStyle'                      => $headerStyle,
+    //         'DetailheaderStyle'                => $DetailheaderStyle,
+    //         'DetailheaderStyleBold'            => $DetailheaderStyleBold,
+    //         'DetailheaderStyleleft'            => $DetailheaderStyleleft,
+    //         'DetailheaderStyleleftNoBorder'    => $DetailheaderStyleleftNoBorder,
+    //         'DetailheaderStyletopbottom'       => $DetailheaderStyletopbottom,
+    //         'DetailheaderStyleright'           => $DetailheaderStyleright,
+    //         'DetailheaderVerticalStyle'        => $DetailheaderVerticalStyle,
+    //         'bodyStyle'                        => $bodyStyle,
+    //         'doubleLeft'                       => $doubleLeft,
+    //         'doubleLeftBottom'                 => $doubleLeftBottom,
+    //         'doubleBottom'                     => $doubleBottom,
+    //         'doubleBottomBold'                 => $doubleBottomBold,
+    //         'doubleSolidTop'                   => $doubleSolidTop,
+    //         'doubleSolidBottom'                => $doubleSolidBottom,
+    //         'noborderTop'                      => $noborderTop,
+    //         'noborderTop2'                     => $noborderTop2,
+    //         'noborderTop3'                     => $noborderTop3,
+    //         'headerStyleRight'                 => $headerStyleRight,
+    //         'headerStyleRightcenter'           => $headerStyleRightcenter,
+    //         'headerStyleRightleftcenter'       => $headerStyleRightleftcenter,
+    //         'headerStyleLeft'                  => $headerStyleLeft,
+    //         'headerStyleLeftRight'             => $headerStyleLeftRight,
+    //         'headerStyleLeftRight2'            => $headerStyleLeftRight2,
+    //         'headerStyleRightTop'              => $headerStyleRightTop,
+    //         'headerStyleLeftTop'               => $headerStyleLeftTop,
+    //         'headerStyleRightbottom'           => $headerStyleRightbottom,
+    //         'headerStyleRightbottomcenter'     => $headerStyleRightbottomcenter,
+    //         'headerStyleRightleftbottomcenter' => $headerStyleRightleftbottomcenter,
+    //         'headerStyleRightleftbottom'       => $headerStyleRightleftbottom,
+    //         'headerStyleLeftBottom'            => $headerStyleLeftBottom,
+    //         'headerStyleRightBottomTop'        => $headerStyleRightBottomTop,
+    //         'headerStyleLeftBottomTop'         => $headerStyleLeftBottomTop,
+    //         'headerStyleLeftRightTop'          => $headerStyleLeftRightTop,
+    //         'headerStyleTopBottom'             => $headerStyleTopBottom,
+    //         'StyleLeftBottomTop'               => $StyleLeftBottomTop,
+    //         'StyleRightBottomTop'              => $StyleRightBottomTop,
+    //         'Style14'                          => $Style14,
+    //         'StyleBottomTop'                   => $StyleBottomTop,
+    //         'StyleBottom'                      => $StyleBottom,
+    //         'StyleBorderTop'                   => $StyleBorderTop,
+    //         'StyleBottomunderline'             => $StyleBottomunderline,
+    //         'borderJustBottomStyle'            => $borderJustBottomStyle,
+    //         'noborderStyle'                    => $noborderStyle,
+    //         'rightborderStyle'                 => $rightborderStyle,
+    //         'leftborderStyle'                  => $leftborderStyle,
+    //         'DetailheaderRightTopStyle'        => $DetailheaderRightTopStyle,
+    //         'DetailheaderRightStyle'           => $DetailheaderRightStyle,
+    //         'DetailheaderLeftStyle'            => $DetailheaderLeftStyle,
+    //         'DetailheaderRightBottomStyle'     => $DetailheaderRightBottomStyle,
+    //         'footerStyleRightbottom'           => $footerStyleRightbottom,
+    //         'footerStyleRightbottom2'          => $footerStyleRightbottom2,
+    //         'footerStyleRightbottom3'          => $footerStyleRightbottom3,
+    //         'footerStyleRightTop'              => $footerStyleRightTop,
+    //         'footerStyleRight'                 => $footerStyleRight,
+    //         'footerStyleRightLeftbottom'       => $footerStyleRightLeftbottom,
+    //         'footerRightLeftbottom'            => $footerRightLeftbottom,
+    //         'footerStyleLeftbottom'            => $footerStyleLeftbottom,
+    //         'footerStyleLeft'                  => $footerStyleLeft,
+    //         'footerStylebottomtop'             => $footerStylebottomtop,
+    //         'footerStylebottom'                => $footerStylebottom,
+    //         'boderdottedbottom'                => $boderdottedbottom,
+    //         'bodyStyleLeft'                    => $bodyStyleLeft,
+    //         'bodyStylewithDoth'                => $bodyStylewithDoth,
+    //         'bodyStylewithNoBorderTop'         => $bodyStylewithNoBorderTop,
+    //         'justBottom'                       => $justBottom,
+    //         'justTop'                          => $justTop,
+    //         'justRight'                        => $justRight,
+    //         'justLeft'                         => $justLeft,
+    //         'leftBottomTop'                    => $leftBottomTop,
+    //         'rightBottomTop'                   => $rightBottomTop,
+    //         'BottomTop'                        => $BottomTop,
+    //         'DiagonalBorder'                   => $DiagonalBorder,
+    //     ];
+    // }
 }
