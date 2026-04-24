@@ -275,6 +275,7 @@ class Login extends CI_Controller
         $this->load->model('m_login');
         $log    = $this->m_login->log_in2($userID);
         $cek    = $this->m_login->cekpass2($userID, $passID);
+        $checkLogedIn    = $this->m_login->checkLogInaAnotherDevice($userID);
         if ($log->num_rows() > 0) {
             $row = $log->row();
             if ($row->InActive === 1) {
@@ -282,6 +283,9 @@ class Login extends CI_Controller
                 // print_r('test');
                 // die;
                 exit();
+                return 1;
+            } elseif ($checkLogedIn) {
+                $this->session->set_flashdata('message', "<div class='alert alert-danger'><i class='fa fa-warning'>&nbsp;</i><strong>Anda sudah login di device lain.</strong></div>");
                 return 1;
             } else if ($cek === true) {
                 // print_r($row);
