@@ -28,28 +28,28 @@ class C_onelogin_verifikasi extends CI_Controller
         $appkey         = $this->input->get('appkey');
 
         $result = $this->m_login->login_onelogin($personalid, $personalstatus);
-        if ($result == false || $result->num_rows() == 0) {
-            redirect('/C_onelogin_logout/invalidaccess', 'refresh');
-            return;
-        }
+        // if ($result == false || $result->num_rows() == 0) {
+        //     redirect('/C_onelogin_logout/invalidaccess', 'refresh');
+        //     return;
+        // }
 
-        // ambil LoginID
-        $loginID = $result->row()->LoginID;
+        // // ambil LoginID
+        // $loginID = $result->row()->LoginID;
 
-        // cek login device lain
-        $checkLogedIn = $this->m_login->checkLogInaAnotherDevice($loginID);
+        // // cek login device lain
+        // $checkLogedIn = $this->m_login->checkLogInaAnotherDevice($loginID);
 
-        if ($checkLogedIn) {
-            $this->session->set_flashdata(
-                'message',
-                "<div class='alert alert-danger'>
-            <i class='fa fa-warning'></i>
-            <strong>Anda sudah login di device lain.</strong>
-        </div>"
-            );
-            redirect('login');
-            return;
-        }
+        // if ($checkLogedIn) {
+        //     $this->session->set_flashdata(
+        //         'message',
+        //         "<div class='alert alert-danger'>
+        //     <i class='fa fa-warning'></i>
+        //     <strong>Anda sudah login di device lain.</strong>
+        // </div>"
+        //     );
+        //     redirect('login');
+        //     return;
+        // }
         if ($appkey == 'psgp1_rekrutment' && $result != false && $result->num_rows() > 0) {
             $row = $result->row();
             $this->session->set_userdata('userid', $row->LoginID);
