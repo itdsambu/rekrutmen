@@ -423,9 +423,43 @@ class M_register extends CI_Model
      * Dipakai untuk membatasi scope query ke sambusehat
      */
 
+    // private function _get_candidate_header_ids($proses)
+    // {
+    //     // Pakai koneksi terpisah biar tidak bentrok dengan $this->db
+    //     $db = $this->load->database('default', TRUE);
+
+    //     $db->select('A.HeaderID')
+    //         ->from('vwListTenakerForPemborong AS A')
+    //         ->join('dbo.tblTrnBerkas AS B', 'A.HeaderID = B.HeaderID', 'inner')
+    //         ->where('PostingData', 0)
+    //         ->where('StatusDaftar IS NOT NULL');
+
+    //     if ($proses == 'proses') {
+    //         $db->where('Proses', 'proses');
+    //         $db->where('StatusDaftar', 1);
+    //         $db->where('JadwalInterview IS NULL');
+    //     }
+
+    //     if (!empty($_POST['start_process_date']) && !empty($_POST['end_process_date'])) {
+    //         $db->where('DiprosesDate >=', date('Y-m-d', strtotime($_POST['start_process_date'])));
+    //         $db->where('DiprosesDate <=', date('Y-m-d', strtotime($_POST['end_process_date'])));
+    //     }
+
+    //     $db->group_start();
+    //     $db->where('KeteranganKirim !=', 'blacklist');
+    //     $db->where('KeteranganKirim !=', 'blacklist_2_bln');
+    //     $db->where('KeteranganKirim !=', 'blacklist_6_bln');
+    //     $db->or_where('KeteranganKirim IS NULL');
+    //     $db->group_end();
+    //     $db->order_by('A.HeaderID', 'DESC');
+    //     $db->limit(2000);
+
+    //     $rows = $db->get()->result();
+    //     return array_column($rows, 'HeaderID');
+    // }
+
     private function _get_candidate_header_ids($proses)
     {
-        // Pakai koneksi terpisah biar tidak bentrok dengan $this->db
         $db = $this->load->database('default', TRUE);
 
         $db->select('A.HeaderID')
@@ -451,6 +485,43 @@ class M_register extends CI_Model
         $db->where('KeteranganKirim !=', 'blacklist_6_bln');
         $db->or_where('KeteranganKirim IS NULL');
         $db->group_end();
+
+        // 🔍 SEARCH (FIX: pakai $db, bukan $this->db)
+        $i = 0;
+        foreach ($this->column_search_main_ctkb as $item) {
+            if (!empty($_POST['search']['value'])) {
+                $search_value = $_POST['search']['value'];
+
+                if ($i === 0) {
+                    $db->group_start();
+                }
+
+                if ($item == 'date_time') {
+                    $db->or_where("TO_CHAR($item, 'YYYY-MM-DD') LIKE '%$search_value%'", null, false);
+                } else {
+                    $db->or_like($item, $search_value);
+                }
+
+                if (count($this->column_search_main_ctkb) - 1 == $i) {
+                    $db->group_end();
+                }
+            }
+            $i++;
+        }
+
+        // // 🔽 ORDERING (prioritas: request dari datatable)
+        // if (isset($_POST['order'])) {
+        //     $db->order_by(
+        //         $this->column_order_main_ctkb[$_POST['order']['0']['column']],
+        //         $_POST['order']['0']['dir']
+        //     );
+        // } else if (isset($this->order_main_ctkb)) {
+        //     $order = $this->order_main_ctkb;
+        //     $db->order_by(key($order), $order[key($order)]);
+        // } else {
+        //     // default fallback
+        //     $db->order_by('A.HeaderID', 'DESC');
+        // }
         $db->order_by('A.HeaderID', 'DESC');
         $db->limit(2000);
 
