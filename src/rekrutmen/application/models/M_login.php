@@ -117,6 +117,26 @@ class M_login extends CI_Model
         $this->db->where('personalstatus', $personalstatus);
         return $this->db->get('vwUtlUserLogin');
     }
+
+    function checkLogInaAnotherDevice($userID)
+    {
+        $result = $this->db
+            ->select('SignOut')
+            ->from('tblUtl_LogOnline')
+            ->where('UserID', $userID)
+            ->order_by('SignID', 'DESC')
+            ->limit(1)
+            ->get()
+            ->row();
+
+        // kalau tidak ada data → anggap tidak login
+        if ($result === null) {
+            return false;
+        }
+
+        // kalau SignOut NULL → masih login
+        return $result->SignOut === null;
+    }
 }
 
 /* End of file m_login.php */
