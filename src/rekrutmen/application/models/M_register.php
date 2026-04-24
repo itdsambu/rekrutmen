@@ -451,7 +451,7 @@ class M_register extends CI_Model
         $db->where('KeteranganKirim !=', 'blacklist_6_bln');
         $db->or_where('KeteranganKirim IS NULL');
         $db->group_end();
-
+        $db->order_by('A.HeaderID', 'DESC');
         $db->limit(2000);
 
         $rows = $db->get()->result();
