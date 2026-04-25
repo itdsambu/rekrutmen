@@ -217,7 +217,7 @@ class M_register extends CI_Model
                 // Select tanpa kolom C (akan di-merge dari sambusehat)
                 $this->db->select('A.*, B.BerkasID, B.KTP, B.CV, B.Lamaran, B.Ijazah, B.Transkrip, B.SuratKontrak, B.Vaksin1, B.Vaksin2, B.Vaksin3, B.KK, B.SKCK');
                 $this->db->from($table . ' AS A');
-                $this->db->join('dbo.tblTrnBerkas AS B', 'A.HeaderID = B.HeaderID', 'inner');
+                $this->db->join('dbo.tblTrnBerkas AS B', 'A.HeaderID = B.HeaderID', 'left');
                 // JOIN ke PSGKlinik dihapus
 
                 $this->db->where('PostingData', 0);
