@@ -162,6 +162,76 @@ class WawancaraTujuan extends CI_Controller
     //     redirect(site_url('wawancaraTujuan/index'));
     // }
 
+    // function simpanTujuan()
+    // {
+    //     // === Ambil input dengan null-safety ===
+    //     $filter_status = $this->input->post('filter_status');
+    //     $jml_data      = (int) $this->input->post('jml_data');
+    //     $checked       = $this->input->post('ckHdrID') ?? [];
+    //     $comboDept     = $this->input->post('cmbIDDetailHarian');
+    //     $comboDept2    = $this->input->post('cmbIDDetailKar');
+    //     $to_p2k3       = $this->input->post('to_p2k3') ?? [];
+    //     $to_elc        = $this->input->post('to_elc') ?? [];
+    //     $to_hed        = $this->input->post('to_hed') ?? [];
+
+    //     // Fallback ke combo kedua kalau yang pertama kosong
+    //     if (empty($comboDept)) {
+    //         $comboDept = $comboDept2;
+    //     }
+
+    //     $itung = count($checked);
+
+    //     // === Ambil data department sekali di awal (bukan di dalam loop) ===
+    //     $getDept   = $this->m_wawancara->getDept($comboDept);
+    //     $idDetail  = null;
+    //     $dept      = null;
+    //     $transaksi = null;
+    //     $minta     = 0;
+
+    //     foreach ($getDept as $row) {
+    //         $idDetail  = $row->DetailID;
+    //         $dept      = $row->DeptAbbr;
+    //         $transaksi = $row->Pekerjaan;
+    //         $minta     = $row->TempSetTenaker;
+    //     }
+
+    //     // === Guard: kalau department nggak ketemu, stop ===
+    //     if ($idDetail === null) {
+    //         redirect(site_url('wawancaraTujuan/index'));
+    //         return;
+    //     }
+
+    //     // === Data statis yang sama untuk semua row ===
+    //     $baseData = [
+    //         'DeptTujuan'     => $dept,
+    //         'TransID'        => $idDetail,
+    //         'Transaksi'      => $transaksi,
+    //         'SendedBy'       => strtoupper($this->session->userdata('username')),
+    //         'SendedDate'     => date('Y-m-d H:i:s'),
+    //         'WawancaraHasil' => null,
+    //     ];
+
+    //     // === Loop update per checked row ===
+    //     for ($i = 0; $i <= $jml_data; $i++) {
+    //         if (!isset($checked[$i])) {
+    //             continue;
+    //         }
+
+    //         $data = $baseData + [
+    //             'status_p2k3' => isset($to_p2k3[$i]) ? '1' : '0',
+    //             'status_elc'  => isset($to_elc[$i])  ? '1' : '0',
+    //             'status_hed'  => isset($to_hed[$i])  ? '1' : '0',
+    //         ];
+
+    //         $this->m_wawancara->updateDeptTujuan($checked[$i], $data);
+    //     }
+
+    //     // === Update counter TempSetTenaker ===
+    //     $this->m_wawancara->updateTempMinta($idDetail, $minta + $itung);
+
+    //     redirect(site_url('wawancaraTujuan/index'));
+    // }
+
     function simpanTujuan()
     {
         // === Ambil input dengan null-safety ===
@@ -179,9 +249,16 @@ class WawancaraTujuan extends CI_Controller
             $comboDept = $comboDept2;
         }
 
+        // === Guard: nggak ada yang dichecklist, stop ===
+        if (empty($checked)) {
+            $this->session->set_flashdata('error', 'Tidak ada data yang dipilih.');
+            redirect(site_url('wawancaraTujuan/index'));
+            return;
+        }
+
         $itung = count($checked);
 
-        // === Ambil data department sekali di awal (bukan di dalam loop) ===
+        // === Ambil data department sekali di awal ===
         $getDept   = $this->m_wawancara->getDept($comboDept);
         $idDetail  = null;
         $dept      = null;
@@ -197,6 +274,7 @@ class WawancaraTujuan extends CI_Controller
 
         // === Guard: kalau department nggak ketemu, stop ===
         if ($idDetail === null) {
+            $this->session->set_flashdata('error', 'Department tidak ditemukan.');
             redirect(site_url('wawancaraTujuan/index'));
             return;
         }
@@ -212,22 +290,46 @@ class WawancaraTujuan extends CI_Controller
         ];
 
         // === Loop update per checked row ===
-        for ($i = 0; $i <= $jml_data; $i++) {
-            if (!isset($checked[$i])) {
+        $totalUpdated = 0;
+        $skipped      = [];
+
+        foreach ($checked as $i => $hdrId) {
+            // Validasi tujuan: minimal 1 harus dipilih
+            $isP2k3 = isset($to_p2k3[$i]) ? 1 : 0;
+            $isElc  = isset($to_elc[$i])  ? 1 : 0;
+            $isHed  = isset($to_hed[$i])  ? 1 : 0;
+
+            // Skip kalau nggak ada tujuan sama sekali
+            if ($isP2k3 === 0 && $isElc === 0 && $isHed === 0) {
+                $skipped[] = $hdrId;
+                continue;
+            }
+
+            // Server-side guard: p2k3 dan elc nggak boleh barengan
+            if ($isP2k3 === 1 && $isElc === 1) {
+                $skipped[] = $hdrId;
                 continue;
             }
 
             $data = $baseData + [
-                'status_p2k3' => isset($to_p2k3[$i]) ? '1' : '0',
-                'status_elc'  => isset($to_elc[$i])  ? '1' : '0',
-                'status_hed'  => isset($to_hed[$i])  ? '1' : '0',
+                'status_p2k3' => (string) $isP2k3,
+                'status_elc'  => (string) $isElc,
+                'status_hed'  => (string) $isHed,
             ];
 
-            $this->m_wawancara->updateDeptTujuan($checked[$i], $data);
+            $this->m_wawancara->updateDeptTujuan($hdrId, $data);
+            $totalUpdated++;
         }
 
-        // === Update counter TempSetTenaker ===
-        $this->m_wawancara->updateTempMinta($idDetail, $minta + $itung);
+        // === Update counter TempSetTenaker hanya yang berhasil diupdate ===
+        if ($totalUpdated > 0) {
+            $this->m_wawancara->updateTempMinta($idDetail, $minta + $totalUpdated);
+            $this->session->set_flashdata('success', "$totalUpdated data berhasil diproses.");
+        }
+
+        if (!empty($skipped)) {
+            $this->session->set_flashdata('warning', count($skipped) . ' data dilewati (tujuan tidak valid).');
+        }
 
         redirect(site_url('wawancaraTujuan/index'));
     }

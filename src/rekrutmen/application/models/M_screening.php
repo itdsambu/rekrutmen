@@ -168,6 +168,7 @@ class M_screening extends CI_Model
         4. Kalau Identifikasi di ceklist To ELC, setelah selesai dinilai dan screening by tim tapi belum diapproval ELC, belum masuk ke screening by PSN. Harus diapproval ELC baru  masuk ke screening by PSN
         5. Kalau Identifikasi ke Dept Divisi Utility dan p2k3. setelah selesai dinilai dan screening by tim tapi belum diapproval p2k3 dan approval divisi, belum masuk ke screening by PSN. Harus diapproval P2K3 dan divisi baru  masuk ke screening by PSN
         6. Kalau Identifikasi ke Dept Divisi Utility dan To ELC. setelah selesai dinilai dan screening by tim tapi belum diapproval To ELC dan approval divisi, belum masuk ke screening by PSN. Harus diapproval ELC dan divisi baru  masuk ke screening by PSN
+        7. Kalau Identifikasi ke all dept dan diceklist To HED. Setelah selesai dinilai dan screening by tim tapo belum approval To HED maka belum masuk ke Screening By PSN. Harus diapproval HED baru masuk ke screening by PSN
         */
 
         $query = $this->db->query("WITH CTE AS (
@@ -283,6 +284,22 @@ class M_screening extends CI_Model
                                                     (
                                                         a.DeptTujuan IN (SELECT DeptAbbr FROM CTE)
                                                         AND ISNULL(a.AppDivStatus,0) = 1
+                                                        AND ISNULL(a.AppHEDStatus,0) = 1
+                                                    )
+                                                    OR
+
+                                                    -- P2K3 + HED
+                                                    (
+                                                        a.DeptTujuan IN (SELECT DeptAbbr FROM CTE)
+                                                        AND ISNULL(a.AppP2K3Status,0) = 1
+                                                        AND ISNULL(a.AppHEDStatus,0) = 1
+                                                    )
+                                                    OR
+
+                                                    -- ELC + HED
+                                                    (
+                                                        a.DeptTujuan IN (SELECT DeptAbbr FROM CTE)
+                                                        AND ISNULL(a.AppELCStatus,0) = 1
                                                         AND ISNULL(a.AppHEDStatus,0) = 1
                                                     )
 

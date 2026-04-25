@@ -143,7 +143,7 @@ echo form_open('wawancaraTujuan/simpanTujuan', $att);
                                         <div class="checkbox">
                                             <label class="pos-rel">
                                                 <!-- <input name="alldatapost[<?= $no3 ?>]" class="alldatapost" id="alldatapost" type="hidden" value=""> -->
-                                                <input name="to_p2k3[<?= $no3 ?>]" class="to_p2k3" id="to_p2k3" type="checkbox" value="">
+                                                <input name="to_elc[<?= $no3 ?>]" class="to_elc" id="to_elc" type="checkbox" value="">
                                             </label>
                                         </div>
                                     </td>
@@ -242,16 +242,33 @@ echo form_open('wawancaraTujuan/simpanTujuan', $att);
     //     }
     // });
 
-    $(".to_p2k3, .to_elc, .to_hed").on("click", function() {
+    // $(".to_p2k3, .to_elc, .to_hed").on("click", function() {
+    //     let that = $(this);
+    //     if (this.checked) {
+    //         // uncheck checkbox lain di row yang sama
+    //         that.closest("tr")
+    //             .find(".to_p2k3, .to_elc, .to_hed")
+    //             .not(this)
+    //             .prop("checked", false);
+    //     }
+    // });
+
+    $(document).on("click", ".to_p2k3, .to_elc, .to_hed", function() {
         let that = $(this);
         if (this.checked) {
-            // uncheck checkbox lain di row yang sama
-            that.closest("tr")
-                .find(".to_p2k3, .to_elc, .to_hed")
-                .not(this)
-                .prop("checked", false);
+            let row = that.closest("tr");
+
+            if (that.hasClass("to_p2k3")) {
+                row.find(".to_elc").prop("checked", false);
+            } else if (that.hasClass("to_elc")) {
+                row.find(".to_p2k3").prop("checked", false);
+            }
         }
     });
+
+    // console.log("p2k3 count:", $(".to_p2k3").length);
+    // console.log("elc count:", $(".to_elc").length);
+    // console.log("hed count:", $(".to_hed").length);
 
     function changePekerjaanHarian(val) {
         if (val != '') {
