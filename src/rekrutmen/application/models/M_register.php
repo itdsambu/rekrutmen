@@ -600,7 +600,7 @@ class M_register extends CI_Model
         return $query->result();
     }
 
-    function PilihCTKB($start_date, $end_date, $idpemborong)
+    function PilihCTKBOld($start_date, $end_date, $idpemborong)
     {
         if ($idpemborong > 0) {
             $query = $this->db->query("SELECT * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND registereddate >= '$start_date' 
@@ -644,7 +644,51 @@ class M_register extends CI_Model
         return $query->result();
     }
 
-    function PilihCTKBProses($start_date, $end_date, $idpemborong)
+    function PilihCTKB($start_date, $end_date, $idpemborong)
+    {
+        if ($idpemborong > 0) {
+            // Tambahkan 1 hari untuk end_date
+            $end_date_plus = date('Y-m-d', strtotime($end_date . ' +1 day'));
+            
+            $query = $this->db->query("SELECT * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND registereddate >= '$start_date' 
+            AND registereddate < '$end_date_plus' AND "
+                . "( CVNama IN ( SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) OR CVNama IN ( SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) ) 
+                ORDER BY headerid DESC");
+        } else {
+            /**
+             * VINO MINTA RANGE tanggalnya sesuai dengan tanggal yang di daftarkan pemborong
+             */
+            $query = $this->db->query("SELECT TOP
+                                            ( 1000 ) A.*,
+                                            B.BerkasID,
+                                            B.KTP,
+                                            B.CV,
+                                            B.Lamaran,
+                                            B.Ijazah,
+                                            B.Transkrip,
+                                            B.SuratKontrak,
+                                            B.Vaksin1,
+                                            B.Vaksin2,
+                                            B.Vaksin3,
+                                            B.KK,
+                                            B.SKCK 
+                                        FROM
+                                            vwListTenakerForPemborong AS A
+                                            INNER JOIN dbo.tblTrnBerkas AS B ON A.HeaderID = b.HeaderID 
+                                        WHERE
+                                            PostingData = 0 
+                                            AND StatusDaftar IS NOT NULL 
+                                            AND StatusDaftar <> 1 
+                                            AND DikirimDate >= '2024-03-05' 
+                                            AND DikirimDate < '2024-06-06' 
+                                            AND ( KeteranganKirim != 'blacklist' OR KeteranganKirim IS NULL ) 
+                                        ORDER BY
+                                            headerid DESC");
+        }
+        return $query->result();
+    }
+
+    function PilihCTKBProsesOld($start_date, $end_date, $idpemborong)
     {
         if ($idpemborong > 0) {
             $query = $this->db->query("SELECT * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND registereddate >= '$start_date' 
@@ -683,6 +727,53 @@ class M_register extends CI_Model
                                         ORDER BY headerid DESC");
         }
 
+        return $query->result();
+    }
+
+    function PilihCTKBProses($start_date, $end_date, $idpemborong)
+    {
+        if ($idpemborong > 0) {
+            // Tambahkan 1 hari untuk end_date
+            $end_date_plus = date('Y-m-d', strtotime($end_date . ' +1 day'));
+            
+            $query = $this->db->query("SELECT * FROM vwListTenakerForPemborong WHERE PostingData = 0 AND StatusDaftar IS NOT NULL  AND StatusDaftar <> 1  AND registereddate >= '$start_date' 
+            AND registereddate < '$end_date_plus' AND "
+                . "( CVNama IN ( SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) OR CVNama IN ( SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) ) 
+                ORDER BY headerid DESC");
+        } else {
+            /**
+             * VINO MINTA RANGE tanggalnya sesuai dengan tanggal yang di daftarkan pemborong
+             */
+            // Tambahkan 1 hari untuk end_date
+            $end_date_plus = date('Y-m-d', strtotime($end_date . ' +1 day'));
+            
+            $query = $this->db->query("SELECT
+                                        A.*,
+                                        B.BerkasID,
+                                        B.KTP,
+                                        B.CV,
+                                        B.Lamaran,
+                                        B.Ijazah,
+                                        B.Transkrip,
+                                        B.SuratKontrak,
+                                        B.Vaksin1,
+                                        B.Vaksin2,
+                                        B.Vaksin3,
+                                        B.KK,
+                                        B.SKCK 
+                                    FROM
+                                        vwListTenakerForPemborong AS A
+                                        LEFT JOIN dbo.tblTrnBerkas as B ON A.HeaderID = b.HeaderID  
+                                    WHERE 
+                                        PostingData = 0 
+                                        AND StatusDaftar IS NOT NULL  
+                                        AND StatusDaftar = 1 
+                                        AND Proses = 'proses' 
+                                        AND (JadwalInterview IS NULL OR JadwalInterview = '') 
+                                        AND DikirimDate >= '$start_date' 
+                                        AND DikirimDate < '$end_date_plus' 
+                                        ORDER BY headerid DESC");
+        }
         return $query->result();
     }
 
