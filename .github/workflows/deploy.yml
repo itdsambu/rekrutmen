@@ -40,6 +40,7 @@ jobs:
       - name: Run composer install on server
         run: |
           ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
             cd ${{ secrets.DEPLOY_PATH }}/src/rekrutmen
             if [ -f composer.json ]; then
               composer install \
