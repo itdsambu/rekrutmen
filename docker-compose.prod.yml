@@ -115,5 +115,5 @@ services:
 
 networks:
   appnet:
-  # proxy-net:
-  #   external: true
+  proxy-net:
+     external: true
