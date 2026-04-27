@@ -93,7 +93,7 @@ if (isset($dtdetail)) {
         } elseif ($count == 1) {
             $pesanklinik = reset($results);
         } else {
-            $pesanklinik = '';
+            $pesanklinik = $row->ket_medis; // fallback ke teks asli kalau nggak ada yang cocok
         }
     }
 }

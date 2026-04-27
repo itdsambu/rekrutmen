@@ -1995,12 +1995,12 @@ class M_monitor extends CI_Model
         $headerIds = array_column($dataA, 'HeaderID');
 
         // Tentukan kolom yang mau di-expose (sesuai yg dipakai controller/view)
-        $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu, pesan_klinik';
+        $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu, pesan_klinik, ket_medis';
         // Tambahkan kolom lain yang dipakai:
         // $selectCols = 'header_id, approved_dokter_by, kesimpulan_cu, mcu_date, dst';
 
         // Daftar kolom B yg harus selalu ada di output (tanpa header_id)
-        $bColumns = ['approved_dokter_by', 'kesimpulan_mcu', 'pesan_klinik'];
+        $bColumns = ['approved_dokter_by', 'kesimpulan_mcu', 'pesan_klinik', 'ket_medis'];
         // Sinkronkan dengan $selectCols di atas
 
         // Mapping: nama kolom baru (pgsql) => nama kolom lama (alias biar kode lama tetap jalan)
@@ -2008,6 +2008,8 @@ class M_monitor extends CI_Model
             'approved_dokter_by' => 'apvdokterby',
             'kesimpulan_mcu'     => 'kesimpulanCU',
             'pesan_klinik'       => 'pesanklinik',
+            'ket_medis'          => 'ketmedis'
+
         ];
 
         $dataB = $dbPgsql->select($selectCols)
