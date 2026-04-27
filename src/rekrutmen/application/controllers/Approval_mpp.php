@@ -463,7 +463,7 @@ class Approval_mpp extends CI_Controller
             }
 
             $data = [
-                'Status'       => 5, // Rejected / Disapprove,
+                'Status'       => 4, // Rejected / Disapprove,
                 'Approved3By'   => $this->session->userdata('username'),
                 'Approved3Date' => date('Y-m-d H:i:s'),
                 'AppStatus3'    => 1,
