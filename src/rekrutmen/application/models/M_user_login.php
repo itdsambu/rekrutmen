@@ -82,7 +82,10 @@ class M_user_login extends CI_Model
 
     function get_alldepartemen()
     {
-        return json_decode($this->curl->simple_get(setAPI2() . "p1_get_all_departemen"));
+        // return json_decode($this->curl->simple_get(setAPI2() . "p1_get_all_departemen"));
+        $response = $this->curl->simple_get(setAPI2() . "p1_get_all_departemen");
+        $decoded  = json_decode($response);
+        return $decoded ?? []; // fallback ke array kosong kalau null
     }
 
     public function selectUserLogin()
