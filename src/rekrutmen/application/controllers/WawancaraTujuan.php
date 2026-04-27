@@ -300,10 +300,10 @@ class WawancaraTujuan extends CI_Controller
             $isHed  = isset($to_hed[$i])  ? 1 : 0;
 
             // Skip kalau nggak ada tujuan sama sekali
-            if ($isP2k3 === 0 && $isElc === 0 && $isHed === 0) {
-                $skipped[] = $hdrId;
-                continue;
-            }
+            // if ($isP2k3 === 0 && $isElc === 0 && $isHed === 0) {
+            //     $skipped[] = $hdrId;
+            //     continue;
+            // }
 
             // Server-side guard: p2k3 dan elc nggak boleh barengan
             if ($isP2k3 === 1 && $isElc === 1) {
