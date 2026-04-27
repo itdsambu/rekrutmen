@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch:  # Bisa trigger manual dari GitHub UI
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -24,23 +24,26 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # ── 3. Add server ke known_hosts (hindari prompt "yes/no") ──────────
+      # ── 3. Add server ke known_hosts ────────────────────────────────────
       - name: Add server to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p ${{ secrets.SSH_PORT || '22' }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
       # ── 4. Pull latest code di server ───────────────────────────────────
       - name: Pull latest code on server
         run: |
-          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            "cd ${{ secrets.DEPLOY_PATH }} && git pull origin $(git symbolic-ref --short HEAD)"
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin $(git symbolic-ref --short HEAD)
+            echo "✅ Git pull selesai"
+          EOF
 
-      # ── 5. Composer install (skip dev dependencies di production) ────────
+      # ── 5. Composer install ──────────────────────────────────────────────
       - name: Run composer install on server
         run: |
-          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            git config --global --add safe.directory ${{ secrets.DEPLOY_PATH }}
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd ${{ secrets.DEPLOY_PATH }}/src/rekrutmen
             if [ -f composer.json ]; then
               composer install \
@@ -54,77 +57,25 @@ jobs:
             fi
           EOF
 
-      # ── 6. Build & recreate Docker containers ───────────────────────────
-      - name: Docker build & up (production)
+      # ── 6. Docker up (sama persis dengan command manual Galung) ─────────
+      - name: Docker compose up
         run: |
-          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd ${{ secrets.DEPLOY_PATH }}
-
-            # Gunakan docker-compose.prod.yml jika ada
-            COMPOSE_FILE="docker-compose.yml"
-            if [ -f "docker-compose.prod.yml" ]; then
-              COMPOSE_FILE="docker-compose.prod.yml"
-              echo "📦 Menggunakan $COMPOSE_FILE"
-            fi
-
-            docker compose -f $COMPOSE_FILE pull --quiet || true
-            docker compose -f $COMPOSE_FILE build --no-cache
-            docker compose -f $COMPOSE_FILE up -d --remove-orphans
-
-            echo "✅ Docker containers berhasil dijalankan"
+            docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+            echo "✅ Docker compose up selesai"
           EOF
 
-      # ── 7. Restart PHP-FPM & Nginx di dalam container ───────────────────
-      - name: Restart PHP-FPM & Nginx
-        run: |
-          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ${{ secrets.DEPLOY_PATH }}
-
-            # Deteksi nama container dari docker-compose
-            PHP83_CONTAINER=$(docker compose ps -q php83 2>/dev/null || docker ps --filter "name=php83" -q | head -1)
-            PHP74_CONTAINER=$(docker compose ps -q php74 2>/dev/null || docker ps --filter "name=php74" -q | head -1)
-            NGINX_CONTAINER=$(docker compose ps -q nginx 2>/dev/null || docker ps --filter "name=nginx" -q | head -1)
-
-            # Restart PHP-FPM
-            if [ -n "$PHP83_CONTAINER" ]; then
-              docker exec $PHP83_CONTAINER sh -c "kill -USR2 1 2>/dev/null || pkill -USR2 php-fpm || true"
-              echo "✅ PHP 8.3 FPM restarted"
-            fi
-
-            if [ -n "$PHP74_CONTAINER" ]; then
-              docker exec $PHP74_CONTAINER sh -c "kill -USR2 1 2>/dev/null || pkill -USR2 php-fpm || true"
-              echo "✅ PHP 7.4 FPM restarted"
-            fi
-
-            # Reload Nginx (graceful, tanpa downtime)
-            if [ -n "$NGINX_CONTAINER" ]; then
-              docker exec $NGINX_CONTAINER nginx -s reload
-              echo "✅ Nginx reloaded"
-            fi
-          EOF
-
-      # ── 8. Health check ──────────────────────────────────────────────────
+      # ── 7. Health check ──────────────────────────────────────────────────
       - name: Health check
         run: |
-          ssh -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd ${{ secrets.DEPLOY_PATH }}
-            
-            # Cek semua container running
-            RUNNING=$(docker compose ps --filter "status=running" --quiet | wc -l)
-            TOTAL=$(docker compose ps --quiet | wc -l)
-            
-            echo "🐳 Container running: $RUNNING / $TOTAL"
-            docker compose ps
-
-            if [ "$RUNNING" -lt "$TOTAL" ]; then
-              echo "❌ Ada container yang tidak running!"
-              exit 1
-            fi
-
-            echo "✅ Health check passed — semua container running"
+            echo "🐳 Status containers:"
+            docker compose -f docker-compose.prod.yml ps
           EOF
 
-      # ── 9. Notifikasi sukses / gagal ─────────────────────────────────────
+      # ── 8. Notifikasi sukses / gagal ─────────────────────────────────────
       - name: Notify deploy status
         if: always()
         run: |
@@ -148,8 +99,8 @@ jobs:
           echo "Commit  : $COMMIT_MSG"
           echo "Detail  : $RUN_URL"
 
-          # Uncomment jika ingin kirim notifikasi Telegram:
+          # Uncomment untuk notifikasi Telegram:
           # curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
           #   -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-          #   -d text="$ICON Rekrutmen Deploy\n\n$TEXT\nBranch: $BRANCH\nBy: $ACTOR\nCommit: $COMMIT_MSG\nDetail: $RUN_URL" \
+          #   -d text="$ICON Rekrutmen Deploy%0A%0A$TEXT%0ABranch: $BRANCH%0ABy: $ACTOR%0ACommit: $COMMIT_MSG%0ADetail: $RUN_URL" \
           #   -d parse_mode="HTML"
