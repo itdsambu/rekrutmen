@@ -25,7 +25,7 @@
                     </div>
                     <div class="widget-body">
                         <div class="widget-main">
-                            <?php if ($this->session->flashdata('_message')) : ?>
+                            <?php if ($this->session->flashdata('_message')): ?>
                                 <div class="alert <?= ($_GET['success'] == 'ok' ? 'alert-success' : 'alert-danger') ?> alert-dismissible" rolw="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">x</span></button>
                                     <strong><?= ($_GET['success'] == 'ok' ? 'Well done' : 'Oh snap') ?>!</strong> <?= $this->session->flashdata('_message') ?>
@@ -55,7 +55,7 @@
 
                                     <tbody>
                                         <?php
-                                        foreach ($getUserLogin as $setUser) :
+                                        foreach ($getUserLogin as $setUser):
                                             foreach ($dtdepartemen as $row) {
                                                 if ($row->deptid == $setUser->DeptID) {
                                                     $DeptAbbrNEW = $row->deptabbr;
@@ -90,8 +90,7 @@
                                                     /// status user tamu akan aktif hanya jika :
                                                     /// 1. terdaftar sebagai user aktif di aplikasi ini.
                                                     /// ===
-                                                    // if ($setUser->NotActive == '0' && count($setUser->children) > 0 && $setUser->PersonalStatus != '3') {
-                                                    if ($setUser->NotActive == '0' && !empty($setUser->children) && $setUser->PersonalStatus != '3') {
+                                                    if ($setUser->NotActive == '0' && count($setUser->children) > 0 && $setUser->PersonalStatus != '3') {
                                                         foreach ($setUser->children2 as $children2_row) {
                                                             if ($children2_row->userOnelogin == 1) {
                                                                 echo "<span class='label label-sm label-primary'>Active</span>";
@@ -119,9 +118,11 @@
                                                         $setUser->UpdatedDate;
                                                     } ?></td>
                                                 <td>
-                                                    <a class="green tooltip-success" href="<?php echo site_url('user_login/editUserLogin') . "?id=" . $setUser->LoginID; ?>" title="Edit User!" data-rel="tooltip"><i class="ace-icon fa fa-pencil bigger-130"></i>
+                                                    <a class="green tooltip-success" href="<?php echo site_url('user_login/editUserLogin') . "?id=" . $setUser->LoginID; ?>"
+                                                        title="Edit User!" data-rel="tooltip"><i class="ace-icon fa fa-pencil bigger-130"></i>
                                                     </a>
-                                                    <a class="blue tooltip-info" href="<?php echo site_url('user_login/ubahPassword') . "?id=" . $setUser->LoginID; ?>" title="Ubah password!" data-rel="tooltip"><i class="ace-icon fa fa-key bigger-130"></i>
+                                                    <a class="blue tooltip-info" href="<?php echo site_url('user_login/ubahPassword') . "?id=" . $setUser->LoginID; ?>"
+                                                        title="Ubah password!" data-rel="tooltip"><i class="ace-icon fa fa-key bigger-130"></i>
                                                     </a>
                                                     <a href="#" data-act="bootbox-delete" class="delete red tooltip-error" data-id="<?php echo $setUser->LoginID; ?>" title="Delete User!" data-rel="tooltip">
                                                         <i class="ace-icon fa fa-trash-o bigger-130"></i>
