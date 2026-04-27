@@ -86,7 +86,7 @@ class Monitor extends CI_Controller
         $nowOL            = $this->session->userdata('username');
         $dept             = $this->session->userdata('dept');
         $data['_getTK']   = $this->m_monitor->listTenagaKerjaHED($dept);
-        $this->template->display('monitor/AppHED/V_AppHED', $data);
+        $this->template->display('monitor/AppHed/V_AppHED', $data);
     }
 
     public function screeningProses2()
