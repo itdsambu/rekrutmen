@@ -36,7 +36,7 @@ class M_TrainingOnline extends CI_Model
 
     function _getTenagaKerjaKaryawan_elc($nik_id)
     {
-        $query = $this->db->query("SELECT * FROM PSGTrainingOnline..vwTrnPerson where TglKeluar is null and NIKPayroll = '$nik_id'");
+        $query = $this->db->query("SELECT * FROM PSGTrainingOnline..vwTrnPersonOptimized where TglKeluar is null and NIKPayroll = '$nik_id'");
         return $query->row();
     }
 
