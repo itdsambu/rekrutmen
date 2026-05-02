@@ -1933,16 +1933,16 @@ class M_monitor extends CI_Model
     //     return $query->num_rows();
     // }
 
-    // public function count_all_list_for_pbr($table)
-    // {
-    //     return $this->db->from($table)
-    //         ->count_all_results();
-    // }
+    public function count_all_list_for_pbr($table)
+    {
+        return $this->db->from($table)
+            ->count_all_results();
+    }
 
-    // /**
-    //  * Merge data A dengan data medical dari PostgreSQL
-    //  * Output sama persis seperti hasil LEFT JOIN SELECT A.*, B.*
-    //  */
+    /**
+     * Merge data A dengan data medical dari PostgreSQL
+     * Output sama persis seperti hasil LEFT JOIN SELECT A.*, B.*
+     */
     // private function _merge_with_pgsql_medical($dataA)
     // {
     //     if (empty($dataA)) return [];
