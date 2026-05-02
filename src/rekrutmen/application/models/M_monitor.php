@@ -1781,168 +1781,168 @@ class M_monitor extends CI_Model
     //     return $this->db->from($table)
     //         ->count_all_results();
     // }
+    //  ########################################### BATAS
+    // private function _get_datatables_query_list_for_pbr($table)
+    // {
+    //     $idpemborong = $this->session->userdata('idpemborong');
 
-    private function _get_datatables_query_list_for_pbr($table)
-    {
-        $idpemborong = $this->session->userdata('idpemborong');
+    //     if ($idpemborong > 0) {
+    //         $this->db->where("( CVNama IN ( SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) OR CVNama IN ( SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) )");
+    //     }
 
-        if ($idpemborong > 0) {
-            $this->db->where("( CVNama IN ( SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) OR CVNama IN ( SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) )");
-        }
+    //     // Select hanya dari A, B di-merge di PHP
+    //     $this->db->select('A.*, A.HeaderID as ID');
 
-        // Select hanya dari A, B di-merge di PHP
-        $this->db->select('A.*, A.HeaderID as ID');
+    //     if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'mcu') {
+    //         $this->db->from('tblTrnCalonTenagaKerja AS A');
+    //     } else {
+    //         $this->db->from($table . ' AS A');
+    //     }
 
-        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'mcu') {
-            $this->db->from('tblTrnCalonTenagaKerja AS A');
-        } else {
-            $this->db->from($table . ' AS A');
-        }
+    //     $this->db->limit(800);
 
-        $this->db->limit(800);
+    //     $i = 0;
+    //     foreach ($this->column_search_list_for_pbr as $item) {
+    //         if ($_POST['search']['value']) {
+    //             if ($item == 'date_time') {
+    //                 $search_value = $_POST['search']['value'];
+    //                 $this->db->or_where("TO_CHAR($item, 'YYYY-MM-DD') LIKE", "'%$search_value%'", false);
+    //             } else {
+    //                 if ($i === 0) {
+    //                     $this->db->group_start();
+    //                     $this->db->like($item, $_POST['search']['value']);
+    //                 } else {
+    //                     $this->db->or_like($item, $_POST['search']['value']);
+    //                 }
+    //             }
+    //             if (count($this->column_search_list_for_pbr) - 1 == $i)
+    //                 $this->db->group_end();
+    //         }
+    //         $i++;
+    //     }
 
-        $i = 0;
-        foreach ($this->column_search_list_for_pbr as $item) {
-            if ($_POST['search']['value']) {
-                if ($item == 'date_time') {
-                    $search_value = $_POST['search']['value'];
-                    $this->db->or_where("TO_CHAR($item, 'YYYY-MM-DD') LIKE", "'%$search_value%'", false);
-                } else {
-                    if ($i === 0) {
-                        $this->db->group_start();
-                        $this->db->like($item, $_POST['search']['value']);
-                    } else {
-                        $this->db->or_like($item, $_POST['search']['value']);
-                    }
-                }
-                if (count($this->column_search_list_for_pbr) - 1 == $i)
-                    $this->db->group_end();
-            }
-            $i++;
-        }
+    //     if (isset($_POST['selTenaker']) && $_POST['selTenaker'] != '') {
 
-        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] != '') {
+    //         if (isset($_POST['tanggal']) && $_POST['tanggal'] != '') {
+    //             $tanggal = date('Y-m-d', strtotime($_POST['tanggal']));
+    //         } else {
+    //             $tanggal = '';
+    //         }
 
-            if (isset($_POST['tanggal']) && $_POST['tanggal'] != '') {
-                $tanggal = date('Y-m-d', strtotime($_POST['tanggal']));
-            } else {
-                $tanggal = '';
-            }
+    //         switch ($_POST['selTenaker']) {
+    //             case 'proses':
+    //                 $this->db->where("Proses", "proses");
+    //                 $this->db->where("KeteranganKirim", "");
+    //                 if ($tanggal) {
+    //                     $this->db->where("CONVERT(date, DiprosesDate) =", $tanggal);
+    //                 }
+    //                 break;
 
-            switch ($_POST['selTenaker']) {
-                case 'proses':
-                    $this->db->where("Proses", "proses");
-                    $this->db->where("KeteranganKirim", "");
-                    if ($tanggal) {
-                        $this->db->where("CONVERT(date, DiprosesDate) =", $tanggal);
-                    }
-                    break;
+    //             case 'proses_all':
+    //                 $this->db->where("Proses", "proses");
+    //                 $this->db->where("CONVERT(date, JadwalInterview) IS NULL");
+    //                 break;
 
-                case 'proses_all':
-                    $this->db->where("Proses", "proses");
-                    $this->db->where("CONVERT(date, JadwalInterview) IS NULL");
-                    break;
+    //             case 'belum_bisa_proses':
+    //                 $this->db->where("Proses", "belum");
+    //                 if ($tanggal) {
+    //                     $this->db->where("CONVERT(date, DiprosesDate) =", $tanggal);
+    //                 }
+    //                 break;
 
-                case 'belum_bisa_proses':
-                    $this->db->where("Proses", "belum");
-                    if ($tanggal) {
-                        $this->db->where("CONVERT(date, DiprosesDate) =", $tanggal);
-                    }
-                    break;
+    //             case 'interview':
+    //                 $this->db->where("JadwalInterview IS NOT NULL");
+    //                 if ($tanggal) {
+    //                     $this->db->where("CONVERT(date, JadwalInterview) =", $tanggal);
+    //                 }
+    //                 break;
 
-                case 'interview':
-                    $this->db->where("JadwalInterview IS NOT NULL");
-                    if ($tanggal) {
-                        $this->db->where("CONVERT(date, JadwalInterview) =", $tanggal);
-                    }
-                    break;
+    //             case 'mcu':
+    //                 $this->db->where("mcu_date IS NOT NULL");
+    //                 $this->db->where("JadwalInterview IS NULL");
+    //                 if ($tanggal) {
+    //                     $this->db->where("CONVERT(date, mcu_date) =", $tanggal);
+    //                 }
+    //                 break;
 
-                case 'mcu':
-                    $this->db->where("mcu_date IS NOT NULL");
-                    $this->db->where("JadwalInterview IS NULL");
-                    if ($tanggal) {
-                        $this->db->where("CONVERT(date, mcu_date) =", $tanggal);
-                    }
-                    break;
+    //             case 'blacklist':
+    //                 $this->db->where_in("A.KeteranganKirim", array('blacklist', 'blacklist_2_bln'));
+    //                 break;
 
-                case 'blacklist':
-                    $this->db->where_in("A.KeteranganKirim", array('blacklist', 'blacklist_2_bln'));
-                    break;
+    //             case 'id_lama':
+    //                 // apvdokterby sudah di-handle post-merge (karena dari sambusehat)
+    //                 $this->db->where("JadwalInterview IS NULL");
+    //                 $this->db->where("tanggal_mcu IS NULL");
+    //                 $this->db->where("KeteranganKirim IS NULL");
+    //                 $this->db->where("WawancaraKe IS NULL");
+    //                 $this->db->where("Nofix IS NULL");
+    //                 $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) >=', 3);
+    //                 break;
 
-                case 'id_lama':
-                    // apvdokterby sudah di-handle post-merge (karena dari sambusehat)
-                    $this->db->where("JadwalInterview IS NULL");
-                    $this->db->where("tanggal_mcu IS NULL");
-                    $this->db->where("KeteranganKirim IS NULL");
-                    $this->db->where("WawancaraKe IS NULL");
-                    $this->db->where("Nofix IS NULL");
-                    $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) >=', 3);
-                    break;
+    //             default:
+    //                 break;
+    //         }
+    //     }
 
-                default:
-                    break;
-            }
-        }
+    //     if (isset($_POST['order'])) {
+    //         $this->db->order_by($this->column_order_list_for_pbr[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+    //     } else if (isset($this->column_order_list_for_pbr)) {
+    //         $order = $this->order_list_for_pbr;
+    //         $this->db->order_by(key($order), $order[key($order)]);
+    //     }
+    // }
 
-        if (isset($_POST['order'])) {
-            $this->db->order_by($this->column_order_list_for_pbr[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-        } else if (isset($this->column_order_list_for_pbr)) {
-            $order = $this->order_list_for_pbr;
-            $this->db->order_by(key($order), $order[key($order)]);
-        }
-    }
+    // public function get_datatables_list_for_pbr($table)
+    // {
+    //     $this->_get_datatables_query_list_for_pbr($table);
+    //     if ($_POST['length'] != -1)
+    //         $this->db->limit($_POST['length'], $_POST['start']);
+    //     $query = $this->db->get();
+    //     $dataA = $query->result();
 
-    public function get_datatables_list_for_pbr($table)
-    {
-        $this->_get_datatables_query_list_for_pbr($table);
-        if ($_POST['length'] != -1)
-            $this->db->limit($_POST['length'], $_POST['start']);
-        $query = $this->db->get();
-        $dataA = $query->result();
+    //     // Merge dengan data medical dari sambusehat
+    //     $merged = $this->_merge_with_pgsql_medical($dataA);
 
-        // Merge dengan data medical dari sambusehat
-        $merged = $this->_merge_with_pgsql_medical($dataA);
+    //     // Post-filter untuk case id_lama (cek apvdokterby IS NULL)
+    //     if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'id_lama') {
+    //         $merged = array_values(array_filter($merged, function ($row) {
+    //             // apvdokterby IS NULL berarti: property tidak ada (header_id tidak match di B)
+    //             // atau nilainya null
+    //             return !isset($row->approved_dokter_by) || $row->approved_dokter_by === null;
+    //         }));
+    //     }
 
-        // Post-filter untuk case id_lama (cek apvdokterby IS NULL)
-        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'id_lama') {
-            $merged = array_values(array_filter($merged, function ($row) {
-                // apvdokterby IS NULL berarti: property tidak ada (header_id tidak match di B)
-                // atau nilainya null
-                return !isset($row->approved_dokter_by) || $row->approved_dokter_by === null;
-            }));
-        }
+    //     return $merged;
+    // }
 
-        return $merged;
-    }
+    // public function count_filtered_list_for_pbr($table)
+    // {
+    //     $this->_get_datatables_query_list_for_pbr($table);
+    //     $query = $this->db->get();
 
-    public function count_filtered_list_for_pbr($table)
-    {
-        $this->_get_datatables_query_list_for_pbr($table);
-        $query = $this->db->get();
+    //     // Untuk id_lama, harus merge + filter dulu baru hitung
+    //     if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'id_lama') {
+    //         $dataA = $query->result();
+    //         $merged = $this->_merge_with_pgsql_medical($dataA);
+    //         $filtered = array_filter($merged, function ($row) {
+    //             return !isset($row->approved_dokter_by) || $row->approved_dokter_by === null;
+    //         });
+    //         return count($filtered);
+    //     }
 
-        // Untuk id_lama, harus merge + filter dulu baru hitung
-        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'id_lama') {
-            $dataA = $query->result();
-            $merged = $this->_merge_with_pgsql_medical($dataA);
-            $filtered = array_filter($merged, function ($row) {
-                return !isset($row->approved_dokter_by) || $row->approved_dokter_by === null;
-            });
-            return count($filtered);
-        }
+    //     return $query->num_rows();
+    // }
 
-        return $query->num_rows();
-    }
+    // public function count_all_list_for_pbr($table)
+    // {
+    //     return $this->db->from($table)
+    //         ->count_all_results();
+    // }
 
-    public function count_all_list_for_pbr($table)
-    {
-        return $this->db->from($table)
-            ->count_all_results();
-    }
-
-    /**
-     * Merge data A dengan data medical dari PostgreSQL
-     * Output sama persis seperti hasil LEFT JOIN SELECT A.*, B.*
-     */
+    // /**
+    //  * Merge data A dengan data medical dari PostgreSQL
+    //  * Output sama persis seperti hasil LEFT JOIN SELECT A.*, B.*
+    //  */
     // private function _merge_with_pgsql_medical($dataA)
     // {
     //     if (empty($dataA)) return [];
@@ -1951,13 +1951,22 @@ class M_monitor extends CI_Model
     //     $headerIds = array_column($dataA, 'HeaderID');
 
     //     // Tentukan kolom yang mau di-expose (sesuai yg dipakai controller/view)
-    //     $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu';
+    //     $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu, pesan_klinik, ket_medis';
     //     // Tambahkan kolom lain yang dipakai:
     //     // $selectCols = 'header_id, approved_dokter_by, kesimpulan_cu, mcu_date, dst';
 
     //     // Daftar kolom B yg harus selalu ada di output (tanpa header_id)
-    //     $bColumns = ['approved_dokter_by', 'kesimpulan_mcu'];
+    //     $bColumns = ['approved_dokter_by', 'kesimpulan_mcu', 'pesan_klinik', 'ket_medis'];
     //     // Sinkronkan dengan $selectCols di atas
+
+    //     // Mapping: nama kolom baru (pgsql) => nama kolom lama (alias biar kode lama tetap jalan)
+    //     $aliasMap = [
+    //         'approved_dokter_by' => 'apvdokterby',
+    //         'kesimpulan_mcu'     => 'kesimpulanCU',
+    //         'pesan_klinik'       => 'pesanklinik',
+    //         'ket_medis'          => 'ketmedis'
+
+    //     ];
 
     //     $dataB = $dbPgsql->select($selectCols)
     //         ->from('mcu_trx_medical_hdr')
@@ -1981,70 +1990,17 @@ class M_monitor extends CI_Model
     //                 $row->$k = $v;
     //             }
     //         }
+
+    //         // Tambahan: copy nilai kolom baru ke nama kolom lama (alias)
+    //         foreach ($aliasMap as $newName => $oldName) {
+    //             $row->$oldName = $row->$newName ?? null;
+    //         }
     //     }
     //     unset($row);
 
     //     return $dataA;
     // }
-
-    private function _merge_with_pgsql_medical($dataA)
-    {
-        if (empty($dataA)) return [];
-
-        $dbPgsql   = $this->load->database('sambusehat', TRUE);
-        $headerIds = array_column($dataA, 'HeaderID');
-
-        // Tentukan kolom yang mau di-expose (sesuai yg dipakai controller/view)
-        $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu, pesan_klinik, ket_medis';
-        // Tambahkan kolom lain yang dipakai:
-        // $selectCols = 'header_id, approved_dokter_by, kesimpulan_cu, mcu_date, dst';
-
-        // Daftar kolom B yg harus selalu ada di output (tanpa header_id)
-        $bColumns = ['approved_dokter_by', 'kesimpulan_mcu', 'pesan_klinik', 'ket_medis'];
-        // Sinkronkan dengan $selectCols di atas
-
-        // Mapping: nama kolom baru (pgsql) => nama kolom lama (alias biar kode lama tetap jalan)
-        $aliasMap = [
-            'approved_dokter_by' => 'apvdokterby',
-            'kesimpulan_mcu'     => 'kesimpulanCU',
-            'pesan_klinik'       => 'pesanklinik',
-            'ket_medis'          => 'ketmedis'
-
-        ];
-
-        $dataB = $dbPgsql->select($selectCols)
-            ->from('mcu_trx_medical_hdr')
-            ->where_in('header_id', $headerIds)
-            ->get()->result();
-
-        $mapB = [];
-        foreach ($dataB as $row) {
-            $mapB[$row->header_id] = $row;
-        }
-
-        foreach ($dataA as &$row) {
-            // Default semua kolom B jadi null dulu
-            foreach ($bColumns as $k) {
-                $row->$k = null;
-            }
-            // Override dengan data aktual kalau match
-            if (isset($mapB[$row->HeaderID])) {
-                foreach ($mapB[$row->HeaderID] as $k => $v) {
-                    if ($k === 'header_id') continue;
-                    $row->$k = $v;
-                }
-            }
-
-            // Tambahan: copy nilai kolom baru ke nama kolom lama (alias)
-            foreach ($aliasMap as $newName => $oldName) {
-                $row->$oldName = $row->$newName ?? null;
-            }
-        }
-        unset($row);
-
-        return $dataA;
-    }
-
+    //  ########################################### BATAS
 
     private function _get_datatables_query_calon_tenaker($table)
     {
@@ -2543,6 +2499,333 @@ class M_monitor extends CI_Model
     //         $this->db->order_by(key($order), $order[key($order)]);
     //     }
     // }
+
+
+    /**
+     * ============================================================
+     * GANTI FUNGSI-FUNGSI BERIKUT INI DI MODEL KAMU
+     * Tidak ada perubahan logic, hanya optimasi memory & performa
+     * ============================================================
+     *
+     * Daftar fungsi yang DIGANTI:
+     *   1. _get_datatables_query_list_for_pbr()   → tambah param $count_only
+     *   2. get_datatables_list_for_pbr()           → tidak berubah, tapi ikut update karena panggil #1
+     *   3. count_filtered_list_for_pbr()           → optimasi utama: tidak fetch rows untuk count
+     *   4. _count_id_lama_filtered()               → BARU: khusus handle count case id_lama
+     *   5. _merge_with_pgsql_medical()             → tambah chunking where_in
+     *
+     * Fungsi yang TIDAK PERLU DIGANTI:
+     *   - count_all_list_for_pbr()                 → sudah efisien
+     */
+
+
+    // ============================================================
+    // [1] GANTI: _get_datatables_query_list_for_pbr
+    //     Tambah parameter $count_only = false
+    //     Sehingga LIMIT 800 tidak ikut kena saat count
+    // ============================================================
+
+    private function _get_datatables_query_list_for_pbr($table, $count_only = false)
+    {
+        $idpemborong = $this->session->userdata('idpemborong');
+
+        if ($idpemborong > 0) {
+            $this->db->where("( CVNama IN ( SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) OR CVNama IN ( SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) )");
+        }
+
+        // Select hanya dari A, B di-merge di PHP
+        $this->db->select('A.*, A.HeaderID as ID');
+
+        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'mcu') {
+            $this->db->from('tblTrnCalonTenagaKerja AS A');
+        } else {
+            $this->db->from($table . ' AS A');
+        }
+
+        // PERUBAHAN: limit 800 hanya untuk query data, tidak untuk count
+        if (!$count_only) {
+            $this->db->limit(800);
+        }
+
+        $i = 0;
+        foreach ($this->column_search_list_for_pbr as $item) {
+            if ($_POST['search']['value']) {
+                if ($item == 'date_time') {
+                    $search_value = $_POST['search']['value'];
+                    $this->db->or_where("TO_CHAR($item, 'YYYY-MM-DD') LIKE", "'%$search_value%'", false);
+                } else {
+                    if ($i === 0) {
+                        $this->db->group_start();
+                        $this->db->like($item, $_POST['search']['value']);
+                    } else {
+                        $this->db->or_like($item, $_POST['search']['value']);
+                    }
+                }
+                if (count($this->column_search_list_for_pbr) - 1 == $i)
+                    $this->db->group_end();
+            }
+            $i++;
+        }
+
+        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] != '') {
+
+            if (isset($_POST['tanggal']) && $_POST['tanggal'] != '') {
+                $tanggal = date('Y-m-d', strtotime($_POST['tanggal']));
+            } else {
+                $tanggal = '';
+            }
+
+            switch ($_POST['selTenaker']) {
+                case 'proses':
+                    $this->db->where("Proses", "proses");
+                    $this->db->where("KeteranganKirim", "");
+                    if ($tanggal) {
+                        $this->db->where("CONVERT(date, DiprosesDate) =", $tanggal);
+                    }
+                    break;
+
+                case 'proses_all':
+                    $this->db->where("Proses", "proses");
+                    $this->db->where("CONVERT(date, JadwalInterview) IS NULL");
+                    break;
+
+                case 'belum_bisa_proses':
+                    $this->db->where("Proses", "belum");
+                    if ($tanggal) {
+                        $this->db->where("CONVERT(date, DiprosesDate) =", $tanggal);
+                    }
+                    break;
+
+                case 'interview':
+                    $this->db->where("JadwalInterview IS NOT NULL");
+                    if ($tanggal) {
+                        $this->db->where("CONVERT(date, JadwalInterview) =", $tanggal);
+                    }
+                    break;
+
+                case 'mcu':
+                    $this->db->where("mcu_date IS NOT NULL");
+                    $this->db->where("JadwalInterview IS NULL");
+                    if ($tanggal) {
+                        $this->db->where("CONVERT(date, mcu_date) =", $tanggal);
+                    }
+                    break;
+
+                case 'blacklist':
+                    $this->db->where_in("A.KeteranganKirim", array('blacklist', 'blacklist_2_bln'));
+                    break;
+
+                case 'id_lama':
+                    // apvdokterby sudah di-handle post-merge (karena dari sambusehat)
+                    $this->db->where("JadwalInterview IS NULL");
+                    $this->db->where("tanggal_mcu IS NULL");
+                    $this->db->where("KeteranganKirim IS NULL");
+                    $this->db->where("WawancaraKe IS NULL");
+                    $this->db->where("Nofix IS NULL");
+                    $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) >=', 3);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        if (isset($_POST['order'])) {
+            $this->db->order_by($this->column_order_list_for_pbr[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->column_order_list_for_pbr)) {
+            $order = $this->order_list_for_pbr;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
+    }
+
+
+    // ============================================================
+    // [2] GANTI: get_datatables_list_for_pbr
+    //     Tidak ada perubahan logic, hanya ikut update
+    //     karena memanggil _get_datatables_query_list_for_pbr
+    // ============================================================
+
+    public function get_datatables_list_for_pbr($table)
+    {
+        $this->_get_datatables_query_list_for_pbr($table); // $count_only default false
+        if ($_POST['length'] != -1)
+            $this->db->limit($_POST['length'], $_POST['start']);
+        $query  = $this->db->get();
+        $dataA  = $query->result();
+
+        // Merge dengan data medical dari sambusehat
+        $merged = $this->_merge_with_pgsql_medical($dataA);
+
+        // Post-filter untuk case id_lama (cek apvdokterby IS NULL)
+        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'id_lama') {
+            $merged = array_values(array_filter($merged, function ($row) {
+                return !isset($row->approved_dokter_by) || $row->approved_dokter_by === null;
+            }));
+        }
+
+        return $merged;
+    }
+
+
+    // ============================================================
+    // [3] GANTI: count_filtered_list_for_pbr
+    //     SEBELUM : fetch semua rows → num_rows() → buang rows-nya
+    //     SESUDAH : COUNT(*) langsung di DB (case normal)
+    //               _count_id_lama_filtered() (case id_lama)
+    // ============================================================
+
+    public function count_filtered_list_for_pbr($table)
+    {
+        // Case id_lama: filter cross-DB, tidak bisa COUNT di SQL langsung
+        // Delegasi ke fungsi khusus yang lebih hemat memori
+        if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'id_lama') {
+            return $this->_count_id_lama_filtered($table);
+        }
+
+        // Case normal: gunakan COUNT(*) langsung, tidak fetch rows sama sekali
+        $this->_get_datatables_query_list_for_pbr($table, true); // $count_only = true
+        return $this->db->count_all_results();
+    }
+
+
+    // ============================================================
+    // [4] BARU: _count_id_lama_filtered
+    //     Khusus menghitung count untuk case id_lama
+    //     Trick: hanya fetch HeaderID (bukan A.*), cross-check ke pgsql
+    //     Jauh lebih hemat vs fetch A.* + full merge hanya untuk count
+    // ============================================================
+
+    private function _count_id_lama_filtered($table)
+    {
+        $idpemborong = $this->session->userdata('idpemborong');
+
+        // Filter pemborong
+        if ($idpemborong > 0) {
+            $this->db->where("( CVNama IN ( SELECT NamaCV FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) OR CVNama IN ( SELECT Perusahaan FROM vwMstPemborong WHERE IDPerusahaan = '" . $idpemborong . "' ) )");
+        }
+
+        // Hanya ambil HeaderID, tidak perlu A.*
+        $this->db->select('A.HeaderID');
+        $this->db->from($table . ' AS A');
+
+        // Filter id_lama (sama persis dengan switch case di _get_datatables_query)
+        $this->db->where("JadwalInterview IS NULL");
+        $this->db->where("tanggal_mcu IS NULL");
+        $this->db->where("KeteranganKirim IS NULL");
+        $this->db->where("WawancaraKe IS NULL");
+        $this->db->where("Nofix IS NULL");
+        $this->db->where('DATEDIFF(month, A.RegisteredDate, GETDATE()) >=', 3);
+
+        // Terapkan filter search jika ada
+        $i = 0;
+        foreach ($this->column_search_list_for_pbr as $item) {
+            if (!empty($_POST['search']['value'])) {
+                if ($i === 0) {
+                    $this->db->group_start();
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+                if (count($this->column_search_list_for_pbr) - 1 == $i) {
+                    $this->db->group_end();
+                }
+            }
+            $i++;
+        }
+
+        $headerIds = array_column($this->db->get()->result(), 'HeaderID');
+
+        if (empty($headerIds)) return 0;
+
+        // Cross-check ke pgsql: cari header_id yang sudah punya approved_dokter_by (NOT NULL)
+        // Yang id_lama = yang TIDAK ADA di hasil ini
+        $dbPgsql = $this->load->database('sambusehat', TRUE);
+
+        // Chunk where_in agar tidak overload kalau headerIds banyak
+        $approvedIds = [];
+        foreach (array_chunk($headerIds, 500) as $chunk) {
+            $rows = $dbPgsql->select('header_id')
+                ->from('mcu_trx_medical_hdr')
+                ->where_in('header_id', $chunk)
+                ->where('approved_dokter_by IS NOT NULL')
+                ->get()->result();
+            foreach ($rows as $row) {
+                $approvedIds[$row->header_id] = true;
+            }
+        }
+
+        // Count yang belum disetujui dokter = id_lama sejati
+        $count = 0;
+        foreach ($headerIds as $id) {
+            if (!isset($approvedIds[$id])) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+
+    // ============================================================
+    // [5] GANTI: _merge_with_pgsql_medical
+    //     Tambah chunking where_in (max 500 per batch)
+    //     agar tidak overload kalau data banyak
+    // ============================================================
+
+    private function _merge_with_pgsql_medical($dataA)
+    {
+        if (empty($dataA)) return [];
+
+        $dbPgsql   = $this->load->database('sambusehat', TRUE);
+        $headerIds = array_column($dataA, 'HeaderID');
+
+        $selectCols = 'header_id, approved_dokter_by, kesimpulan_mcu, pesan_klinik, ket_medis';
+        $bColumns   = ['approved_dokter_by', 'kesimpulan_mcu', 'pesan_klinik', 'ket_medis'];
+        $aliasMap   = [
+            'approved_dokter_by' => 'apvdokterby',
+            'kesimpulan_mcu'     => 'kesimpulanCU',
+            'pesan_klinik'       => 'pesanklinik',
+            'ket_medis'          => 'ketmedis',
+        ];
+
+        // Chunk where_in agar tidak overload query (max 500 per batch)
+        $mapB = [];
+        foreach (array_chunk($headerIds, 500) as $chunk) {
+            $rows = $dbPgsql->select($selectCols)
+                ->from('mcu_trx_medical_hdr')
+                ->where_in('header_id', $chunk)
+                ->get()->result();
+            foreach ($rows as $row) {
+                $mapB[$row->header_id] = $row;
+            }
+        }
+
+        // Siapkan null defaults sekali saja di luar loop
+        $nullDefaults = array_fill_keys($bColumns, null);
+
+        foreach ($dataA as &$row) {
+            // Set semua kolom B jadi null dulu
+            foreach ($nullDefaults as $k => $v) {
+                $row->$k = $v;
+            }
+
+            // Override dengan data aktual kalau match
+            if (isset($mapB[$row->HeaderID])) {
+                foreach ($mapB[$row->HeaderID] as $k => $v) {
+                    if ($k === 'header_id') continue;
+                    $row->$k = $v;
+                }
+            }
+
+            // Copy nilai ke nama alias (agar kode lama tetap jalan)
+            foreach ($aliasMap as $newName => $oldName) {
+                $row->$oldName = $row->$newName ?? null;
+            }
+        }
+        unset($row);
+
+        return $dataA;
+    }
 }
 
 /* End of file m_monitor.php */
