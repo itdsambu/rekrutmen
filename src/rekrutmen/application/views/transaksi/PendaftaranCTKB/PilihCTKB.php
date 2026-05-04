@@ -46,18 +46,20 @@
                                     <span>Main</span>
                                 </a>
                             </li>
-                            <li>
-                                <a data-toggle="tab" aria-expanded="true" href="#faq-tab-2" class="centered-tab">
-                                    <i class="green ace-icon fa fa-stethoscope bigger-120"></i>
-                                    <span>Procces to MCU</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" aria-expanded="true" href="#faq-tab-3" class="centered-tab">
-                                    <i class="green ace-icon fa fa-pencil bigger-120"></i>
-                                    <span>Procces to interview</span>
-                                </a>
-                            </li>
+                            <?php if ($idpemborong == 0) : ?>
+                                <li>
+                                    <a data-toggle="tab" aria-expanded="true" href="#faq-tab-2" class="centered-tab">
+                                        <i class="green ace-icon fa fa-stethoscope bigger-120"></i>
+                                        <span>Procces to MCU</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" aria-expanded="true" href="#faq-tab-3" class="centered-tab">
+                                        <i class="green ace-icon fa fa-pencil bigger-120"></i>
+                                        <span>Procces to interview</span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
 
 
 
