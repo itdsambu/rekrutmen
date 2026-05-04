@@ -34,12 +34,12 @@ $config['base_url'] = $root;
 
 // $config['base_url'] = ((isset($_SERVER['HTTPS']) ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . '/');
 
-// if ($_SERVER['HTTP_HOST'] == '192.168.3.5') {
-//     $config['base_url'] = 'http://192.168.3.5/rekrutmen/'; // untuk lokal
+// if ($_SERVER['HTTP_HOST'] == '192.168.3.18') {
+//     $config['base_url'] = 'http://192.168.3.18/rekrutmen/'; // untuk lokal
 // } else {
-//     $config['base_url'] = 'http://portal.psg.co.id/rekrutmen/'; // untuk server publik
+//     $config['base_url'] = 'http://aplikasi.psg.co.id/rekrutmen/'; // untuk server publik
 // }
-// $config['base_url'] = 'http://portal.psg.co.id/rekrutmen/'; // untuk server publik
+// $config['base_url'] = 'http://aplikasi.psg.co.id/rekrutmen/'; // untuk server publik
 
 $config['photo_url'] = 'file://' . '192.168.3.2' . '/foto/';
 

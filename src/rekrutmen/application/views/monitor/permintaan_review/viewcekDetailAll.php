@@ -25,35 +25,36 @@
                         </div>
                     </div>
                     <div class="widget-body">
-                        <div class="widget-main"> 
+                        <div class="widget-main">
                             <div class="table-responsive">
                                 <table id="dataTables-listTK" class="table table-striped table-bordered table-hover">
                                     <thead>
-                                    <tr>
-                                        <th rowspan="2">No</th>
-                                        <th rowspan="2">ID</th>
-                                        <th rowspan="2">TransID</th>
-                                        <th rowspan="2">Departemen</th>
-                                        <th rowspan="2">Pekerjaan</th>
-                                        <th rowspan="2">NAMA</th>
-                                    </tr>
+                                        <tr>
+                                            <th rowspan="2">No</th>
+                                            <th rowspan="2">ID</th>
+                                            <th rowspan="2">TransID</th>
+                                            <th rowspan="2">Departemen</th>
+                                            <th rowspan="2">Pekerjaan</th>
+                                            <th rowspan="2">NAMA</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <?php $no=1; foreach($_getTrans as $row):?>
-                                        <tr>
-                                            <td><?php echo $no++; ?></td>
-                                            <td><?php echo $row->HeaderID; ?></td>
-                                            <td><?php echo $row->TransID; ?></td>
-                                            <td><?php echo $row->DeptAbbr; ?></td>
-                                            <td><?php echo $row->Pekerjaan; ?></td>
-                                            <td><?php echo $row->Nama; ?></td>
-                                        </tr>
-                                    <?php endforeach;?>
+                                        <?php $no = 1;
+                                        foreach ($_getTrans as $row) : ?>
+                                            <tr>
+                                                <td><?php echo $no++; ?></td>
+                                                <td><?php echo $row->HeaderID; ?></td>
+                                                <td><?php echo $row->TransID; ?></td>
+                                                <td><?php echo $row->DeptAbbr; ?></td>
+                                                <td><?php echo $row->Pekerjaan; ?></td>
+                                                <td><?php echo $row->Nama; ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -61,12 +62,12 @@
     </div>
 </div>
 
-<!-- page specific plugin scripts -->        
-<script src="http://192.168.3.5/rekrutmen/assets/sp/scroll-persen.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/jquery.dataTables.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
+<!-- page specific plugin scripts -->
+<script src="<?= base_url() ?>/rekrutmen/assets/sp/scroll-persen.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/jquery.dataTables.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
 
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/datepicker.css" />
 
@@ -76,7 +77,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('#dataTables-listTK').dataTable({
-            "order": [[0,'desc']]
+            "order": [
+                [0, 'desc']
+            ]
         });
     });
 </script>

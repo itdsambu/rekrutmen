@@ -18,7 +18,7 @@ class Welcome extends CI_Controller
 
         date_default_timezone_set("Asia/Jakarta");
         if (!$this->session->userdata('userid')) {
-            // if ($_SERVER['HTTP_HOST'] == '192.168.3.5') {
+            // if ($_SERVER['HTTP_HOST'] == '192.168.3.18') {
             //     # code...
             // }
             redirect('login');

@@ -541,13 +541,13 @@
 </div>
 
 
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/jquery.dataTables.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
-<script src="http://192.168.3.5/rekrutmen/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
-<script type="text/javascript" src="http://192.168.3.5/rekrutmen/assets/jqv/jquery.tablesorter.min.js"></script>
-<script type="text/javascript" src="http://192.168.3.5/rekrutmen/assets/moment.min.js"></script>
-<script type="text/javascript" src="http://192.168.3.5/rekrutmen/assets/datetime-moment.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/jquery.dataTables.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+<script src="<?= base_url() ?>/rekrutmen/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>/rekrutmen/assets/jqv/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>/rekrutmen/assets/moment.min.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>/rekrutmen/assets/datetime-moment.js"></script>
 <script>
     $(document).ready(function() {
         $.fn.dataTable.moment('DD/MM/YYYY');

@@ -30,7 +30,7 @@ class TrainingOnline_v2 extends CI_Controller
         $data['getSoal']      = $this->M_TrainingOnline->_getSoal($idHdrSoal);
         $data['_getWaktu']    = $this->M_TrainingOnline->getWaktu($idHdrSoal);
 
-        // http://192.168.3.5/rekrutmen/
+        // http://192.168.3.18/rekrutmen/
 
 
         // echo "<pre>";
