@@ -235,7 +235,7 @@ class WawancaraProses extends CI_Controller
             } else {
 
                 foreach ($cekPendidikan as $row) {
-                    if ($row->Pendidikan == 'D3' || $row->Pendidikan == 'S1' || $row->Pendidikan == 'S2' || $row->Pendidikan == 'S3' || $row->Pendidikan == 'SMK') {
+                    if ($row->Pendidikan == 'D3' || $row->Pendidikan == 'S1' || $row->Pendidikan == 'S2' || $row->Pendidikan == 'S3' || $row->Pendidikan == 'SMK' || $row->Pendidikan == 'D4' || $row->Pendidikan == 'SMU') {
                         $this->load->view('registrasi/proses_wawancara/wawancara_karyawan/wawancaraKaryawan', $data);
                     } else {
                         $this->load->view('registrasi/proses_wawancara/wawancara_karyawan/wawancaraSmu', $data);
