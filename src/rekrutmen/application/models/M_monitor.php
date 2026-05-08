@@ -2549,7 +2549,6 @@ class M_monitor extends CI_Model
                             A.JadwalInterview,
                             A.KeteranganKirim, 
                             A.DiprosesDate,
-                            A.tanggal_mcu,
                             A.mcu_date,
                             A.RegisteredDate,
                             A.HeaderID as ID');
