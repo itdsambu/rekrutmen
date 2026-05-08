@@ -328,7 +328,7 @@ class WawancaraProses extends CI_Controller
         //=====================================================================
         $data1  = array(
             'HeaderID'       => $this->input->post('HeaderID'),
-            'Tanggal'        => date('Y-m-d H: i: s'),
+            'Tanggal'        => date('Y-m-d H:i:s'),
             'Departemen'     => $this->input->post('txtDept'),
             'WawancaraBy'    => $this->session->userdata('username'),
             'HasilWawancara' => $hasil,
