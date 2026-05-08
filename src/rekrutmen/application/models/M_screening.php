@@ -173,22 +173,22 @@ class M_screening extends CI_Model
 
         $query = $this->db->query("WITH CTE AS (
                                             -- Divisi Utility
-                                            -- SELECT 'HED' AS DeptAbbr
-                                            -- UNION ALL SELECT 'TBN'
-                                            -- UNION ALL SELECT 'BMD'
-                                            -- UNION ALL SELECT 'CAC'
-                                            -- UNION ALL SELECT 'DWP'
-                                            -- UNION ALL SELECT 'ELC'
-                                            -- UNION ALL SELECT 'IPL'
-                                            -- UNION ALL SELECT 'PRU'
-                                            -- UNION ALL SELECT 'PWH'
-                                            -- UNION ALL SELECT 'WTD'
-                                            SELECT
-                                            deptabbr as DeptAbbr
-                                            FROM
-                                            Personalia.dbo.vwDeptdanDivisi 
-                                            WHERE
-                                            NamaDivisi = 'UTILITY'
+                                            SELECT 'HED' AS DeptAbbr
+                                            UNION ALL SELECT 'TBN'
+                                            UNION ALL SELECT 'BMD'
+                                            UNION ALL SELECT 'CAC'
+                                            UNION ALL SELECT 'DWP'
+                                            UNION ALL SELECT 'ELC'
+                                            UNION ALL SELECT 'IPL'
+                                            UNION ALL SELECT 'PRU'
+                                            UNION ALL SELECT 'PWH'
+                                            UNION ALL SELECT 'WTD'
+                                            -- SELECT
+                                            -- deptabbr as DeptAbbr
+                                            -- FROM
+                                            -- Personalia.dbo.vwDeptdanDivisi 
+                                            -- WHERE
+                                            -- NamaDivisi = 'UTILITY'
                                             )
                                                 
                                                 
