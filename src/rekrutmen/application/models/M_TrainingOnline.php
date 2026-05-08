@@ -96,7 +96,7 @@ class M_TrainingOnline extends CI_Model
         // Query lama
         // $query = $this->db->query("SELECT COUNT(RegFix) as nofix  from PSGTrainingOnline..tblTrnJawabanHdr where RegFix ='$Nofix'  and IDMstSoalHdr= '$hdrSoal'");
         // Query baru
-        $query = $this->db->query("SELECT COUNT(RegFix) as nofix  from PSGTrainingOnline..vwTrnJawabanHdrelc where RegFix ='$Nofix'  and IDMstSoalHdr= '$hdrSoal' and Nilai is not null and remedial = 0");
+        $query = $this->db->query("SELECT COUNT(RegFix) as nofix  from PSGTrainingOnline..vwTrnJawabanHdrELC1 where RegFix ='$Nofix'  and IDMstSoalHdr= '$hdrSoal' and Nilai is not null and remedial = 0");
         return $query->row();
     }
 

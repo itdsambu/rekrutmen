@@ -2534,7 +2534,25 @@ class M_monitor extends CI_Model
         }
 
         // Select hanya dari A, B di-merge di PHP
-        $this->db->select('A.*, A.HeaderID as ID');
+        $this->db->select(' A.HeaderID,
+                            A.Jenis_Kelamin,
+                            A.WawancaraKe,
+                            A.UdahDiAmbil,
+                            A.Nofix,
+                            A.KeteranganKirim,
+                            A.RegisteredBy,
+                            A.RegisteredDate,
+                            A.Pemborong,
+                            A.SubPemborong,
+                            A.Nama,
+                            A.Tgl_Lahir,
+                            A.JadwalInterview,
+                            A.KeteranganKirim, 
+                            A.DiprosesDate,
+                            A.tanggal_mcu,
+                            A.mcu_date,
+                            A.RegisteredDate,
+                            A.HeaderID as ID');
 
         if (isset($_POST['selTenaker']) && $_POST['selTenaker'] == 'mcu') {
             $this->db->from('tblTrnCalonTenagaKerja AS A');
