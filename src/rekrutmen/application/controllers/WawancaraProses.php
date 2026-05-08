@@ -214,7 +214,7 @@ class WawancaraProses extends CI_Controller
     function wawancaraIndex()
     {
         $data['_getTenagaKerja'] = $this->m_wawancara->getTenaker();
-        $data['_getDept'] = $this->m_wawancara->getDepartment();
+        // $data['_getDept'] = $this->m_wawancara->getDepartment();
 
         $this->template->display('registrasi/proses_wawancara/wawancara_karyawan/index', $data);
     }

@@ -87,6 +87,7 @@ class M_TrainingOnline extends CI_Model
         $query = $this->db->query("SELECT WaktuPublish,SettingWaktu,CreatedDate,IdMstSoalHdr FROM PSGTrainingOnline..tblMstSoalHdr where idMstSoalHdr = '$HdrSoal'");
         return $query->result();
     }
+    //test push
 
     //function cek nofix dan materi yang sama
 
