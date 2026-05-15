@@ -36,7 +36,7 @@
                         <div class="center">
                             <h3>
                                 <i class="ace-icon fa fa-leaf green"></i>
-                                <span class="red">Recruitment</span>
+                                <span class="red">Recruitmenttt</span>
                                 <!-- <span class="white" id="id-text2">Management System</span> -->
                             </h3>
                             <h4 class="grey" id="id-company-text">&copy;</h4>
